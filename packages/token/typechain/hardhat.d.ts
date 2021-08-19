@@ -49,9 +49,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20Upgradeable__factory>;
     getContractFactory(
+      name: "ClaimableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ClaimableUpgradeable__factory>;
+    getContractFactory(
       name: "Lif2",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Lif2__factory>;
+    getContractFactory(
+      name: "StoppableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StoppableUpgradeable__factory>;
 
     // default types
     getContractFactory(

@@ -44,7 +44,9 @@ task('deploy', 'Deploys the token')
     console.log(`Deploying the ${contractName} proxy...`);
     const proxy = await hre.upgrades.deployProxy(
       contract,
-      [],
+      [
+        '0xeb9951021698b42e4399f9cbb6267aa35f82d59d'
+      ],
       {
         initializer: 'initialize'
       }
