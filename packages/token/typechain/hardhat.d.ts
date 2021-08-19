@@ -57,6 +57,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Lif2__factory>;
     getContractFactory(
+      name: "Lif2UpgradeabilityTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Lif2UpgradeabilityTest__factory>;
+    getContractFactory(
+      name: "OldLifTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.OldLifTest__factory>;
+    getContractFactory(
       name: "StoppableUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.StoppableUpgradeable__factory>;
