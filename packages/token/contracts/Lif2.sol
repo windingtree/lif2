@@ -10,6 +10,9 @@ import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "./StoppableUpgradeable.sol";
 import "./ClaimableUpgradeable.sol";
 
+/**
+ * @dev Lif ERC20 token
+ */
 contract Lif2 is
   Initializable,
   ERC20Upgradeable,
@@ -19,22 +22,37 @@ contract Lif2 is
   ERC20PermitUpgradeable,
   ClaimableUpgradeable
 {
+  /**
+   * @dev Initializes the contract
+   *
+   * Note: Must be called as soon as possible after the contract deployment
+   */
   function initialize(address tokenAddress_) public initializer {
     __ERC20_init("Lif Token", "LIF");
     __Pausable_init();
+    __Stoppable_init();
     __Ownable_init();
     __ERC20Permit_init("Lif Token");
     __Claimable_init(tokenAddress_);
   }
 
+  /**
+   * @dev Triggers stopped state.
+   */
   function pause() public onlyOwner {
     _pause();
   }
 
+  /**
+   * @dev Returns to normal paused state.
+   */
   function unpause() public onlyOwner {
     _unpause();
   }
 
+  /**
+   * @dev See {ERC20Upgradeable-_beforeTokenTransfer}
+   */
   function _beforeTokenTransfer(
     address from,
     address to,
@@ -45,6 +63,9 @@ contract Lif2 is
 
   // The following functions are overrides required by Solidity.
 
+  /**
+   * @dev See {ERC20Upgradeable-_afterTokenTransfer}
+   */
   function _afterTokenTransfer(
     address from,
     address to,
@@ -53,6 +74,9 @@ contract Lif2 is
     super._afterTokenTransfer(from, to, amount);
   }
 
+  /**
+   * @dev See {ERC20Upgradeable-_mint}
+   */
   function _mint(address to, uint256 amount)
     internal
     override(ERC20Upgradeable, ClaimableUpgradeable)
@@ -60,6 +84,9 @@ contract Lif2 is
     super._mint(to, amount);
   }
 
+  /**
+   * @dev See {ERC20Upgradeable-_burn}
+   */
   function _burn(address account, uint256 amount)
     internal
     override(ERC20Upgradeable)
