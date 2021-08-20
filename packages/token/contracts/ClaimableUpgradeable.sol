@@ -14,8 +14,16 @@ abstract contract ClaimableUpgradeable is
   // Original Lif token instance
   IERC20Upgradeable private _originalLif;
 
+  // Feature stopped state
+  bool private _stopped;
+
   // Mapping of a holder address to its balance in stuck
   mapping(address => uint256) private _stuckBalance;
+
+  /**
+   * @dev Emitted when the stop is triggered by `account`.
+   */
+  event Stopped(address account);
 
   /**
    * @dev Emitted when `value` tokens are been claimed by the `holder`
@@ -26,6 +34,18 @@ abstract contract ClaimableUpgradeable is
    * @dev Emitted when `value` tokens are been resurrected for the `holder`
    */
   event Resurrect(address indexed holder, uint256 value);
+
+  /**
+   * @dev Modifier to make a function callable only when the contract is not stopped.
+   *
+   * Requirements:
+   *
+   * - The contract must not be stopped.
+   */
+  modifier whenNotStopped() {
+    require(!stopped(), "Claimable: stopped");
+    _;
+  }
 
   /**
    * @dev Sets the original Lif token instance
@@ -39,6 +59,7 @@ abstract contract ClaimableUpgradeable is
     initializer
   {
     require(tokenAddress_ != address(0), "Claimable: invalid token address");
+    _stopped = false;
     _originalLif = IERC20Upgradeable(tokenAddress_);
     __ReentrancyGuard_init();
 
@@ -90,10 +111,6 @@ abstract contract ClaimableUpgradeable is
     uint256 balance = _originalLif.balanceOf(holder);
 
     require(balance > 0, "Claimable: nothing to claim");
-    require(
-      _originalLif.allowance(holder, address(this)) >= balance,
-      "Claimable: tokens not allowed"
-    );
 
     // Fetches all the old tokens...
     SafeERC20Upgradeable.safeTransferFrom(
@@ -108,16 +125,35 @@ abstract contract ClaimableUpgradeable is
     );
 
     // ...and sends new tokens in change
-    transfer(holder, balance);
+    _transfer(address(this), holder, balance);
     emit Claim(holder, balance);
 
     // Resurrect tokens if exists
     if (_stuckBalance[holder] > 0) {
       uint256 holderStuckBalance = _stuckBalance[holder];
       _stuckBalance[holder] = 0;
-      transfer(holder, holderStuckBalance);
+      _transfer(address(this), holder, holderStuckBalance);
       emit Resurrect(holder, holderStuckBalance);
     }
+  }
+
+  /**
+    * @dev Returns true if the contract is stopped, and false otherwise.
+    */
+  function stopped() public view virtual returns (bool) {
+    return _stopped;
+  }
+
+  /**
+   * @dev Triggers stopped state.
+   *
+   * Requirements:
+   *
+   * - The contract must not be stopped.
+   */
+  function _stop() internal virtual whenNotStopped {
+    _stopped = true;
+    emit Stopped(_msgSender());
   }
 
   uint256[49] private __gap;

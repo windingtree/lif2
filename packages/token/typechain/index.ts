@@ -14,7 +14,6 @@ export type { ClaimableUpgradeable } from "./ClaimableUpgradeable";
 export type { Lif2 } from "./Lif2";
 export type { Lif2UpgradeabilityTest } from "./Lif2UpgradeabilityTest";
 export type { OldLifTest } from "./OldLifTest";
-export type { StoppableUpgradeable } from "./StoppableUpgradeable";
 
 export { OwnableUpgradeable__factory } from "./factories/OwnableUpgradeable__factory";
 export { PausableUpgradeable__factory } from "./factories/PausableUpgradeable__factory";
@@ -29,4 +28,3 @@ export { ClaimableUpgradeable__factory } from "./factories/ClaimableUpgradeable_
 export { Lif2__factory } from "./factories/Lif2__factory";
 export { Lif2UpgradeabilityTest__factory } from "./factories/Lif2UpgradeabilityTest__factory";
 export { OldLifTest__factory } from "./factories/OldLifTest__factory";
-export { StoppableUpgradeable__factory } from "./factories/StoppableUpgradeable__factory";

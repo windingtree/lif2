@@ -64,10 +64,6 @@ declare module "hardhat/types/runtime" {
       name: "OldLifTest",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.OldLifTest__factory>;
-    getContractFactory(
-      name: "StoppableUpgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.StoppableUpgradeable__factory>;
 
     // default types
     getContractFactory(

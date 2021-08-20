@@ -25,6 +25,9 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "c_0x4551282f(bytes32)": FunctionFragment;
+    "c_0x821dc3c9(bytes32)": FunctionFragment;
+    "c_0x8c197c89(bytes32)": FunctionFragment;
     "claim()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
@@ -39,6 +42,7 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     "paused()": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "stop()": FunctionFragment;
     "stopped()": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
@@ -46,7 +50,6 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "unpause()": FunctionFragment;
-    "unsafeTransfer(address,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -62,6 +65,18 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "c_0x4551282f",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0x821dc3c9",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "c_0x8c197c89",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "claim", values?: undefined): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
@@ -102,6 +117,7 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "stop", values?: undefined): string;
   encodeFunctionData(functionFragment: "stopped", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
@@ -121,10 +137,6 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "unsafeTransfer",
-    values: [string, BigNumberish]
-  ): string;
 
   decodeFunctionResult(
     functionFragment: "DOMAIN_SEPARATOR",
@@ -133,6 +145,18 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0x4551282f",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0x821dc3c9",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "c_0x8c197c89",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
@@ -162,6 +186,7 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "stop", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stopped", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
@@ -178,10 +203,6 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "unsafeTransfer",
-    data: BytesLike
-  ): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
@@ -282,6 +303,36 @@ export class Lif2UpgradeabilityTest extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    c_0x4551282f(
+      c__0x4551282f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x4551282f(bytes32)"(
+      c__0x4551282f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0x821dc3c9(
+      c__0x821dc3c9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x821dc3c9(bytes32)"(
+      c__0x821dc3c9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    c_0x8c197c89(
+      c__0x8c197c89: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
+    "c_0x8c197c89(bytes32)"(
+      c__0x8c197c89: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
 
     claim(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -394,6 +445,14 @@ export class Lif2UpgradeabilityTest extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    stop(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "stop()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     stopped(overrides?: CallOverrides): Promise<[boolean]>;
 
     "stopped()"(overrides?: CallOverrides): Promise<[boolean]>;
@@ -449,18 +508,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
     "unpause()"(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    unsafeTransfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    "unsafeTransfer(address,uint256)"(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
   };
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
@@ -497,6 +544,36 @@ export class Lif2UpgradeabilityTest extends BaseContract {
     account: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  c_0x4551282f(
+    c__0x4551282f: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x4551282f(bytes32)"(
+    c__0x4551282f: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  c_0x821dc3c9(
+    c__0x821dc3c9: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x821dc3c9(bytes32)"(
+    c__0x821dc3c9: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  c_0x8c197c89(
+    c__0x8c197c89: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
+
+  "c_0x8c197c89(bytes32)"(
+    c__0x8c197c89: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<void>;
 
   claim(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -609,6 +686,14 @@ export class Lif2UpgradeabilityTest extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  stop(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "stop()"(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   stopped(overrides?: CallOverrides): Promise<boolean>;
 
   "stopped()"(overrides?: CallOverrides): Promise<boolean>;
@@ -665,18 +750,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  unsafeTransfer(
-    recipient: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  "unsafeTransfer(address,uint256)"(
-    recipient: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
@@ -712,6 +785,36 @@ export class Lif2UpgradeabilityTest extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    c_0x4551282f(
+      c__0x4551282f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x4551282f(bytes32)"(
+      c__0x4551282f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0x821dc3c9(
+      c__0x821dc3c9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x821dc3c9(bytes32)"(
+      c__0x821dc3c9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    c_0x8c197c89(
+      c__0x8c197c89: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "c_0x8c197c89(bytes32)"(
+      c__0x8c197c89: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     claim(overrides?: CallOverrides): Promise<void>;
 
@@ -809,6 +912,10 @@ export class Lif2UpgradeabilityTest extends BaseContract {
 
     "renounceOwnership()"(overrides?: CallOverrides): Promise<void>;
 
+    stop(overrides?: CallOverrides): Promise<void>;
+
+    "stop()"(overrides?: CallOverrides): Promise<void>;
+
     stopped(overrides?: CallOverrides): Promise<boolean>;
 
     "stopped()"(overrides?: CallOverrides): Promise<boolean>;
@@ -860,18 +967,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
     unpause(overrides?: CallOverrides): Promise<void>;
 
     "unpause()"(overrides?: CallOverrides): Promise<void>;
-
-    unsafeTransfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    "unsafeTransfer(address,uint256)"(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
   };
 
   filters: {
@@ -957,6 +1052,36 @@ export class Lif2UpgradeabilityTest extends BaseContract {
 
     "balanceOf(address)"(
       account: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0x4551282f(
+      c__0x4551282f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x4551282f(bytes32)"(
+      c__0x4551282f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0x821dc3c9(
+      c__0x821dc3c9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x821dc3c9(bytes32)"(
+      c__0x821dc3c9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    c_0x8c197c89(
+      c__0x8c197c89: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "c_0x8c197c89(bytes32)"(
+      c__0x8c197c89: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1071,6 +1196,14 @@ export class Lif2UpgradeabilityTest extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    stop(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "stop()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     stopped(overrides?: CallOverrides): Promise<BigNumber>;
 
     "stopped()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1126,18 +1259,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
     "unpause()"(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    unsafeTransfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    "unsafeTransfer(address,uint256)"(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1178,6 +1299,36 @@ export class Lif2UpgradeabilityTest extends BaseContract {
 
     "balanceOf(address)"(
       account: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0x4551282f(
+      c__0x4551282f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x4551282f(bytes32)"(
+      c__0x4551282f: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0x821dc3c9(
+      c__0x821dc3c9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x821dc3c9(bytes32)"(
+      c__0x821dc3c9: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    c_0x8c197c89(
+      c__0x8c197c89: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "c_0x8c197c89(bytes32)"(
+      c__0x8c197c89: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1295,6 +1446,14 @@ export class Lif2UpgradeabilityTest extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    stop(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "stop()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     stopped(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "stopped()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1348,18 +1507,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     "unpause()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    unsafeTransfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "unsafeTransfer(address,uint256)"(
-      recipient: string,
-      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

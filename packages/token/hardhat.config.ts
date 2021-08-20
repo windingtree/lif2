@@ -36,7 +36,15 @@ const config: CustomHardhatConfig = {
   },
   defaultNetwork: 'hardhat',
   networks: {
-    hardhat: networks.hardhat || {},
+    hardhat: {
+      ...(
+        networks.hardhat
+          ? networks.hardhat
+          : {
+            "initialBaseFeePerGas": 0
+          }
+      )
+    },
     ropsten: networks.ropsten
   },
   etherscan: networks.etherscan,
