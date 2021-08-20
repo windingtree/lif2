@@ -32,6 +32,9 @@ import {
 
 // Proxy instance in the Ropsten network
 const ropstenLifAddress = proxy.ropsten;
+/*
+ropstenLifAddress -> 0x40a9c072848243EA5bFd88d9f18A6Fa3af0B3d31
+*/
 ```
 
 ## Management
@@ -40,6 +43,12 @@ const ropstenLifAddress = proxy.ropsten;
 
 ```bash
 npx yarn compile
+```
+
+### Testing
+
+```bash
+npx yarn test
 ```
 
 ### Deployment
