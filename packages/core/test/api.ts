@@ -45,7 +45,7 @@ describe('API tests', () => {
     });
   });
 
-  describe('#oldBalanceOf', () => {
+  describe('#balanceOfOld', () => {
 
     it('should return balance of the account on the OLD contract', async () => {
       expect(await lif2Token.balanceOfOld(holder1Address)).equal(defaultBalance);
