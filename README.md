@@ -15,3 +15,6 @@ npm yarn link
 
 The token smart contract source, built code, typescript typings and deployment information.
 
+### [@windingtree/lif2-token-core](packages/core#readme)
+
+A core TS library of the Lif2 Token
