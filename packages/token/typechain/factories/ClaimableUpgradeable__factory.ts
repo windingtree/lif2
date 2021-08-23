@@ -179,19 +179,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "c__0x4551282f",
-        type: "bytes32",
-      },
-    ],
-    name: "c_0x4551282f",
-    outputs: [],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "claim",
     outputs: [],

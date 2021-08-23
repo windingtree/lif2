@@ -25,9 +25,6 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "c_0x4551282f(bytes32)": FunctionFragment;
-    "c_0x821dc3c9(bytes32)": FunctionFragment;
-    "c_0x8c197c89(bytes32)": FunctionFragment;
     "claim()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
@@ -65,18 +62,6 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "c_0x4551282f",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x821dc3c9",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "c_0x8c197c89",
-    values: [BytesLike]
-  ): string;
   encodeFunctionData(functionFragment: "claim", values?: undefined): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
@@ -145,18 +130,6 @@ interface Lif2UpgradeabilityTestInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x4551282f",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x821dc3c9",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "c_0x8c197c89",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
@@ -303,36 +276,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
-
-    c_0x4551282f(
-      c__0x4551282f: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x4551282f(bytes32)"(
-      c__0x4551282f: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0x821dc3c9(
-      c__0x821dc3c9: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x821dc3c9(bytes32)"(
-      c__0x821dc3c9: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    c_0x8c197c89(
-      c__0x8c197c89: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    "c_0x8c197c89(bytes32)"(
-      c__0x8c197c89: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
 
     claim(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -545,36 +488,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  c_0x4551282f(
-    c__0x4551282f: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x4551282f(bytes32)"(
-    c__0x4551282f: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0x821dc3c9(
-    c__0x821dc3c9: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x821dc3c9(bytes32)"(
-    c__0x821dc3c9: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  c_0x8c197c89(
-    c__0x8c197c89: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  "c_0x8c197c89(bytes32)"(
-    c__0x8c197c89: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
   claim(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -785,36 +698,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    c_0x4551282f(
-      c__0x4551282f: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x4551282f(bytes32)"(
-      c__0x4551282f: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0x821dc3c9(
-      c__0x821dc3c9: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x821dc3c9(bytes32)"(
-      c__0x821dc3c9: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    c_0x8c197c89(
-      c__0x8c197c89: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "c_0x8c197c89(bytes32)"(
-      c__0x8c197c89: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     claim(overrides?: CallOverrides): Promise<void>;
 
@@ -1055,36 +938,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    c_0x4551282f(
-      c__0x4551282f: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x4551282f(bytes32)"(
-      c__0x4551282f: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0x821dc3c9(
-      c__0x821dc3c9: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x821dc3c9(bytes32)"(
-      c__0x821dc3c9: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    c_0x8c197c89(
-      c__0x8c197c89: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "c_0x8c197c89(bytes32)"(
-      c__0x8c197c89: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     claim(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1299,36 +1152,6 @@ export class Lif2UpgradeabilityTest extends BaseContract {
 
     "balanceOf(address)"(
       account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x4551282f(
-      c__0x4551282f: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x4551282f(bytes32)"(
-      c__0x4551282f: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x821dc3c9(
-      c__0x821dc3c9: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x821dc3c9(bytes32)"(
-      c__0x821dc3c9: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    c_0x8c197c89(
-      c__0x8c197c89: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "c_0x8c197c89(bytes32)"(
-      c__0x8c197c89: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

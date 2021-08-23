@@ -33,14 +33,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20PermitUpgradeable__factory>;
     getContractFactory(
-      name: "ERC20BurnableUpgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC20BurnableUpgradeable__factory>;
-    getContractFactory(
-      name: "ERC20VotesUpgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC20VotesUpgradeable__factory>;
-    getContractFactory(
       name: "IERC20MetadataUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20MetadataUpgradeable__factory>;

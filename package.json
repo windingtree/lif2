@@ -3,12 +3,11 @@
   "description": "LIF2 token monorepo",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "link": "lerna link",
-    "lint": "yarn workspaces run lint",
-    "build": "yarn workspaces run build",
-    "test": "yarn workspaces run test",
-    "test:coverage": "yarn workspaces run test:coverage",
+    "bootstrap": "npx lerna bootstrap && npx lerna link",
+    "lint": "npx lerna run lint",
+    "build": "npx lerna run build",
+    "test": "npx lerna run test",
+    "test:coverage": "npx lerna run test:coverage",
     "exec": "lerna exec"
   },
   "repository": {
@@ -34,10 +33,7 @@
   },
   "homepage": "https://github.com/windingtree/lif2#readme",
   "devDependencies": {
-    "yarn": "1.22.11",
-    "lerna": "4.0.0"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+    "lerna": "4.0.0",
+    "yarn": "1.22.11"
+  }
 }

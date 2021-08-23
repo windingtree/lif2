@@ -1,6 +1,4 @@
-import type {
-  Signer
-} from 'ethers';
+import type { Signer } from 'ethers';
 import { expect } from 'chai';
 import hre from 'hardhat';
 const utils = hre.ethers.utils;
@@ -18,7 +16,6 @@ describe('Lif2 contract', () => {
   let Lif2: any;
   let Lif2UpgradeabilityTest: any;
 
-  // Helper for old Lif contract preparation
   const prepareOldLif = async (signer: Signer, holders: string[] = []) => {
     const OldLifTest = await hre.ethers.getContractFactory('OldLifTest');
     const instance = await OldLifTest.connect(signer).deploy();

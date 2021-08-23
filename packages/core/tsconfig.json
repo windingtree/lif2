@@ -16,11 +16,11 @@
     "experimentalDecorators": true,
     "strictNullChecks": true
   },
-  "exclude": [
-    "node_modules",
-    "dist"
+  "include": [
+    "src",
+    "test"
   ],
-  "files": [
-    "hardhat.config.ts"
+  "exclude": [
+    "node_modules"
   ]
 }

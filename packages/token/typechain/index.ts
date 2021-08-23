@@ -6,8 +6,6 @@ export type { PausableUpgradeable } from "./PausableUpgradeable";
 export type { ERC20Upgradeable } from "./ERC20Upgradeable";
 export type { ERC20PermitUpgradeable } from "./ERC20PermitUpgradeable";
 export type { IERC20PermitUpgradeable } from "./IERC20PermitUpgradeable";
-export type { ERC20BurnableUpgradeable } from "./ERC20BurnableUpgradeable";
-export type { ERC20VotesUpgradeable } from "./ERC20VotesUpgradeable";
 export type { IERC20MetadataUpgradeable } from "./IERC20MetadataUpgradeable";
 export type { IERC20Upgradeable } from "./IERC20Upgradeable";
 export type { ClaimableUpgradeable } from "./ClaimableUpgradeable";
@@ -20,8 +18,6 @@ export { PausableUpgradeable__factory } from "./factories/PausableUpgradeable__f
 export { ERC20Upgradeable__factory } from "./factories/ERC20Upgradeable__factory";
 export { ERC20PermitUpgradeable__factory } from "./factories/ERC20PermitUpgradeable__factory";
 export { IERC20PermitUpgradeable__factory } from "./factories/IERC20PermitUpgradeable__factory";
-export { ERC20BurnableUpgradeable__factory } from "./factories/ERC20BurnableUpgradeable__factory";
-export { ERC20VotesUpgradeable__factory } from "./factories/ERC20VotesUpgradeable__factory";
 export { IERC20MetadataUpgradeable__factory } from "./factories/IERC20MetadataUpgradeable__factory";
 export { IERC20Upgradeable__factory } from "./factories/IERC20Upgradeable__factory";
 export { ClaimableUpgradeable__factory } from "./factories/ClaimableUpgradeable__factory";

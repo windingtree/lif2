@@ -18,20 +18,18 @@ This package includes typescript typings which can be used as follows:
 import type {
   Lif2,
   ERC20Upgradeable
-} from '@windingtree/lif2-token';
+} from '@windingtree/lif2-token/typechain';
 ```
 
 ## Built contract, ABI and deployed proxy address
 
 ```typescript
-import {
-  Lif2Contract,
-  Lif2ContractAbi,
-  proxy
-} from '@windingtree/lif2-token';
+import ERC20Contract from '@windingtree/lif2-token/artifacts/contracts/OldLifTest.sol/OldLifTest.json';
+import Lif2Contract from '@windingtree/lif2-token/artifacts/contracts/Lif2.sol/Lif2.json';
 
 // Proxy instance in the Ropsten network
-const ropstenLifAddress = proxy.ropsten;
+import ropstenDeployment from '@windingtree/lif2-token/.openzeppelin/ropsten.json';
+const ropstenLifAddress = ropstenDeployment.proxies[0].address;
 /*
 ropstenLifAddress -> 0x40a9c072848243EA5bFd88d9f18A6Fa3af0B3d31
 */
