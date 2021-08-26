@@ -1,18 +1,10 @@
 export const colors: { [name: string]: string } = {
-  white: "255, 255, 255",
-  black: "0, 0, 0",
-  dark: "12, 12, 13",
-  grey: "169, 169, 188",
-  darkGrey: "113, 119, 138",
-  lightGrey: "212, 212, 212",
-  blue: "101, 127, 230",
-  lightBlue: "64, 153, 255",
-  yellow: "250, 188, 45",
-  orange: "246, 133, 27",
-  green: "84, 209, 146",
-  pink: "255, 51, 102",
-  red: "214, 75, 71",
-  purple: "110, 107, 233",
+  white: '255, 255, 255',
+  black: '0, 0, 0',
+  dark: '74, 74, 74',
+  grey: '207, 207, 207',
+  green: '96, 223, 181',
+  purple: '101, 94, 179',
 };
 
 export const fonts = {
@@ -36,7 +28,7 @@ export const fonts = {
     extrabold: 800,
   },
   family: {
-    OpenSans: '"Open Sans", sans-serif',
+    Inter: 'Inter, sans-serif',
   },
 };
 
@@ -78,7 +70,7 @@ export const responsive = {
 };
 
 export const globalStyle = `
-  @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,500,600,700,800');
+  @import url('https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800');
 
   html, body, #root {
     height: 100%;
@@ -88,7 +80,7 @@ export const globalStyle = `
   }
 
   body {
-    font-family: ${fonts.family.OpenSans};
+    font-family: ${fonts.family.Inter};
     font-style: normal;
     font-stretch: normal;
     font-weight: ${fonts.weight.normal};
@@ -122,8 +114,8 @@ export const globalStyle = `
   }
 
   a, p, h1, h2, h3, h4, h5, h6 {
-      text-decoration: none;
-      margin: 0;
+    text-decoration: none;
+    margin: 0;
     padding: 0;
     margin: 0.7em 0;
   }
@@ -162,9 +154,9 @@ export const globalStyle = `
   }
 
   ul, li {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   * {

@@ -17,7 +17,7 @@ export const useAccount = (provider: Web3ModalProvider | undefined): string | un
     const getAccount = async () => {
       try {
         const accounts = await provider.listAccounts();
-        logger.info(`listAccounts:`, accounts);
+        logger.debug(`listAccounts:`, accounts);
         setAccount(accounts[0]);
       } catch (error) {
         logger.error(error);

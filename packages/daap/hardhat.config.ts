@@ -1,6 +1,7 @@
 import type { HardhatUserConfig } from 'hardhat/types';
 
 import '@nomiclabs/hardhat-ethers';
+import './scripts/testSetup';
 
 import networks from '../token/networks.json';
 

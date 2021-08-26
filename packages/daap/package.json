@@ -9,7 +9,8 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
-    "node": "npx hardhat --network hardhat node"
+    "dev:node": "npx hardhat node",
+    "dev:setup": "npx hardhat --network localhost testSetup"
   },
   "repository": {
     "type": "git",
@@ -72,7 +73,9 @@
     "typescript": "^4.1.2",
     "ethers": "^5.4.5",
     "web3modal": "^1.9.4",
-    "@walletconnect/web3-provider": "^1.6.4"
+    "@walletconnect/web3-provider": "^1.6.4",
+    "@windingtree/lif2-token-core": "1.0.0",
+    "react-blockies": "^1.4.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.3.7",
@@ -87,9 +90,11 @@
     "@types/react-dom": "^17.0.0",
     "@types/styled-components": "^5.1.12",
     "@types/webpack-env": "^1.16.2",
+    "@types/react-blockies": "^1.4.1",
     "hardhat": "^2.6.1",
     "ts-node": "^10.2.1",
-    "@nomiclabs/hardhat-ethers": "^2.0.2"
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@windingtree/lif2-token": "1.0.0"
   },
   "resolutions": {
     "babel-loader": "8.1.0"

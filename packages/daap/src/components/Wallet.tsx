@@ -4,23 +4,27 @@ import { ethers } from 'ethers';
 // Custom hooks
 import { useAccount } from '../hooks/useAccount';
 
-const Button = styled.button`
-  display: inline-block;
-  align-items: center;
-  padding: 5px;
-`;
-
-const Address = styled.span`
-  display: inline-block;
-  align-items: center;
-  padding: 5px;
-`;
+// Custom components
+import { Account } from './Account';
 
 export interface WalletProps {
   provider: ethers.providers.Web3Provider | undefined;
   connect: () => void,
   disconnect: () => void
 }
+
+const WalletWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const Button = styled.button`
+  display: inline-block;
+  align-items: center;
+  padding: 5px;
+`;
 
 export const Wallet = ({
   provider,
@@ -30,11 +34,9 @@ export const Wallet = ({
   const account = useAccount(provider);
 
   return (
-    <div>
+    <WalletWrapper>
       {account &&
-        <Address>
-          {account}
-        </Address>
+        <Account address={account} />
       }
       {!provider &&
         <Button
@@ -50,7 +52,7 @@ export const Wallet = ({
           Disconnect
         </Button>
       }
-    </div>
+    </WalletWrapper>
   );
 };
 

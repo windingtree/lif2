@@ -23,17 +23,17 @@ const logFunction = (subject: string, args: unknown[]) =>
 const Logger = (subject: string): LoggerApi =>
   ({
     error: (...args) => {
-      if (logLevel <= 1) {
+      if (logLevel >= 1) {
         logFunction(subject, args);
       }
     },
     debug: (...args) => {
-      if (logLevel <= 2) {
+      if (logLevel >= 2) {
         logFunction(subject, args);
       }
     },
     info: (...args) => {
-      if (logLevel <= 3) {
+      if (logLevel >= 3) {
         logFunction(subject, args);
       }
     }
