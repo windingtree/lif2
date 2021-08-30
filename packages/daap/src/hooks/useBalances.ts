@@ -17,7 +17,7 @@ export interface LifTokensBalances {
 }
 
 // Shorthand to zero
-const zero = BN.from(0);
+export const zero = BN.from(0);
 
 // Target network Id
 const targetNetworkId = getNetworkId();
@@ -45,15 +45,19 @@ export const useBalances = (
       }
 
       const lif = await lifTokens.balanceOfOld(account);
-      setLifBalance(lif);
-      logger.info(`Lif balance of ${account}: ${lif.toString()}}`);
+      if (!lif.eq(lifBalance)) {
+        setLifBalance(lif);
+        logger.info(`Lif balance of ${account}: ${lif.toString()}}`);
+      }
       const lif2 = await lifTokens.balanceOf(account);
-      setLif2Balance(lif2);
-      logger.info(`Lif2 balance of ${account}: ${lif2.toString()}}`);
+      if (!lif2.eq(lif2Balance)) {
+        setLif2Balance(lif2);
+        logger.info(`Lif2 balance of ${account}: ${lif2.toString()}}`);
+      }
     } catch (error) {
       logger.error(error);
     }
-  }, [lifTokens, account, networkId]);
+  }, [lifTokens, account, networkId, lifBalance, lif2Balance]);
 
   usePoller(
     getBalances,

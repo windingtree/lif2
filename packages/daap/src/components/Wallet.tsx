@@ -9,8 +9,8 @@ import { Account } from './Account';
 
 export interface WalletProps {
   provider: ethers.providers.Web3Provider | undefined;
-  connect: () => void,
-  disconnect: () => void
+  connect: Function,
+  disconnect: Function
 }
 
 const WalletWrapper = styled.div`
@@ -38,19 +38,12 @@ export const Wallet = ({
       {account &&
         <Account address={account} />
       }
-      {!provider &&
-        <Button
-          onClick={connect}
-        >
-          Connect Wallet
-        </Button>
-      }
       {provider &&
-        <Button
-          onClick={disconnect}
+        <button
+          onClick={disconnect as any}
         >
           Disconnect
-        </Button>
+        </button>
       }
     </WalletWrapper>
   );

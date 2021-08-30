@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { globalStyle } from '../src/styles';
+import { Screen, PageWrapper } from '../src/pages/Main';
 
 const GlobalStyle = createGlobalStyle`
   ${globalStyle}
@@ -19,7 +20,11 @@ export const decorators = [
   (Story) => (
       <>
       <GlobalStyle />
-      <Story />
+      <Screen>
+        <PageWrapper>
+          <Story />
+        </PageWrapper>
+      </Screen>
       </>
   ),
 ];

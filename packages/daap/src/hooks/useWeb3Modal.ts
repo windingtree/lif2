@@ -13,8 +13,8 @@ export type Web3ModalProvider = ethers.providers.Web3Provider;
 
 export type  Web3ModalHook = [
   provider: Web3ModalProvider | undefined,
-  logIn: () => void,
-  logOut: () => void
+  logIn: Function,
+  logOut: Function
 ];
 
 // Web3Modal React Hook

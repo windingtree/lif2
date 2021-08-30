@@ -18,6 +18,7 @@ const config: HardhatUserConfig = {
         networks.hardhat
           ? networks.hardhat
           : {
+            "chainId": 1337,
             "initialBaseFeePerGas": 0
           }
       )

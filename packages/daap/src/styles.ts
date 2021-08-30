@@ -5,6 +5,7 @@ export const colors: { [name: string]: string } = {
   grey: '207, 207, 207',
   green: '96, 223, 181',
   purple: '101, 94, 179',
+  red: '179, 0, 0',
 };
 
 export const fonts = {

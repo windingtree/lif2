@@ -3,8 +3,13 @@ import styled from 'styled-components';
 // Styles
 import { colors } from '../styles';
 
+export type TitleStyle =
+  | 'purple'
+  | 'black';
+
 export interface ContainerProps {
-  title: string;
+  title?: string;
+  titleStyle?: TitleStyle;
   children: any;
 }
 
@@ -13,23 +18,41 @@ display: flex;
 flex-direction: column;
 border-radius: 24px;
 padding: 24px;
-margin-top: 40px;
 background-color: rgb(${colors.white});
+`;
+
+export const ContainerSpacer = styled.div`
+display: flex;
+flex-direction: column;
+margin-top: 40px;
 `;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 24px;
-  color: rgb(${colors.black});
-  font-size: 24px;
+  ${({ titleStyle }: ContainerProps) => (
+    titleStyle === 'purple'
+      ? `
+        margin-bottom: 42px;
+        font-size: 42px;
+        font-weight: bold;
+        color: rgb(${colors.purple});
+      `
+      : `
+        margin-bottom: 24px;
+        font-size: 24px;
+        color: rgb(${colors.black});
+      `
+  )}
 `;
 
-export const Container = ({ title, children }: ContainerProps) => (
+export const Container = ({ title, titleStyle, children }: ContainerProps) => (
   <ContainerWrapper>
-    <Title>
-      {title}
-    </Title>
+    {title &&
+      <Title titleStyle={titleStyle}>
+        {title}
+      </Title>
+    }
     {children}
   </ContainerWrapper>
 );
