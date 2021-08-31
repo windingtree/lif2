@@ -1,7 +1,7 @@
 import type { Web3ModalProvider } from '../hooks/useWeb3Modal';
 import type { Lif2Token } from '@windingtree/lif2-token-core';
 import type { LifTokensBalances } from '../hooks/useBalances';
-import type { BigNumber, Signer } from 'ethers';
+import type { BigNumber } from 'ethers';
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import Logger from '../utils/logger';
@@ -152,7 +152,7 @@ export const ClaimTokens = (
         setStateIndex(3);
         setTransactionHash(null);
         setShowRegisterToken(true);
-      }, 3000);
+      }, 2000);
     } catch (error) {
       logger.error(error);
       setError(error.message);

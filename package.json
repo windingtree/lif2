@@ -5,7 +5,7 @@
   "scripts": {
     "bootstrap": "npx lerna bootstrap && npx lerna link",
     "lint": "npx lerna run lint",
-    "build": "npx lerna run build",
+    "build": "npx lerna run build && npx lerna bootstrap",
     "test": "npx lerna run test",
     "test:coverage": "npx lerna run test:coverage",
     "exec": "lerna exec"

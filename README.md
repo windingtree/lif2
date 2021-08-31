@@ -4,9 +4,10 @@ LIF2 token Mono-repository
 ## Setup
 
 ```bash
-npm yarn install
-npm yarn bootstrap
-npm yarn link
+yarn install
+yarn bootstrap
+yarn link
+yarn build
 ```
 
 ## Packages
@@ -18,3 +19,7 @@ The token smart contract source, built code, typescript typings and deployment i
 ### [@windingtree/lif2-token-core](packages/core#readme)
 
 A core TS library of the Lif2 Token
+
+### [@windingtree/lif2-token-dapp](packages/dapp#readme)
+
+A web application with tokens swap UI

@@ -147,7 +147,7 @@ export const UnlockTokens = (
       setTimeout(() => {
         setStateIndex(3);
         setTransactionHash(null);
-      }, 3000);
+      }, 2000);
     } catch (error) {
       logger.error(error);
       setError(error.message);
