@@ -1,5 +1,6 @@
 export const colors: { [name: string]: string } = {
   white: '255, 255, 255',
+  light: '245, 245, 245',
   black: '0, 0, 0',
   dark: '74, 74, 74',
   grey: '207, 207, 207',

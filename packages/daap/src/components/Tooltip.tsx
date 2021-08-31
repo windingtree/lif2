@@ -17,14 +17,15 @@ const TooltipWrapper = styled.div`
 
 const TooltipContent = styled.div`
   position: absolute;
-  top: -12px;
+  top: -28px;
   left: 10px;
   border-radius: 4px;
-  padding: 2px;
-  font-size: 12px;
+  padding: 4px;
+  font-size: 16px;
   color: rgb(${colors.dark});
   background-color: rgb(${colors.white});
-  box-shadow: 2px 2px 2px rgba(${colors.dark},0.2);
+  border: 1px solid rgba(${colors.dark},0.3);
+  box-shadow: 1px 1px 1px rgba(${colors.dark},0.3);
   cursor: pointer;
 `;
 
@@ -40,7 +41,7 @@ export const Tooltip = ({
     setActiveTip(
       setTimeout(
         () => setActiveTip(null),
-        delay || 400
+        delay || 1000
       )
     );
   };

@@ -3,19 +3,19 @@ import type { Lif2Token } from '@windingtree/lif2-token-core';
 import type { LifTokensBalances } from '../hooks/useBalances';
 import type { BigNumber } from 'ethers';
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
 import Logger from '../utils/logger';
 import { getContractsAddresses, getNetwork } from '../config';
 
-// Styles
-import { colors } from '../styles';
-
 // Icons
-import VectorOutSvg from '../assets/VectorOut.svg';
 import Lif2Png from '../assets/lif2.png';
 
 // Custom components
 import { Button } from './Buttons';
+import { Container } from '../components/Container';
+import { Balance } from '../components/Balance';
+import { EtherscanLink } from '../components/EtherscanLink';
+import { TxError } from '../components/TxError';
+import { Congratulations } from '../components/Congratulations';
 
 // Utils
 import { isZero, etherString } from '../utils/numbers';
@@ -43,39 +43,6 @@ export interface ClaimTokensState {
   disabled: boolean;
   progress?: boolean;
 }
-
-const EtherscanLinkWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: 400;
-  color: rgb(${colors.dark});
-  margin-top: 10px;
-  a {
-    text-decoration: none;
-    cursor: pointer;
-    margin: 0;
-    &:visited {
-      color: rgb(${colors.dark});
-    }
-  }
-`;
-
-const EtherscanIcon = styled.img`
-  width: 13px;
-  height : 13px;
-  margin-left: 10px;
-`;
-
-const ErrorWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 400;
-  color: rgb(${colors.red});
-  margin-top: 10px;
-`;
 
 // The components' states
 export const states: ClaimTokensState[] = [
@@ -138,6 +105,7 @@ export const ClaimTokens = (
   const claimTokens = useCallback(async () => {
     try {
       setError(null);
+      setTransactionHash(null);
 
       if (!lifTokens || !signer) {
         return;
@@ -150,7 +118,6 @@ export const ClaimTokens = (
       );
       setTimeout(() => {
         setStateIndex(3);
-        setTransactionHash(null);
         setShowRegisterToken(true);
       }, 2000);
     } catch (error) {
@@ -184,45 +151,44 @@ export const ClaimTokens = (
 
   return (
     <>
-      {!showRegisterToken &&
-        <Button
-          onClick={claimTokens}
-          color='green'
-          disabled={state.disabled}
-          progress={state.progress}
-        >
-          {state.label(balances.lif)}
-        </Button>
-      }
-      {showRegisterToken &&
-        <Button
-          color='purple'
-          onClick={registerToken}
-          progress={registerTokenProgress}
-        >
-          Add to your wallet
-        </Button>
-      }
-      {transactionHash &&
-        <EtherscanLinkWrapper>
-          {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
-          <a
-            href={`${network.blockExplorer}/tx/${transactionHash}`}
-            title='Transaction on Etherscan'
-            target='_blank'
-            rel='noopener noreferrer'
+      <Container title='New tokens'>
+        <Balance
+          balance={balances.lif2}
+          kind='new'
+        />
+        {(!showRegisterToken && stateIndex < 3) &&
+          <Button
+            onClick={claimTokens}
+            color='green'
+            disabled={state.disabled}
+            progress={state.progress}
           >
-            View transaction on Etherscan
-          </a>
-          <EtherscanIcon
-            src={VectorOutSvg}
+            {state.label(balances.lif)}
+          </Button>
+        }
+        {showRegisterToken &&
+          <Button
+            color='purple'
+            onClick={registerToken}
+            progress={registerTokenProgress}
+          >
+            Add to your wallet
+          </Button>
+        }
+        {transactionHash &&
+          <EtherscanLink
+            blockExplorer={network.blockExplorer}
+            transactionHash={transactionHash}
           />
-        </EtherscanLinkWrapper>
-      }
-      {error &&
-        <ErrorWrapper>
-          {error}
-        </ErrorWrapper>
+        }
+        {error &&
+          <TxError>
+            {error}
+          </TxError>
+        }
+      </Container>
+      {stateIndex === 3 &&
+        <Congratulations lifTokens={lifTokens} />
       }
     </>
   );

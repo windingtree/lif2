@@ -1,20 +1,18 @@
 import type { Web3ModalProvider } from '../hooks/useWeb3Modal';
 import type { Lif2Token } from '@windingtree/lif2-token-core';
-import type { LifTokensBalances } from '../hooks/useBalances';
+import { LifTokensBalances } from '../hooks/useBalances';
 import type { BigNumber } from 'ethers';
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
 import Logger from '../utils/logger';
 import { getContractsAddresses, getNetwork } from '../config';
 
-// Styles
-import { colors } from '../styles';
-
-// Icons
-import VectorOutSvg from '../assets/VectorOut.svg'
-
 // Custom components
 import { Button } from '../components/Buttons';
+import { Container } from '../components/Container';
+import { Balance } from '../components/Balance';
+import { GreenLine, VectorDown } from '../components/Decor';
+import { EtherscanLink } from '../components/EtherscanLink';
+import { TxError } from '../components/TxError';
 
 // Utils
 import { isZero, etherString } from '../utils/numbers';
@@ -41,39 +39,6 @@ export interface UnlockTokensState {
   disabled: boolean;
   progress?: boolean;
 }
-
-const EtherscanLinkWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: 400;
-  color: rgb(${colors.dark});
-  margin-top: 10px;
-  a {
-    text-decoration: none;
-    cursor: pointer;
-    margin: 0;
-    &:visited {
-      color: rgb(${colors.dark});
-    }
-  }
-`;
-
-const EtherscanIcon = styled.img`
-  width: 13px;
-  height : 13px;
-  margin-left: 10px;
-`;
-
-const ErrorWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 400;
-  color: rgb(${colors.red});
-  margin-top: 10px;
-`;
 
 // The components' states
 export const states: UnlockTokensState[] = [
@@ -134,6 +99,7 @@ export const UnlockTokens = (
   const approveTokens = useCallback(async () => {
     try {
       setError(null);
+      setTransactionHash(null);
 
       if (!lifTokens || !signer) {
         return;
@@ -146,7 +112,6 @@ export const UnlockTokens = (
       );
       setTimeout(() => {
         setStateIndex(3);
-        setTransactionHash(null);
       }, 2000);
     } catch (error) {
       logger.error(error);
@@ -157,36 +122,41 @@ export const UnlockTokens = (
 
   return (
     <>
-      <Button
-        onClick={approveTokens}
-        color='green'
-        disabled={state.disabled}
-        locked={stateIndex <= 2 || allowance.lt(balances.lif)}
-        progress={state.progress}
+      <Container
+        title='Old Tokens'
       >
-        {state.label(balances.lif)}
-      </Button>
-      {transactionHash &&
-        <EtherscanLinkWrapper>
-          {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
-          <a
-            href={`${network.blockExplorer}/tx/${transactionHash}`}
-            title='Transaction on Etherscan'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            View transaction on Etherscan
-          </a>
-          <EtherscanIcon
-            src={VectorOutSvg}
+        <Balance
+          balance={balances.lif}
+          kind='old'
+        />
+        <GreenLine />
+        <Balance
+          balance={balances.lif}
+          kind='new'
+          title='New tokens to claim'
+        />
+        <Button
+          onClick={approveTokens}
+          color='green'
+          disabled={state.disabled}
+          locked={stateIndex <= 2 || allowance.lt(balances.lif)}
+          progress={state.progress}
+        >
+          {state.label(balances.lif)}
+        </Button>
+        {transactionHash &&
+          <EtherscanLink
+            blockExplorer={network.blockExplorer}
+            transactionHash={transactionHash}
           />
-        </EtherscanLinkWrapper>
-      }
-      {error &&
-        <ErrorWrapper>
-          {error}
-        </ErrorWrapper>
-      }
+        }
+        {error &&
+          <TxError>
+            {error}
+          </TxError>
+        }
+      </Container>
+      <VectorDown />
     </>
   );
 };

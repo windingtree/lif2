@@ -56,7 +56,7 @@ export const Swap = ({ provider, logOut }: SwapProps) => {
     <>
       <Header>
         <Title>
-          Your LÍFs
+          Your LÍF
         </Title>
         <Account
           address={account}
@@ -66,39 +66,16 @@ export const Swap = ({ provider, logOut }: SwapProps) => {
         />
       </Header>
       <ContainerSpacer />
-      <Container
-        title='Old Tokens'
-      >
-        <Balance
-          balance={balances.lif}
-          kind='old'
-        />
-        <GreenLine />
-        <Balance
-          balance={balances.lif}
-          kind='new'
-          title='Available tokens to claim'
-        />
-        <UnlockTokens
-          provider={provider}
-          lifTokens={lifTokens}
-          balances={balances}
-        />
-      </Container>
-      <VectorDown />
-      <Container
-        title='LÍF2 Balance'
-      >
-        <Balance
-          balance={balances.lif2}
-          kind='new'
-        />
-        <ClaimTokens
-          provider={provider}
-          lifTokens={lifTokens}
-          balances={balances}
-        />
-      </Container>
+      <UnlockTokens
+        provider={provider}
+        lifTokens={lifTokens}
+        balances={balances}
+      />
+      <ClaimTokens
+        provider={provider}
+        lifTokens={lifTokens}
+        balances={balances}
+      />
     </>
   );
 };

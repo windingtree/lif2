@@ -2,9 +2,6 @@ import type { Web3ModalConfig } from '../hooks/useWeb3Modal';
 import styled from 'styled-components';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
-// Styles
-import { colors } from '../styles';
-
 // Pages
 import { Hello } from './Hello';
 import { Swap } from './Swap';
@@ -52,6 +49,7 @@ export const Screen = styled.div`
 
 export const PageWrapper = styled.section`
   margin-top: 125px;
+  margin-bottom: 125px;
   width: 520px;
   z-index: 1;
 `;
