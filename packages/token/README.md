@@ -49,7 +49,7 @@ npx yarn compile
 npx yarn test
 ```
 
-To run the code locally you will need to create a `network.json` in the root folder. The content of this file may look like:
+To run the code locally you will need to create a `network.json` in the root folder of this package. The content of this file may look like:
 
 ```json
 {
