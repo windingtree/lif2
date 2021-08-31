@@ -49,6 +49,26 @@ npx yarn compile
 npx yarn test
 ```
 
+To run the code locally you will need to create a `network.json` in the root folder. The content of this file may look like:
+
+```json
+{
+  "ropsten": {
+    "url": "https://ropsten.infura.io/v3/<YOUR_INFURA_PROJECT_ID>",
+    "accounts": [
+      "<PRIVATE_KEY_OF_THE_DEPLOYER_ACCOUNT>"
+    ]
+  },
+  "hardhat": {
+    "chainId": 1337,
+    "initialBaseFeePerGas": 0
+  },
+  "etherscan": {
+    "apiKey": "<YOUR_ETHERSCAN_API_KEY>"
+  }
+}
+```
+
 ### Deployment
 
 It is required to compile contract before the deployment.
