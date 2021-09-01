@@ -2,6 +2,9 @@ import type { Web3ModalConfig } from '../hooks/useWeb3Modal';
 import styled from 'styled-components';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
+// Styles
+import { responsive } from '../styles';
+
 // Pages
 import { Hello } from './Hello';
 import { Swap } from './Swap';
@@ -34,6 +37,7 @@ export const Screen = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 0;
+  overflow-x: hidden;
 
   &:before {
     position: absolute;
@@ -48,10 +52,13 @@ export const Screen = styled.div`
 `;
 
 export const PageWrapper = styled.section`
-  margin-top: 125px;
-  margin-bottom: 125px;
+  margin: 125px 10px 125px 10px;
   width: 520px;
   z-index: 1;
+
+  @media (max-width: ${responsive.sm}) {
+    margin: 30px 10px 60px 10px;
+  }
 `;
 
 export const Main = () => {

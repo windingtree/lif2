@@ -7,6 +7,7 @@ import VectorLeftSvg from '../assets/VectorLeft.svg'
 
 // Styles
 import { colors } from '../styles';
+import { responsive } from '../styles';
 
 // Custom components
 import { Container } from '../components/Container';
@@ -20,10 +21,14 @@ const HelloTitle = styled.div`
   font-size: 42px;
   font-weight: 700;
   color: rgb(${colors.dark});
+
+  @media (max-width: ${responsive.sm}) {
+    margin: 0 26px 0 26px;
+  }
 `;
 
 const WelcomeText = styled.div`
-  margin: 42px 0 42px 28px;
+  margin: 42px 28px 42px 28px;
   font-size: 20px;
   line-height: 16px;
   p {
@@ -36,6 +41,10 @@ const WelcomeText = styled.div`
     &:visited {
       color: rgb(${colors.purple});
     }
+  }
+
+  @media (max-width: ${responsive.sm}) {
+    margin: 32px 26px 32px 26px;
   }
 `;
 
@@ -54,6 +63,11 @@ const TokenName = styled.div`
 const TokenIcon = styled.img`
   width: 80px;
   height : 80px;
+
+  @media (max-width: ${responsive.sm}) {
+    width: 60px;
+    height : 60px;
+  }
 `;
 
 const VectorIcon = styled(TokenIcon)`

@@ -7,6 +7,7 @@ import UnlockingSvg from '../assets/Unlocking.svg'
 
 // Styles
 import { colors } from '../styles';
+import { responsive } from '../styles';
 
 export type ButtonColor =
   | 'green'
@@ -68,6 +69,11 @@ const ButtonWrapper = styled.button`
     &:disabled {
       box-shadow: none;
     }
+  }
+
+  @media (max-width: ${responsive.sm}) {
+    padding: 16px 24px;
+    font-size: 26px;
   }
 `;
 

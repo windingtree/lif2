@@ -2,11 +2,12 @@ import { useState, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import Blockies from 'react-blockies';
 
-// Utils
-import { centerEllipsis, copyToClipboard } from '../utils/strings';
-
 // Styles
 import { colors } from '../styles';
+import { responsive } from '../styles';
+
+// Utils
+import { centerEllipsis } from '../utils/strings'; // copyToClipboard
 
 // Custom hooks
 import { useOutsideListener } from '../hooks/useOutsideListener';
@@ -65,6 +66,10 @@ const ItemsList = styled.ul`
 const Address = styled.div`
   color: rgb(${colors.dark});
   font-size: 24px;
+
+  @media (max-width: ${responsive.sm}) {
+    font-size: 16px;
+  }
 `;
 
 const Icon = styled(Blockies)`

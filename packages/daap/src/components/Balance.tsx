@@ -4,6 +4,7 @@ import { utils, BigNumber as BN } from 'ethers';
 
 // Styles
 import { colors } from '../styles';
+import { responsive } from '../styles';
 
 // Icons
 import LifIcon from '../assets/lif.svg'
@@ -28,7 +29,15 @@ const BalanceWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 16px;
-  font-size: ${({ kind }: BalanceWrapperProps) => (kind === 'old' ? '40' : '32')}px;
+  font-size: ${
+    ({ kind }: BalanceWrapperProps) => (kind === 'old' ? '40' : '32')
+  }px;
+
+  @media (max-width: ${responsive.sm}) {
+    font-size: ${
+      ({ kind }: BalanceWrapperProps) => (kind === 'old' ? '34' : '26')
+    }px;
+  }
 `;
 
 const BalanceValue = styled.div`
@@ -77,7 +86,8 @@ export const Balance = ({ balance, kind, title }: BalanceProps) => (
         </Name>
         <Icon
           src={kind === 'old' ? LifIcon : Lif2Icon}
-          width='40px' height='40px'
+          width='40px'
+          height='40px'
           alt='Lif Token Icon'
         />
       </IconWrapper>

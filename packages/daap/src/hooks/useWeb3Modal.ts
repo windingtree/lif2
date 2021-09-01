@@ -31,6 +31,7 @@ export const useWeb3Modal = (web3ModalConfig: Web3ModalConfig): Web3ModalHook =>
     web3Modal.clearCachedProvider();
     setProvider(undefined);
     logger.info(`Logged Out`);
+    window.location.reload();
   }, [web3Modal]);
 
   const logIn = useCallback(async () => {

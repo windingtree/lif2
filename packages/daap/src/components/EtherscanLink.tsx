@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 // Styles
 import { colors } from '../styles';
+import { responsive } from '../styles';
 
 // Icons
 import VectorOutSvg from '../assets/VectorOut.svg';
@@ -27,6 +28,10 @@ const EtherscanLinkWrapper = styled.div`
       color: rgb(${colors.dark});
     }
   }
+
+  @media (max-width: ${responsive.sm}) {
+    font-size: 18px;
+  }
 `;
 
 const EtherscanIcon = styled.img`
@@ -47,10 +52,17 @@ export const EtherscanLink = ({
       target='_blank'
       rel='noopener noreferrer'
     >
-      View transaction on Etherscan
+      {'View transaction on\u00A0Etherscan'}
     </a>
-    <EtherscanIcon
-      src={VectorOutSvg}
-    />
+    <a
+      href={`${blockExplorer}/tx/${transactionHash}`}
+      title='Transaction on Etherscan'
+      target='_blank'
+      rel='noopener noreferrer'
+    >
+      <EtherscanIcon
+        src={VectorOutSvg}
+      />
+    </a>
   </EtherscanLinkWrapper>
 );

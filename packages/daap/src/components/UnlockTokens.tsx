@@ -47,11 +47,11 @@ export const states: UnlockTokensState[] = [
     disabled: true
   },
   {
-    label: (balance: BigNumber) => `Unlock ${etherString(balance)} LÍF`,
+    label: (balance: BigNumber) => `Unlock ${etherString(balance)}\u00A0LÍF`,
     disabled: false
   },
   {
-    label: () => 'Unlocking the tokens',
+    label: () => 'Unlocking the\u00A0tokens',
     disabled: true,
     progress: true
   },
@@ -151,9 +151,7 @@ export const UnlockTokens = (
           />
         }
         {error &&
-          <TxError>
-            {error}
-          </TxError>
+          <TxError message={error}/>
         }
       </Container>
       <VectorDown />

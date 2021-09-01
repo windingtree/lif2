@@ -3,19 +3,21 @@ import styled, { keyframes } from 'styled-components';
 
 // Styles
 import { colors } from '../styles';
+import { responsive } from '../styles';
 
 // Icons
 import CopySvg from '../assets/copy.svg';
 
 // Custom components
-import {Tooltip} from '../components/Tooltip';
+import { Tooltip } from '../components/Tooltip';
+import { FireWorks } from '../components/FireWorks';
 
 // Custom hooks
 import { useSupply } from '../hooks/useSupply';
 
 // Utils
 import { etherString } from '../utils/numbers';
-import { copyToClipboard } from '../utils/strings';
+import { copyToClipboard, centerEllipsis } from '../utils/strings';
 
 export interface CongratulationsProps {
   lifTokens: Lif2Token | undefined;
@@ -158,6 +160,18 @@ const ContractAddress = styled.div`
   color: rgb(${colors.dark});
 `;
 
+const AddressFull = styled.span`
+  @media (max-width: ${responsive.sm}) {
+    display: none;
+  }
+`;
+
+const AddressEllipsis = styled.span`
+  @media (min-width: ${responsive.sm}) {
+    display: none;
+  }
+`;
+
 const CopyIcon = styled.img`
   width: 25px;
   height: 25px;
@@ -177,6 +191,7 @@ export const Congratulations = ({ lifTokens }: CongratulationsProps) => {
 
   return (
     <BlockWrapper>
+      <FireWorks duration={15000} />
       <Title>
         Congratulations!<br/>
         All your LÍF is now in new tokens
@@ -215,7 +230,12 @@ export const Congratulations = ({ lifTokens }: CongratulationsProps) => {
         </ContractTitle>
         <ContractAddressWrapper>
           <ContractAddress>
-            {lifTokens.contract.address}
+            <AddressFull>
+              {lifTokens.contract.address}
+            </AddressFull>
+            <AddressEllipsis>
+              {centerEllipsis(lifTokens.contract.address, 8)}
+            </AddressEllipsis>
           </ContractAddress>
           <Tooltip
             tooltip='Copied!'

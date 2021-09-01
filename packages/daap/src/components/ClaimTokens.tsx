@@ -51,11 +51,11 @@ export const states: ClaimTokensState[] = [
     disabled: true
   },
   {
-    label: (balance: BigNumber) => `Claim ${etherString(balance)} LÍF2`,
+    label: (balance: BigNumber) => `Claim ${etherString(balance)}\u00A0LÍF2`,
     disabled: false
   },
   {
-    label: () => 'Claiming the tokens',
+    label: () => 'Claiming the\u00A0tokens',
     disabled: true,
     progress: true
   },
@@ -156,7 +156,11 @@ export const ClaimTokens = (
           balance={balances.lif2}
           kind='new'
         />
-        {(!showRegisterToken && stateIndex < 3) &&
+        {(
+          !showRegisterToken &&
+          stateIndex < 3 &&
+          !isZero(balances.lif)
+        ) &&
           <Button
             onClick={claimTokens}
             color='green'
@@ -182,12 +186,10 @@ export const ClaimTokens = (
           />
         }
         {error &&
-          <TxError>
-            {error}
-          </TxError>
+          <TxError message={error}/>
         }
       </Container>
-      {stateIndex === 3 &&
+      {stateIndex === 0 &&
         <Congratulations lifTokens={lifTokens} />
       }
     </>
