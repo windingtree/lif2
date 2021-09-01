@@ -1,21 +1,24 @@
-import type { BigNumberish } from 'ethers';
+import type { BigNumber } from 'ethers';
 import styled from 'styled-components';
-import { utils, BigNumber as BN } from 'ethers';
+import { BigNumber as BN } from 'ethers';
 
 // Styles
 import { colors } from '../styles';
 import { responsive } from '../styles';
 
 // Icons
-import LifIcon from '../assets/lif.svg'
-import Lif2Icon from '../assets/lif2.svg'
+import LifIcon from '../assets/lif.svg';
+import Lif2Icon from '../assets/lif2.svg';
+
+// Utils
+import { etherString } from '../utils/numbers';
 
 export type TokenType =
   | 'old'
   | 'new';
 
 export interface BalanceProps {
-  balance: BigNumberish | undefined;
+  balance: BigNumber | undefined;
   kind: TokenType;
   title?: string;
 }
@@ -78,7 +81,7 @@ export const Balance = ({ balance, kind, title }: BalanceProps) => (
     }
     <BalanceWrapper kind={kind}>
       <BalanceValue>
-        {utils.formatEther(balance || BN.from(0))}
+        {etherString(balance || BN.from(0))}
       </BalanceValue>
       <IconWrapper>
         <Name>

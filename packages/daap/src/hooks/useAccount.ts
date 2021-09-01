@@ -6,7 +6,9 @@ import Logger from '../utils/logger';
 const logger = Logger('useAccount');
 
 // useAccount react hook
-export const useAccount = (provider: Web3ModalProvider | undefined): string | undefined => {
+export const useAccount = (
+  provider: Web3ModalProvider | undefined
+): string | undefined => {
   const [account, setAccount] = useState<string | undefined>();
 
   useEffect(() => {

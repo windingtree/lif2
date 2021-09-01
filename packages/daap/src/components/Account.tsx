@@ -14,9 +14,8 @@ import { useOutsideListener } from '../hooks/useOutsideListener';
 
 export interface AccountProps {
   logOut?: Function;
-  address?: string;
-  networkId?: number;
-  targetNetworkId?: number;
+  account?: string;
+  isRightNetwork: boolean;
 }
 
 export interface AccountWrapperProps {
@@ -90,7 +89,7 @@ const DropDown = styled.div`
 `;
 
 export const Account = ({
-  address, networkId, targetNetworkId, logOut = () => {}
+  account, isRightNetwork, logOut = () => {}
 }: AccountProps) => {
   const [showMenu, setShowMenu] = useState(false);
 
@@ -102,7 +101,7 @@ export const Account = ({
   const menuItems: AccountMenuItem[] = useMemo(() => [
     // {
     //   label: 'Copy to clipboard',
-    //   callback: () => copyToClipboard(address || '')
+    //   callback: () => copyToClipboard(account || '')
     // },
     {
       label: 'Change wallet',
@@ -110,14 +109,7 @@ export const Account = ({
     }
   ], [logOut]);
 
-  // Detect the right connection
-  const isRightNetwork = useMemo(() =>
-    (networkId && targetNetworkId && networkId === targetNetworkId) ||
-    !networkId ||
-    !targetNetworkId,
-  [networkId, targetNetworkId]);
-
-  if (!address) {
+  if (!account) {
     return null;
   }
 
@@ -130,15 +122,19 @@ export const Account = ({
       >
         {
           isRightNetwork
-            ? centerEllipsis(address)
+            ? centerEllipsis(account)
             : 'Wrong network'
         }
       </Address>
-      <Icon
-        seed={address}
-        size={7}
-        scale={4}
-      />
+      <div
+        onClick={() => setShowMenu(true)}
+      >
+        <Icon
+          seed={account}
+          size={7}
+          scale={4}
+        />
+      </div>
       {showMenu &&
         <DropDown ref={dropDownRef}>
           <ItemsList>

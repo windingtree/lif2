@@ -18,6 +18,7 @@ export const useAllowance = (
   lifTokens: Lif2Token | undefined,
   account: string | undefined,
   spender: string | undefined,
+  isRightNetwork: boolean,
   pollInterval = 2000
 ): BigNumber => {
   const [accountAllowance, setAllowance] = useState<BigNumber>(zero);
@@ -29,7 +30,7 @@ export const useAllowance = (
 
   const getAllowance = useCallback(async () => {
     try {
-      if (!lifTokens || !account || !spender) {
+      if (!isRightNetwork || !lifTokens || !account || !spender) {
         return setAllowance(zero);
       }
 
@@ -42,21 +43,19 @@ export const useAllowance = (
     } catch (error) {
       logger.error(error);
     }
-  }, [lifTokens, account, spender, accountAllowance]);
+  }, [isRightNetwork, lifTokens, account, spender, accountAllowance]);
 
   usePoller(
     getAllowance,
-    lifTokens && account && spender
-      ? pollInterval
-      : null,
-    account
+    pollInterval,
+    isRightNetwork && !!lifTokens && !!account && !!spender
   );
 
   useEffect(() => {
-    if (!account) {
+    if (!isRightNetwork || !account) {
       resetAllowance();
     }
-  }, [account]);
+  }, [isRightNetwork, account]);
 
   return accountAllowance;
 }

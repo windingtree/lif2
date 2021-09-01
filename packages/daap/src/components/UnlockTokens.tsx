@@ -13,6 +13,7 @@ import { Balance } from '../components/Balance';
 import { GreenLine, VectorDown } from '../components/Decor';
 import { EtherscanLink } from '../components/EtherscanLink';
 import { TxError } from '../components/TxError';
+import { DeFi } from '../components/DeFi';
 
 // Utils
 import { isZero, etherString } from '../utils/numbers';
@@ -20,6 +21,7 @@ import { isZero, etherString } from '../utils/numbers';
 // Custom hooks
 import { useAllowance } from '../hooks/useAllowance';
 import { useSigner } from '../hooks/useSigner';
+import { useDeFi } from '../hooks/useDeFi';
 
 // Initialize logger
 const logger = Logger('UnlockTokens');
@@ -31,7 +33,8 @@ const network = getNetwork();
 export interface UnlockTokensProps {
   lifTokens: Lif2Token | undefined;
   provider: Web3ModalProvider | undefined;
-  balances: LifTokensBalances
+  balances: LifTokensBalances,
+  isRightNetwork: boolean
 }
 
 export interface UnlockTokensState {
@@ -67,7 +70,8 @@ export const UnlockTokens = (
   {
     provider,
     lifTokens,
-    balances
+    balances,
+    isRightNetwork
   }: UnlockTokensProps
 ) => {
   const [error, setError] = useState<string | null>(null);
@@ -81,7 +85,7 @@ export const UnlockTokens = (
     return newState;
   }, [stateIndex]);
 
-  const allowance = useAllowance(lifTokens, account, lif2);
+  const allowance = useAllowance(lifTokens, account, lif2, isRightNetwork);
 
   useEffect(() => {
     if (isZero(balances.lif)) {
@@ -120,6 +124,13 @@ export const UnlockTokens = (
     }
   }, [lifTokens, signer]);
 
+  const [uniswapV2Balance, idexBalance, etherDeltaBalance] = useDeFi(
+    provider,
+    account,//'0x4c55ae27581b44cd6e014bced60d67680fc86586',
+    isRightNetwork
+  );
+  // console.log('@@@@', uniswapV2.toString(), idex.toString());
+
   return (
     <>
       <Container
@@ -130,6 +141,11 @@ export const UnlockTokens = (
           kind='old'
         />
         <GreenLine />
+        <DeFi
+          uniswapV2Balance={uniswapV2Balance}
+          idexBalance={idexBalance}
+          etherDeltaBalance={etherDeltaBalance}
+        />
         <Balance
           balance={balances.lif}
           kind='new'

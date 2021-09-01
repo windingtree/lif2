@@ -1,4 +1,5 @@
 import type { Web3ModalProvider } from '../hooks/useWeb3Modal';
+import { useContext } from 'react';
 import styled from 'styled-components';
 
 // Styles
@@ -11,17 +12,16 @@ import { ContainerSpacer } from '../components/Container';
 import { UnlockTokens } from '../components/UnlockTokens';
 import { ClaimTokens } from '../components/ClaimTokens';
 
+// Contexts
+import { GlobalContext } from './Main';
 
 // Custom hooks
-import { useNetworkId } from '../hooks/useNetworkId';
 import { useLifTokens } from '../hooks/useLifTokens';
 import { useBalances } from '../hooks/useBalances';
-import { useAccount } from '../hooks/useAccount';
 
 // Config
-import { getContractsAddresses, getNetworkId } from '../config';
+import { getContractsAddresses } from '../config';
 const contracts = getContractsAddresses();
-const targetNetworkId = getNetworkId()
 
 const Header = styled.div`
   display: flex;
@@ -45,15 +45,19 @@ export interface SwapProps {
   logOut: Function;
 }
 
-export const Swap = ({ provider, logOut }: SwapProps) => {
-  const networkId = useNetworkId(provider);
+export const Swap = () => {
+  const {
+    isRightNetwork,
+    provider,
+    logOut,
+    account
+  } = useContext(GlobalContext);
   const lifTokens = useLifTokens(
     provider,
     contracts.lif,
     contracts.lif2
   );
-  const account = useAccount(provider);
-  const balances = useBalances(lifTokens, account, 2000, networkId);
+  const balances = useBalances(lifTokens, account, isRightNetwork);
 
   return (
     <>
@@ -62,9 +66,8 @@ export const Swap = ({ provider, logOut }: SwapProps) => {
           Your LÍF
         </Title>
         <Account
-          address={account}
-          networkId={networkId}
-          targetNetworkId={targetNetworkId}
+          account={account}
+          isRightNetwork={isRightNetwork}
           logOut={logOut}
         />
       </Header>
@@ -73,11 +76,13 @@ export const Swap = ({ provider, logOut }: SwapProps) => {
         provider={provider}
         lifTokens={lifTokens}
         balances={balances}
+        isRightNetwork={isRightNetwork}
       />
       <ClaimTokens
         provider={provider}
         lifTokens={lifTokens}
         balances={balances}
+        isRightNetwork={isRightNetwork}
       />
     </>
   );

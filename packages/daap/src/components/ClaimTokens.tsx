@@ -35,7 +35,8 @@ const network = getNetwork();
 export interface ClaimTokensProps {
   lifTokens: Lif2Token | undefined;
   provider: Web3ModalProvider | undefined;
-  balances: LifTokensBalances
+  balances: LifTokensBalances,
+  isRightNetwork: boolean
 }
 
 export interface ClaimTokensState {
@@ -71,7 +72,8 @@ export const ClaimTokens = (
   {
     provider,
     lifTokens,
-    balances
+    balances,
+    isRightNetwork
   }: ClaimTokensProps
 ) => {
   const [error, setError] = useState<string | null>(null);
@@ -87,7 +89,7 @@ export const ClaimTokens = (
     return newState;
   }, [stateIndex]);
 
-  const allowance = useAllowance(lifTokens, account, lif2);
+  const allowance = useAllowance(lifTokens, account, lif2, isRightNetwork);
 
   useEffect(() => {
     if (
@@ -189,7 +191,7 @@ export const ClaimTokens = (
           <TxError message={error}/>
         }
       </Container>
-      {stateIndex === 0 &&
+      {stateIndex === 3 &&
         <Congratulations lifTokens={lifTokens} />
       }
     </>

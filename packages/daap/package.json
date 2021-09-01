@@ -75,7 +75,9 @@
     "web3modal": "^1.9.4",
     "@walletconnect/web3-provider": "^1.6.4",
     "@windingtree/lif2-token-core": "1.0.0",
-    "react-blockies": "^1.4.1"
+    "react-blockies": "^1.4.1",
+    "@apollo/client": "^3.4.10",
+    "graphql": "^15.5.2"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.3.7",

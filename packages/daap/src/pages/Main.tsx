@@ -1,4 +1,5 @@
-import type { Web3ModalConfig } from '../hooks/useWeb3Modal';
+import type { Web3ModalConfig, Web3ModalProvider } from '../hooks/useWeb3Modal';
+import { useMemo, createContext } from 'react';
 import styled from 'styled-components';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
@@ -11,14 +12,17 @@ import { Swap } from './Swap';
 
 // Custom hooks
 import { useWeb3Modal } from '../hooks/useWeb3Modal';
+import { useNetworkId } from '../hooks/useNetworkId';
 import { useAccount } from '../hooks/useAccount';
 
 // Config
 import {
   getNetwork,
+  getNetworkId,
   getInfuraId
 } from '../config';
-const network = getNetwork(); // Target network
+const network = getNetwork();
+const targetNetworkId = getNetworkId();
 const web3ModalConfig: Web3ModalConfig = {
   network: network.name,
   cacheProvider: true,
@@ -37,7 +41,6 @@ export const Screen = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 0;
-  overflow-x: hidden;
 
   &:before {
     position: absolute;
@@ -61,24 +64,51 @@ export const PageWrapper = styled.section`
   }
 `;
 
+export interface GlobalContextObject {
+  networkId?: number;
+  isRightNetwork: boolean;
+  provider?: Web3ModalProvider;
+  logOut: Function;
+  account?: string;
+}
+
+// Global context
+export const GlobalContext = createContext<GlobalContextObject>({
+  isRightNetwork: false,
+  logOut: () => {}
+});
+
 export const Main = () => {
   const [provider, logIn, logOut] = useWeb3Modal(web3ModalConfig);
+  const networkId = useNetworkId(provider);
+  const isRightNetwork = useMemo(
+    () => !!networkId && !!targetNetworkId && networkId === targetNetworkId,
+    [networkId]
+  );
   const account = useAccount(provider);
-
+  const globalContextValue = useMemo(
+    () => ({
+      networkId,
+      isRightNetwork,
+      provider,
+      logOut,
+      account
+    }),
+    [networkId, isRightNetwork, provider, logOut, account]
+  );
 
   return (
-    <Screen>
-      <PageWrapper>
-        {!account &&
-          <Hello logIn={logIn} />
-        }
-        {account &&
-          <Swap
-            provider={provider}
-            logOut={logOut}
-          />
-        }
-      </PageWrapper>
-    </Screen>
+    <GlobalContext.Provider value={globalContextValue}>
+      <Screen>
+        <PageWrapper>
+          {!account &&
+            <Hello logIn={logIn} />
+          }
+          {account &&
+            <Swap />
+          }
+        </PageWrapper>
+      </Screen>
+    </GlobalContext.Provider>
   );
 };

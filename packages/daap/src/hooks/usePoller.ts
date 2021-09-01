@@ -1,20 +1,17 @@
-import { useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 import Logger from '../utils/logger';
 
 // Initialize logger
 const logger = Logger('usePoller');
 
-export interface Ref {
-  current: Function;
-}
-
 // usePoller react hook
 export const usePoller = (
   fn: Function,
   delay: number | null,
-  dependency?: unknown | undefined
+  enabled = true
 ) => {
+  const [pollerOn, setPollerOn] = useState(enabled);
   const tick = useCallback(() => {
     try {
       fn();
@@ -24,10 +21,14 @@ export const usePoller = (
   }, [fn]);
 
   useEffect(() => {
-    if (delay !== null) {
+    setPollerOn(enabled);
+  }, [enabled]);
+
+  useEffect(() => {
+    if (pollerOn && delay) {
       const id = setInterval(tick, delay);
       tick();
       return () => clearInterval(id);
     }
-  }, [tick, delay, dependency]);
+  }, [tick, delay, pollerOn]);
 };

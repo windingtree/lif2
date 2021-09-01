@@ -3,7 +3,6 @@ import type { BigNumber } from 'ethers';
 import { useState, useCallback, useEffect } from 'react';
 import { BigNumber as BN } from 'ethers';
 import Logger from '../utils/logger';
-import { getNetworkId } from '../config';
 
 // Custom hooks
 import { usePoller } from './usePoller';
@@ -19,15 +18,12 @@ export interface LifTokensBalances {
 // Shorthand to zero
 export const zero = BN.from(0);
 
-// Target network Id
-const targetNetworkId = getNetworkId();
-
 // useBalances react hook
 export const useBalances = (
   lifTokens: Lif2Token | undefined,
   account: string | undefined,
-  pollInterval = 2000,
-  networkId: number | undefined
+  isRightNetwork: boolean,
+  pollInterval = 2000
 ): LifTokensBalances => {
   const [lifBalance, setLifBalance] = useState<BigNumber>(zero);
   const [lif2Balance, setLif2Balance] = useState<BigNumber>(zero);
@@ -40,7 +36,7 @@ export const useBalances = (
 
   const getBalances = useCallback(async () => {
     try {
-      if (!lifTokens || !account || networkId !== targetNetworkId) {
+      if (!isRightNetwork || !lifTokens || !account) {
         return resetBalances();
       }
 
@@ -57,14 +53,12 @@ export const useBalances = (
     } catch (error) {
       logger.error(error);
     }
-  }, [lifTokens, account, networkId, lifBalance, lif2Balance]);
+  }, [isRightNetwork, lifTokens, account, lifBalance, lif2Balance]);
 
   usePoller(
     getBalances,
-    lifTokens && account && networkId === targetNetworkId
-      ? pollInterval
-      : null,
-    account
+    pollInterval,
+    isRightNetwork && !!lifTokens && !!account
   );
 
   useEffect(() => {
