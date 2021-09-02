@@ -2,6 +2,7 @@ import type { HardhatUserConfig } from 'hardhat/types';
 
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-waffle';
+import "@nomiclabs/hardhat-etherscan";
 import '@openzeppelin/hardhat-upgrades';
 import '@typechain/hardhat';
 import 'solidity-coverage';

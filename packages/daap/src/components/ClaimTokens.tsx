@@ -92,6 +92,7 @@ export const ClaimTokens = (
   const allowance = useAllowance(lifTokens, account, lif2, isRightNetwork);
 
   useEffect(() => {
+    let index = 0;
     if (
       !isZero(balances.lif) &&
       allowance.gte(balances.lif) &&
@@ -100,8 +101,9 @@ export const ClaimTokens = (
       logger.debug('allowance', allowance.toString());
       logger.debug('balance', balances.lif.toString());
       logger.debug('Already allowed');
-      setStateIndex(1);
+      index = 1;
     }
+    setStateIndex(index);
   }, [stateIndex, account, balances, allowance]);
 
   const claimTokens = useCallback(async () => {

@@ -12,6 +12,7 @@
     "dev:node": "npx hardhat node",
     "dev:setup": "npx hardhat --network localhost testSetup"
   },
+  "homepage": "./",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/windingtree/lif2-token.git"
