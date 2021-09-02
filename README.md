@@ -7,7 +7,6 @@ LIF2 token Mono-repository
 yarn install
 yarn bootstrap
 yarn link
-yarn build
 ```
 
 ## Packages
