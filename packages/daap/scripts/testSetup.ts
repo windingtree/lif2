@@ -87,3 +87,45 @@ task('testSetup', 'Deploys the token')
     const lif2Address = await setupLif2(hre, deployer, oldLifAddress);
     console.log('New lif2 address:', lif2Address);
   });
+
+  task('ropstenSetup', 'Deploys tokens to Ropsten network')
+    .setAction(async (_, hre) => {
+      try {
+        const signers: Signer[] = await hre.ethers.getSigners();
+        const deployer: Signer = signers[0];
+        const formatValue = (value: string): BigNumber =>
+          hre.ethers.utils.parseUnits(value, 'ether');
+        const holdersList = {
+          addresses: [
+            '0x567Eb9E8D8A43C24c7bac4cb4b51ca806cFE8996', // me
+            '0x0bb476Cc44b32eC1B7DBF93F57A984764F7246C8', // me
+            '0xA0B74BFE28223c9e08d6DBFa74B5bf4Da763f959', // me
+            '0x8db4FDd5FD446bB2f1C821A727ccb6d9e619E935', // m
+            '0x9253AA6cce96b2D02C25532a2522142185FAee94', // m
+            '0x59E538652207D9A6a93c6C29c32e8c749F35981D', // p
+          ],
+          balances: [
+            formatValue('1234567'),
+            formatValue('1000000000'),
+            formatValue('765'),
+            formatValue('654'),
+            formatValue('987'),
+            formatValue('876'),
+          ]
+        };
+        if (holdersList.addresses.length !== holdersList.balances.length) {
+          throw new Error('Broken holders list');
+        }
+        const oldLifAddress = await setupOldLif(
+          hre,
+          deployer,
+          holdersList.addresses,
+          holdersList.balances
+        );
+        console.log('Old lif address:', oldLifAddress);
+        const lif2Address = await setupLif2(hre, deployer, oldLifAddress);
+        console.log('New lif2 address:', lif2Address);
+      } catch (error) {
+        console.log(error);
+      }
+    });
