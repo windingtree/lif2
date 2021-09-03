@@ -3,7 +3,7 @@ LIF2 token Mono-repository
 
 ## Environment
 
-node.js v 12+
+node.js v12+
 
 ## Setup
 
