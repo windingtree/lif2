@@ -93,7 +93,7 @@ abstract contract ClaimableUpgradeable is
   /**
    * @dev Returns the original Lif token address
    */
-  function originalLif() public view virtual returns (address) {
+  function originalLif() external view virtual returns (address) {
     return address(_originalLif);
   }
 

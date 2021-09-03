@@ -54,6 +54,7 @@
     "solidity-coverage": "0.7.17",
     "typechain": "5.1.2",
     "@typechain/hardhat": "2.3.0",
-    "@typechain/ethers-v5": "7.0.1"
+    "@typechain/ethers-v5": "7.0.1",
+    "hardhat-docgen": "1.1.2"
   }
 }

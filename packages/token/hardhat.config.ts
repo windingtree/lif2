@@ -6,6 +6,7 @@ import "@nomiclabs/hardhat-etherscan";
 import '@openzeppelin/hardhat-upgrades';
 import '@typechain/hardhat';
 import 'solidity-coverage';
+import 'hardhat-docgen';
 import './scripts/lif2tasks';
 
 import networks from './networks.json';
@@ -47,7 +48,7 @@ const config: CustomHardhatConfig = {
           }
       )
     },
-    ropsten: networks.ropsten
+    ropsten: networks.ropsten,
   },
   etherscan: networks.etherscan,
   mocha: {
@@ -56,7 +57,12 @@ const config: CustomHardhatConfig = {
   typechain: {
     outDir: 'typechain',
     target: 'ethers-v5',
-    alwaysGenerateOverloads: true
+    alwaysGenerateOverloads: true,
+  },
+  docgen: {
+    path: './docs',
+    clear: true,
+    runOnCompile: true,
   }
 };
 
