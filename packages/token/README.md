@@ -1,8 +1,38 @@
 # Lif2 Token Smart Contract
 
-## Setup
+The token implements ERC20 interface and the related use cases that described in the [EIP-20](https://eips.ethereum.org/EIPS/eip-20) specification with following extensions:
+- `Pausable` functionality (native OpenZeppelin's implementation)
+- `Ownable` functionality (native OpenZeppelin's implementation)
+- [EIP-2612](https://eips.ethereum.org/EIPS/eip-2612[EIP-2612])  (ERC20 `Permit`, native OpenZeppelin's draft implementation)
+- `Claimable` functionality dedicated for migration of tokens from the old Lif token contract (custom implementation).
 
-Please use mono-repository script for the package bootstrap.
+The token is made for using the OpenZeppelin proxy-based upgradeability system.
+So the the token contracts uses initializer function instead of constructors.
+The root initializer may be called only once right after the deployment. The restriction is managed by Initializable contract (native OpenZeppelin's implementation).
+
+ERC20 `transfer(address,uint256)` OpenZeppelin's function implementation is changed to prevent making transfers of tokens to the contracts.
+
+The Claimable functionality has two features:
+- old Lif tokens migration
+- restoration of tokens that stuck in the old Lif contract as a result of the wrong transfers to the contract address. The list of senders and sent tokens values are taken from this request: https://etherscan.io/token/0xeb9951021698b42e4399f9cbb6267aa35f82d59d?a=0xeb9951021698b42e4399f9cbb6267aa35f82d59d
+
+The initialization function of the Claimable contract reads the `totalSupply` value of the old Lif token contract and mints the equal number of the new tokens.
+The holder of these minted tokens is the contract itself.
+The contract does not provide a possibility to transfer these tokens except through the `claim()` function. Also during the initialization:
+- an address of the old Lif contract is saving to the new token contract;
+- `stuckBalance` - the list of balances that are stuck in the old contract is saved to the new token storage using the `_afterClaimableInitHook()` function. This function is overriding by the root contract and the storage update directives are hardcoded into this function.
+
+To use the `claim()` function a holder of old Lif tokens must approve spending of these tokens by the contract address. A call of the `claim()` function will have the following results:
+- whole balance of old Lif tokens of the caller will be transferred to the new contract address. Recover these funds will not be possible anymore.
+- equal number of new tokens will be transferred to the caller address and a `Claim` event will be emitted
+- transaction to call may be reverted in following cases:
+  - balance of old tokens is equal to zero or a user does not approved them;
+  - transfer of old tokens from its owner to the new contract is failed;
+  - the transfer is succeeded but the caller balance does not become equal to zero;
+- in case of the address of a caller has a positive `stuckBalance` the caller will be credited with the value of this balance. Along with it, this balance will be set to zero and a `Resurrect` event will be emitted.
+## Environment setup
+
+Please use mono-repository root script for the package bootstrap.
 
 ## NPM package
 
@@ -40,16 +70,17 @@ ropstenLifAddress -> 0x40a9c072848243EA5bFd88d9f18A6Fa3af0B3d31
 ### Compile contract
 
 ```bash
-npx yarn compile
+yarn compile
 ```
 
-### Testing
+### Linting & Testing
 
 ```bash
-npx yarn test
+yarn lint
+yarn test
 ```
 
-To run the code locally you will need to create a `network.json` in the root folder of this package. The content of this file may look like:
+To run the code you will need to create a `network.json` in the root folder of this package. The content of this file may look like:
 
 ```json
 {
@@ -101,6 +132,7 @@ This operation will be required if you want to just deploy a new instance. As re
 ```bash
 npx hardhat --network <NETWORK_NAME> prepare --name <NAME_OF_THE_NEW_CONTRACT>
 ```
+
 A result will look like:
 
 ```text

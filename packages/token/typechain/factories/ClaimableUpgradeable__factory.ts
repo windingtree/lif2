@@ -83,6 +83,19 @@ const _abi = [
         type: "address",
       },
     ],
+    name: "Started",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
     name: "Stopped",
     type: "event",
   },

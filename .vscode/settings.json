@@ -1,6 +1,8 @@
 {
     "solidity.compileUsingRemoteVersion": "latest",
     "cSpell.words": [
-        "etherdelta"
+        "etherdelta",
+        "mixedcase",
+        "solhint"
     ]
 }

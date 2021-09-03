@@ -18,12 +18,17 @@ abstract contract ClaimableUpgradeable is
   bool private _stopped;
 
   // Mapping of a holder address to its balance in stuck
-  mapping(address => uint256) private _stuckBalance;
+  mapping(address => uint256) internal _stuckBalance;
 
   /**
    * @dev Emitted when the stop is triggered by `account`.
    */
   event Stopped(address account);
+
+  /**
+   * @dev Emitted when the start is triggered by `account`.
+   */
+  event Started(address account);
 
   /**
    * @dev Emitted when `value` tokens are been claimed by the `holder`
@@ -48,12 +53,25 @@ abstract contract ClaimableUpgradeable is
   }
 
   /**
+   * @dev Modifier to make a function callable only when the contract is stopped.
+   *
+   * Requirements:
+   *
+   * - The contract must be stopped.
+   */
+  modifier whenStopped() {
+    require(stopped(), "Claimable: started");
+    _;
+  }
+
+  /**
    * @dev Sets the original Lif token instance
    *
    * Requirements:
    *
    * - `tokenAddress_` cannot be zero
    */
+  // solhint-disable-next-line func-name-mixedcase
   function __Claimable_init(address tokenAddress_)
     internal
     initializer
@@ -68,18 +86,8 @@ abstract contract ClaimableUpgradeable is
     // until be claimed by original Lif token holders
     _mint(address(this), _originalLif.totalSupply());
 
-    // Initialize the `_stuckBalance`, which contains tokens that have been stuck in the old contract
-    // Created on the base of https://etherscan.io/token/0xeb9951021698b42e4399f9cbb6267aa35f82d59d?a=0xeb9951021698b42e4399f9cbb6267aa35f82d59d
-    _stuckBalance[0x9067Ae747976631D6194311f6Cf6fD83A561b0C9] += 9830000000000000000000;
-    _stuckBalance[0x415dF4Ef8f2E4afAEBd99eC1d49b05A220aC3673] += 51999999999999999995385;
-    _stuckBalance[0x77E4588685744cdbDdBf677860B42A3c28E166DD] += 751039901550000000000;
-    _stuckBalance[0xb91e2071762E2825D3ec7513304b7f833Be32d48] += 10000;
-    _stuckBalance[0x72bA03F175420890d18423500f0C6b1f2B3e821D] += 5045000000000000000000;
-    _stuckBalance[0x692306857D17a8f31bB5fEb17cfE765773487E66] += 185963000000000000000;
-    _stuckBalance[0xA7F660812022155adA962F54D2C289C5592F518A] += 500000000000000000000;
-    _stuckBalance[0x8adbf5f4F80319CFBe8d49976aAD9Aacc158B4b8] += 3050000000000000000000;
-    _stuckBalance[0x77E4588685744cdbDdBf677860B42A3c28E166DD] += 40000000000000000000;
-    _stuckBalance[0x77928bbE911befe4bD4E5D6A6C6D1b7ca58eAB6E] += 300000000000000000000;
+    // Extra initialization actions
+    _afterClaimableInitHook();
   }
 
   /**
@@ -155,6 +163,23 @@ abstract contract ClaimableUpgradeable is
     _stopped = true;
     emit Stopped(_msgSender());
   }
+
+  /**
+   * @dev Triggers started state.
+   *
+   * Requirements:
+   *
+   * - The contract must not be stopped.
+   */
+  function _start() internal virtual whenStopped {
+    _stopped = false;
+    emit Started(_msgSender());
+  }
+
+  /**
+   * @dev Extra initializations hook.
+   */
+  function _afterClaimableInitHook() internal virtual initializer {}
 
   uint256[49] private __gap;
 }

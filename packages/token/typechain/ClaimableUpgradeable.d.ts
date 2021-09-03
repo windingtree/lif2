@@ -110,6 +110,7 @@ interface ClaimableUpgradeableInterface extends ethers.utils.Interface {
     "Approval(address,address,uint256)": EventFragment;
     "Claim(address,uint256)": EventFragment;
     "Resurrect(address,uint256)": EventFragment;
+    "Started(address)": EventFragment;
     "Stopped(address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
@@ -117,6 +118,7 @@ interface ClaimableUpgradeableInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Claim"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Resurrect"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Started"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Stopped"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
@@ -528,6 +530,8 @@ export class ClaimableUpgradeable extends BaseContract {
       [string, BigNumber],
       { holder: string; value: BigNumber }
     >;
+
+    Started(account?: null): TypedEventFilter<[string], { account: string }>;
 
     Stopped(account?: null): TypedEventFilter<[string], { account: string }>;
 

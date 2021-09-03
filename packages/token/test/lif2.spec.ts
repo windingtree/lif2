@@ -1,7 +1,14 @@
-import type { Signer } from 'ethers';
+import type { BigNumber, Signer } from 'ethers';
 import { expect } from 'chai';
+import { BigNumber as BN } from 'ethers';
 import hre from 'hardhat';
 const utils = hre.ethers.utils;
+
+const stuckBalances = {
+  '0x70997970C51812dc3A010C7d01b50e0d17dc79C8': BN.from('9830000000000000000000'),
+  '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC': BN.from('51999999999999999995385'),
+  '0x90F79bf6EB2c4f870365E785982E1f101E93b906': BN.from('751039901550000000000')
+};
 
 describe('Lif2 contract', () => {
   let signers;
@@ -27,6 +34,11 @@ describe('Lif2 contract', () => {
       }
     }
 
+    // Initialize stuck balance
+    for (let addr in stuckBalances) {
+      await instance.mint(instance.address, stuckBalances[addr]);
+    }
+
     return instance;
   };
 
@@ -46,7 +58,7 @@ describe('Lif2 contract', () => {
     // Setup old Lif
     oldLif = await prepareOldLif(deployer, [holder1Address]);
 
-    Lif2 = await hre.ethers.getContractFactory('Lif2');
+    Lif2 = await hre.ethers.getContractFactory('Lif2Test');
     Lif2UpgradeabilityTest = await hre.ethers.getContractFactory('Lif2UpgradeabilityTest');
   });
 
@@ -58,7 +70,7 @@ describe('Lif2 contract', () => {
     });
 
     it('should implement ERC20 interface', async () => {
-      expect(await lif.name()).equal('Lif Token');
+      expect(await lif.name()).equal('LifToken');
       expect(await lif.symbol()).equal('LIF');
       expect((await lif.decimals()).toString()).equal('18');
     });
@@ -186,6 +198,13 @@ describe('Lif2 contract', () => {
       lif = await hre.upgrades.deployProxy(Lif2, [oldLif.address]);
     });
 
+    describe('#originalLif', () => {
+
+      it('should return old Lif address', async () => {
+        expect(await lif.originalLif()).equal(oldLif.address);
+      });
+    });
+
     describe('#claim()', () => {
 
       it('should throw if nothing to claim', async () => {
@@ -216,7 +235,21 @@ describe('Lif2 contract', () => {
           balance
         );
         expect(await oldLifContract.balanceOf(holder1Address)).equal(0);
-        expect(await lifContract.balanceOf(holder1Address)).equal(balance);
+        if (stuckBalances[utils.getAddress(holder1Address)]) {
+          // With refunded funds
+          expect(await lifContract.balanceOf(holder1Address)).equal(
+            // Token holder must receive his claimed value + his stuck balance
+            balance
+              .add(stuckBalances[utils.getAddress(holder1Address)])
+          );
+          expect(tx).to.emit(lifContract, 'Resurrect').withArgs(
+            holder1Address,
+            stuckBalances[utils.getAddress(holder1Address)]
+          );
+        } else {
+          // No refunds
+          expect(await lifContract.balanceOf(holder1Address)).equal(balance);
+        }
       });
     });
 
@@ -245,12 +278,25 @@ describe('Lif2 contract', () => {
         await expect(lifContract.stop()).revertedWith('Ownable: caller is not the owner');
       });
     });
+
+    describe('#start()', () => {
+
+      it('should start stopped claimable feature', async () => {
+        await expect(lif.start()).revertedWith('Claimable: started');
+        await lif.stop();
+        expect(await lif.stopped()).equal(true);
+        const tx = await lif.start();
+        expect(tx).to.emit(lif, 'Started').withArgs(deployerAddress);
+        expect(await lif.stopped()).equal(false);
+      });
+    });
   });
 
   describe('ERC20 features', () => {
     let oldLifContract: any;
     let lifContract: any;
     let balance: any;
+    let totalSupply: BigNumber;
 
     beforeEach(async () => {
       const oldLif = await prepareOldLif(deployer, [holder1Address]);
@@ -260,6 +306,7 @@ describe('Lif2 contract', () => {
       balance = await oldLifContract.balanceOf(holder1Address);
       await oldLifContract.approve(lifContract.address, balance);
       await lifContract.claim();
+      totalSupply = await lifContract.totalSupply();
     });
 
     describe('#transfer(address,uint256)', () => {
@@ -277,7 +324,7 @@ describe('Lif2 contract', () => {
       it('should throw if insufficient funds', async () => {
         await expect(lifContract.transfer(
           holder2Address,
-          balance.mul(2)
+          totalSupply
         )).revertedWith('ERC20: transfer amount exceeds balance');
       });
 
@@ -338,7 +385,7 @@ describe('Lif2 contract', () => {
         await expect(lif.transferFrom(
           holder1Address,
           holder2Address,
-          balance.mul(2)
+          totalSupply
         )).revertedWith('ERC20: transfer amount exceeds balance');
       });
 

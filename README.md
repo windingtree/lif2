@@ -1,12 +1,15 @@
 # LIF2
 LIF2 token Mono-repository
 
+## Environment
+
+node.js v 12+
+
 ## Setup
 
 ```bash
 yarn install
 yarn bootstrap
-yarn link
 ```
 
 ## Packages
