@@ -3,6 +3,7 @@ import type { Lif2Token } from '@windingtree/lif2-token-core';
 import type { LifTokensBalances } from '../hooks/useBalances';
 import type { BigNumber } from 'ethers';
 import { useState, useMemo, useEffect, useCallback } from 'react';
+import styled from 'styled-components';
 import Logger from '../utils/logger';
 import { getContractsAddresses, getNetwork } from '../config';
 
@@ -36,7 +37,8 @@ export interface ClaimTokensProps {
   lifTokens: Lif2Token | undefined;
   provider: Web3ModalProvider | undefined;
   balances: LifTokensBalances,
-  isRightNetwork: boolean
+  isRightNetwork: boolean,
+  onClaim: Function
 }
 
 export interface ClaimTokensState {
@@ -48,11 +50,11 @@ export interface ClaimTokensState {
 // The components' states
 export const states: ClaimTokensState[] = [
   {
-    label: () => 'Claim LÍF2',
+    label: () => 'Claim LÍF',
     disabled: true
   },
   {
-    label: (balance: BigNumber) => `Claim ${etherString(balance)}\u00A0LÍF2`,
+    label: (balance: BigNumber) => `Claim ${etherString(balance)}\u00A0LÍF`,
     disabled: false
   },
   {
@@ -68,12 +70,20 @@ export const states: ClaimTokensState[] = [
 
 const getStateByIndex = (index: number): ClaimTokensState => states[index];
 
+const BlockWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0 0 40px 0;
+`;
+
 export const ClaimTokens = (
   {
     provider,
     lifTokens,
     balances,
-    isRightNetwork
+    isRightNetwork,
+    onClaim
   }: ClaimTokensProps
 ) => {
   const [error, setError] = useState<string | null>(null);
@@ -85,26 +95,32 @@ export const ClaimTokens = (
 
   const state = useMemo(() => {
     const newState = getStateByIndex(stateIndex)
-    logger.debug('New state', newState);
+    logger.debug(`New state #${stateIndex}`, newState);
     return newState;
   }, [stateIndex]);
 
   const allowance = useAllowance(lifTokens, account, lif2, isRightNetwork);
 
   useEffect(() => {
-    let index = 0;
-    if (
-      !isZero(balances.lif) &&
-      allowance.gte(balances.lif) &&
-      stateIndex < 2
-    ) {
-      logger.debug('allowance', allowance.toString());
-      logger.debug('balance', balances.lif.toString());
-      logger.debug('Already allowed');
-      index = 1;
+    if (!isZero(balances.lif) && stateIndex !== 2) {
+      logger.info('balance', balances.lif.toString());
+      if (allowance.gte(balances.lif)) {
+        logger.info('Already allowed', allowance.toString());
+        setStateIndex(1);
+      } else {
+        logger.info('Tokens not allowed yet');
+        setStateIndex(0);
+      }
     }
-    setStateIndex(index);
-  }, [stateIndex, account, balances, allowance]);
+  }, [balances, allowance, stateIndex]);
+
+  useEffect(() => {
+    setStateIndex(0);
+    setError(null);
+    setTransactionHash(null);
+    setShowRegisterToken(false);
+    setRegisterTokenProgress(false);
+  }, [account, isRightNetwork]);
 
   const claimTokens = useCallback(async () => {
     try {
@@ -121,20 +137,23 @@ export const ClaimTokens = (
         tx => setTransactionHash(tx.hash)
       );
       setTimeout(() => {
+        onClaim();
+      }, 500);
+      setTimeout(() => {
         setStateIndex(3);
         setShowRegisterToken(true);
-      }, 2000);
+      }, 1000);
     } catch (error) {
       logger.error(error);
-      setError(error.message);
+      setError((error as Error).message);
       setStateIndex(1);
     }
-  }, [lifTokens, signer]);
+  }, [lifTokens, signer, onClaim]);
 
   const registrationCallback = useRegisterToken(
     provider,
     lif2,
-    'LÍF2',
+    'LIF',
     18,
     Lif2Png
   );
@@ -147,14 +166,14 @@ export const ClaimTokens = (
       setRegisterTokenProgress(false);
       setShowRegisterToken(false);
     } catch (error) {
-      setError(error);
+      setError((error as Error).message);
       logger.error(error);
       setRegisterTokenProgress(false);
     }
   }, [registrationCallback]);
 
   return (
-    <>
+    <BlockWrapper>
       <Container title='New tokens'>
         <Balance
           balance={balances.lif2}
@@ -162,6 +181,7 @@ export const ClaimTokens = (
         />
         {(
           !showRegisterToken &&
+          stateIndex > 0 &&
           stateIndex < 3 &&
           !isZero(balances.lif)
         ) &&
@@ -194,8 +214,8 @@ export const ClaimTokens = (
         }
       </Container>
       {stateIndex === 3 &&
-        <Congratulations lifTokens={lifTokens} />
+        <Congratulations />
       }
-    </>
+    </BlockWrapper>
   );
 };

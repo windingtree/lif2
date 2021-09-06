@@ -14,7 +14,8 @@ import { Container } from '../components/Container';
 import { Button } from '../components/Buttons';
 
 export interface HelloProps {
-  logIn: Function
+  logIn: Function;
+  isConnecting: boolean;
 }
 
 const HelloTitle = styled.div`
@@ -75,7 +76,7 @@ const VectorIcon = styled(TokenIcon)`
   height : 34px;
 `;
 
-export const Hello = ({ logIn }: HelloProps) => (
+export const Hello = ({ logIn, isConnecting }: HelloProps) => (
   <>
     <HelloTitle>
       Hello!
@@ -89,7 +90,7 @@ export const Hello = ({ logIn }: HelloProps) => (
       </a>
     </WelcomeText>
     <Container
-      title='Claim your new LÍF2'
+      title='Claim your new LÍF'
       titleStyle='purple'
     >
       <IconsBlock>
@@ -103,7 +104,7 @@ export const Hello = ({ logIn }: HelloProps) => (
           src={VectorLeftSvg}
         />
         <TokenName>
-          LÍF2
+          LÍF
         </TokenName>
         <TokenIcon
           src={Lif2Svg}
@@ -112,6 +113,7 @@ export const Hello = ({ logIn }: HelloProps) => (
       <Button
         color='purple'
         onClick={logIn}
+        progress={isConnecting}
       >
         Connect a wallet
       </Button>

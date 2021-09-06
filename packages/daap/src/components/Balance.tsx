@@ -21,6 +21,7 @@ export interface BalanceProps {
   balance: BigNumber | undefined;
   kind: TokenType;
   title?: string;
+  isUnlock?: boolean;
 }
 
 export interface BalanceWrapperProps {
@@ -48,6 +49,7 @@ const BalanceValue = styled.div`
   align-items: center;
   color: rgb(${colors.black});
   font-size: inherit;
+  font-weight: bold;
 `;
 
 const IconWrapper = styled.div`
@@ -72,7 +74,7 @@ const Name = styled.div`
   font-size: inherit;
 `;
 
-export const Balance = ({ balance, kind, title }: BalanceProps) => (
+export const Balance = ({ balance, kind, title, isUnlock }: BalanceProps) => (
   <>
     {title &&
       <Title>
@@ -85,14 +87,16 @@ export const Balance = ({ balance, kind, title }: BalanceProps) => (
       </BalanceValue>
       <IconWrapper>
         <Name>
-          {kind === 'old' ? 'LÍF' : 'LÍF2'}
+          {kind === 'old' ? 'LÍF' : isUnlock ? '' : (<strong>LIF</strong>)}
         </Name>
-        <Icon
-          src={kind === 'old' ? LifIcon : Lif2Icon}
-          width='40px'
-          height='40px'
-          alt='Lif Token Icon'
-        />
+        {!isUnlock &&
+          <Icon
+            src={kind === 'old' ? LifIcon : Lif2Icon}
+            width='40px'
+            height='40px'
+            alt='Lif Token Icon'
+          />
+        }
       </IconWrapper>
     </BalanceWrapper>
   </>

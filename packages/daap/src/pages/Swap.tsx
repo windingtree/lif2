@@ -1,5 +1,5 @@
 import type { Web3ModalProvider } from '../hooks/useWeb3Modal';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 // Styles
@@ -11,6 +11,8 @@ import { Account } from '../components/Account';
 import { ContainerSpacer } from '../components/Container';
 import { UnlockTokens } from '../components/UnlockTokens';
 import { ClaimTokens } from '../components/ClaimTokens';
+import { OverallStats } from '../components/OverallStats';
+import { NewContractLink } from '../components/NewContractLink';
 
 // Contexts
 import { GlobalContext } from './Main';
@@ -18,6 +20,9 @@ import { GlobalContext } from './Main';
 // Custom hooks
 import { useLifTokens } from '../hooks/useLifTokens';
 import { useBalances } from '../hooks/useBalances';
+
+// Utils
+import { zero } from '../utils/numbers';
 
 // Config
 import { getContractsAddresses } from '../config';
@@ -46,6 +51,7 @@ export interface SwapProps {
 }
 
 export const Swap = () => {
+  const [isClaimedDone, setIsClaimedDone] = useState(false);
   const {
     isRightNetwork,
     provider,
@@ -58,6 +64,14 @@ export const Swap = () => {
     contracts.lif2
   );
   const balances = useBalances(lifTokens, account, isRightNetwork);
+
+  useEffect(() => {
+    setIsClaimedDone(false);
+  }, [account, isRightNetwork]);
+
+  const onClaimDone = () => {
+    setIsClaimedDone(true);
+  }
 
   return (
     <>
@@ -72,18 +86,37 @@ export const Swap = () => {
         />
       </Header>
       <ContainerSpacer />
-      <UnlockTokens
-        provider={provider}
-        lifTokens={lifTokens}
-        balances={balances}
-        isRightNetwork={isRightNetwork}
-      />
+      {(
+        !isClaimedDone &&
+        (
+          (balances.isClaimed && balances.lif.gt(zero)) ||
+          !balances.isClaimed
+        )
+      ) &&
+        <UnlockTokens
+          provider={provider}
+          lifTokens={lifTokens}
+          balances={balances}
+          isRightNetwork={isRightNetwork}
+        />
+      }
       <ClaimTokens
         provider={provider}
         lifTokens={lifTokens}
         balances={balances}
         isRightNetwork={isRightNetwork}
+        onClaim={onClaimDone}
       />
+      {lifTokens && balances.lif2.gt(zero) &&
+        <OverallStats
+          lifTokens={lifTokens}
+        />
+      }
+      {lifTokens &&
+        <NewContractLink
+          address={lifTokens.contract.address}
+        />
+      }
     </>
   );
 };

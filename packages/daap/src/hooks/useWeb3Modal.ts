@@ -14,12 +14,14 @@ export type Web3ModalProvider = ethers.providers.Web3Provider;
 export type  Web3ModalHook = [
   provider: Web3ModalProvider | undefined,
   logIn: Function,
-  logOut: Function
+  logOut: Function,
+  isConnecting: boolean
 ];
 
 // Web3Modal React Hook
 export const useWeb3Modal = (web3ModalConfig: Web3ModalConfig): Web3ModalHook => {
   const [provider, setProvider] = useState<Web3ModalProvider | undefined>();
+  const [isConnecting, setIsConnecting] = useState(false);
 
   // Web3Modal initialization
   const web3Modal = useMemo(
@@ -36,6 +38,7 @@ export const useWeb3Modal = (web3ModalConfig: Web3ModalConfig): Web3ModalHook =>
 
   const logIn = useCallback(async () => {
     try {
+      setIsConnecting(true);
       const web3ModalProvider = await web3Modal.connect();
 
       const updateProvider = () => setProvider(
@@ -64,6 +67,7 @@ export const useWeb3Modal = (web3ModalConfig: Web3ModalConfig): Web3ModalHook =>
 
       logger.info(`Logged In`);
     } catch (error) {
+      setIsConnecting(false);
       logger.error(error);
       throw error;
     }
@@ -72,12 +76,15 @@ export const useWeb3Modal = (web3ModalConfig: Web3ModalConfig): Web3ModalHook =>
   useEffect(() => {
     if (!provider && web3Modal.cachedProvider) {
       logIn();
+    } else if (provider) {
+      setTimeout(() => setIsConnecting(false), 250);
     }
   }, [provider, web3Modal.cachedProvider, logIn]);
 
   return [
     provider,
     logIn,
-    logOut
+    logOut,
+    isConnecting
   ];
 };

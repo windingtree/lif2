@@ -13,6 +13,7 @@ const logger = Logger('useBalances');
 export interface LifTokensBalances {
   lif: BigNumber;
   lif2: BigNumber;
+  isClaimed: boolean;
 }
 
 // Shorthand to zero
@@ -27,11 +28,13 @@ export const useBalances = (
 ): LifTokensBalances => {
   const [lifBalance, setLifBalance] = useState<BigNumber>(zero);
   const [lif2Balance, setLif2Balance] = useState<BigNumber>(zero);
+  const [isClaimed, setIsClaimed] = useState(false);
 
   const resetBalances = () => {
     setLifBalance(zero);
     setLif2Balance(zero);
-    logger.info(`Balances reset. Lif: 0; Lif2: 0}`);
+    setIsClaimed(false);
+    logger.info('Balances reset. Lif: 0; Lif2: 0; isClaimed: false');
   };
 
   const getBalances = useCallback(async () => {
@@ -41,34 +44,31 @@ export const useBalances = (
       }
 
       const lif = await lifTokens.balanceOfOld(account);
-      if (!lif.eq(lifBalance)) {
-        setLifBalance(lif);
-        logger.info(`Lif balance of ${account}: ${lif.toString()}}`);
-      }
+      setLifBalance(lif);
+      logger.info(`Lif balance of ${account}: ${lif.toString()}}`);
+
       const lif2 = await lifTokens.balanceOf(account);
-      if (!lif2.eq(lif2Balance)) {
-        setLif2Balance(lif2);
-        logger.info(`Lif2 balance of ${account}: ${lif2.toString()}}`);
-      }
+      setLif2Balance(lif2);
+      logger.info(`Lif2 balance of ${account}: ${lif2.toString()}}`);
+
+      const currentIsClaimed = await lifTokens.isClaimed(account);
+      logger.info('Claimed state:', currentIsClaimed, account);
+      setIsClaimed(currentIsClaimed);
     } catch (error) {
       logger.error(error);
     }
-  }, [isRightNetwork, lifTokens, account, lifBalance, lif2Balance]);
+  }, [isRightNetwork, lifTokens, account]);
 
   usePoller(
     getBalances,
     pollInterval,
-    isRightNetwork && !!lifTokens && !!account
+    isRightNetwork && lifTokens && !!account,
+    'getBalances'
   );
-
-  useEffect(() => {
-    if (!account) {
-      resetBalances();
-    }
-  }, [account]);
 
   return {
     lif: lifBalance,
-    lif2: lif2Balance
+    lif2: lif2Balance,
+    isClaimed
   };
 };

@@ -13,7 +13,8 @@ import { Balance } from '../components/Balance';
 import { GreenLine, VectorDown } from '../components/Decor';
 import { EtherscanLink } from '../components/EtherscanLink';
 import { TxError } from '../components/TxError';
-import { DeFi } from '../components/DeFi';
+import { DeFiNote } from '../components/DeFiNote';
+// import { DeFi } from '../components/DeFi';
 
 // Utils
 import { isZero, etherString } from '../utils/numbers';
@@ -21,7 +22,7 @@ import { isZero, etherString } from '../utils/numbers';
 // Custom hooks
 import { useAllowance } from '../hooks/useAllowance';
 import { useSigner } from '../hooks/useSigner';
-import { useDeFi } from '../hooks/useDeFi';
+// import { useDeFi } from '../hooks/useDeFi';
 
 // Initialize logger
 const logger = Logger('UnlockTokens');
@@ -91,14 +92,17 @@ export const UnlockTokens = (
     if (isZero(balances.lif)) {
       setStateIndex(0);
     } else if (!isZero(balances.lif) && allowance.gte(balances.lif)) {
-      logger.debug('allowance', allowance.toString());
-      logger.debug('balance', balances.lif.toString());
-      logger.debug('Already allowed');
+      logger.info('balance', balances.lif.toString());
+      logger.info('Already allowed', allowance.toString());
       setStateIndex(3);
     } else if (stateIndex <= 1) {
       setStateIndex(account && !isZero(balances.lif) ? 1 : 0);
     }
   }, [stateIndex, account, balances, allowance]);
+
+  useEffect(() => {
+    setTransactionHash(null);
+  }, [account, isRightNetwork]);
 
   const approveTokens = useCallback(async () => {
     try {
@@ -119,17 +123,16 @@ export const UnlockTokens = (
       }, 2000);
     } catch (error) {
       logger.error(error);
-      setError(error.message);
+      setError((error as Error).message);
       setStateIndex(1);
     }
   }, [lifTokens, signer]);
 
-  const [uniswapV2Balance, idexBalance, etherDeltaBalance] = useDeFi(
-    provider,
-    account,//'0x4c55ae27581b44cd6e014bced60d67680fc86586',
-    isRightNetwork
-  );
-  // console.log('@@@@', uniswapV2.toString(), idex.toString());
+  // const [uniswapV2Balance, idexBalance, etherDeltaBalance] = useDeFi(
+  //   provider,
+  //   account,//'0x4c55ae27581b44cd6e014bced60d67680fc86586',
+  //   isRightNetwork
+  // );
 
   return (
     <>
@@ -141,15 +144,17 @@ export const UnlockTokens = (
           kind='old'
         />
         <GreenLine />
-        <DeFi
+        <DeFiNote />
+        {/* <DeFi
           uniswapV2Balance={uniswapV2Balance}
           idexBalance={idexBalance}
           etherDeltaBalance={etherDeltaBalance}
-        />
+        /> */}
         <Balance
           balance={balances.lif}
           kind='new'
           title='New tokens to claim'
+          isUnlock={true}
         />
         <Button
           onClick={approveTokens}

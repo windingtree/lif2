@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import Logger from '../utils/logger';
 
@@ -9,26 +9,19 @@ const logger = Logger('usePoller');
 export const usePoller = (
   fn: Function,
   delay: number | null,
-  enabled = true
+  enabled = true,
+  name?: string
 ) => {
-  const [pollerOn, setPollerOn] = useState(enabled);
-  const tick = useCallback(() => {
-    try {
-      fn();
-    } catch (error) {
-      logger.error(error);
-    }
-  }, [fn]);
-
   useEffect(() => {
-    setPollerOn(enabled);
-  }, [enabled]);
-
-  useEffect(() => {
-    if (pollerOn && delay) {
-      const id = setInterval(tick, delay);
-      tick();
-      return () => clearInterval(id);
+    if (enabled && delay) {
+      const id1 = setInterval(fn, delay);
+      const id0 = setTimeout(fn, 0);
+      logger.info(`Poller ${name ? '"name" ' : ' '}started`);
+      return () => {
+        clearTimeout(id0);
+        clearInterval(id1);
+        logger.info(`Poller ${name ? '"name" ' : ' '}stopped`);
+      };
     }
-  }, [tick, delay, pollerOn]);
+  }, [fn, name, delay, enabled]);
 };

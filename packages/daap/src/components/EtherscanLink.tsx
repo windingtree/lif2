@@ -21,7 +21,7 @@ const EtherscanLinkWrapper = styled.div`
   color: rgb(${colors.dark});
   margin-top: 10px;
   a {
-    text-decoration: none;
+    text-decoration: underline;
     cursor: pointer;
     margin: 0;
     &:visited {

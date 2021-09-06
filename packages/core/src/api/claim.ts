@@ -9,6 +9,16 @@ import { extractEvents } from '../utils/extractEvents';
 export const isStopped = async (contract: Lif2): Promise<boolean> =>
   contract['stopped()']();
 
+// Checks if a holder ever claimed tokens
+export const isClaimed = async (
+  contract: Lif2,
+  holder: string
+): Promise<boolean> => {
+  const eventFilter = contract.filters.Claim(holder);
+  const events = await contract.queryFilter(eventFilter);
+  return events && events.length > 0;
+}
+
 // Claim tokens
 // - the callback function will be called right after a transaction sent
 export const claim = async (

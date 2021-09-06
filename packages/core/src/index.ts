@@ -8,7 +8,7 @@ import ERC20Contract from '@windingtree/lif2-token/artifacts/@openzeppelin/contr
 import { ethers } from 'ethers';
 
 import  { txCallback } from './utils/sendMethodTx';
-import { isStopped, claim } from './api/claim';
+import { isStopped, isClaimed, claim } from './api/claim';
 import {
   totalSupplyOld,
   balanceOfOld,
@@ -106,9 +106,17 @@ export class Lif2Token {
     );
   }
 
-  // Checks is claim feature is stopped
+  // Checks if claim feature is stopped
   isStopped(): Promise<boolean> {
     return isStopped(this.contract);
+  }
+
+  // Checks if holder ever claimed tokens
+  isClaimed(address: string): Promise<boolean> {
+    return isClaimed(
+      this.contract,
+      address
+    );
   }
 
   // Claim tokens

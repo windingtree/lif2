@@ -57,6 +57,7 @@ export const Screen = styled.div`
 export const PageWrapper = styled.section`
   margin: 125px 10px 125px 10px;
   width: 520px;
+  max-width: 520px;
   z-index: 1;
 
   @media (max-width: ${responsive.sm}) {
@@ -74,12 +75,15 @@ export interface GlobalContextObject {
 
 // Global context
 export const GlobalContext = createContext<GlobalContextObject>({
+  networkId: undefined,
   isRightNetwork: false,
-  logOut: () => {}
+  provider: undefined,
+  logOut: () => {},
+  account: undefined
 });
 
 export const Main = () => {
-  const [provider, logIn, logOut] = useWeb3Modal(web3ModalConfig);
+  const [provider, logIn, logOut, isConnecting] = useWeb3Modal(web3ModalConfig);
   const networkId = useNetworkId(provider);
   const isRightNetwork = useMemo(
     () => !!networkId && !!targetNetworkId && networkId === targetNetworkId,
@@ -102,7 +106,10 @@ export const Main = () => {
       <Screen>
         <PageWrapper>
           {!account &&
-            <Hello logIn={logIn} />
+            <Hello
+              logIn={logIn}
+              isConnecting={isConnecting}
+            />
           }
           {account &&
             <Swap />

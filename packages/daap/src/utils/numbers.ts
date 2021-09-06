@@ -12,5 +12,7 @@ export const etherString = (value: BigNumber, decimals = 3): string => {
     : fixedDecimalsValue;
 };
 
+export const zero = BN.from(0);
+
 // Checks a value for zero
 export const isZero = (value: BigNumber): boolean => BN.from(0).eq(value);

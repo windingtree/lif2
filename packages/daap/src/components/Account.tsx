@@ -7,7 +7,7 @@ import { colors } from '../styles';
 import { responsive } from '../styles';
 
 // Utils
-import { centerEllipsis } from '../utils/strings'; // copyToClipboard
+import { centerEllipsis, copyToClipboard } from '../utils/strings';
 
 // Custom hooks
 import { useOutsideListener } from '../hooks/useOutsideListener';
@@ -86,6 +86,7 @@ const DropDown = styled.div`
   box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.1);
   cursor: auto;
   top: 60px;
+  width: 250px;
 `;
 
 export const Account = ({
@@ -99,15 +100,15 @@ export const Account = ({
 
   // Dropdown menu items
   const menuItems: AccountMenuItem[] = useMemo(() => [
-    // {
-    //   label: 'Copy to clipboard',
-    //   callback: () => copyToClipboard(account || '')
-    // },
+    {
+      label: 'Copy to clipboard',
+      callback: () => copyToClipboard(account || '')
+    },
     {
       label: 'Change wallet',
       callback: () => logOut()
     }
-  ], [logOut]);
+  ], [account, logOut]);
 
   if (!account) {
     return null;
