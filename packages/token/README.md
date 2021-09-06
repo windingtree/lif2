@@ -7,7 +7,7 @@ The token implements ERC20 interface and the related use cases that described in
 - `Claimable` functionality dedicated for migration of tokens from the old Lif token contract (custom implementation).
 
 The token is made for using the OpenZeppelin proxy-based upgradeability system.
-So the the token contracts uses initializer function instead of constructors.
+So the token contracts uses the initializer function instead of constructors.
 The root initializer may be called only once right after the deployment. The restriction is managed by Initializable contract (native OpenZeppelin's implementation).
 
 ERC20 `transfer(address,uint256)` OpenZeppelin's function implementation is changed to prevent making transfers of tokens to the contracts.
@@ -23,13 +23,13 @@ The contract does not provide a possibility to transfer these tokens except thro
 - `stuckBalance` - the list of balances that are stuck in the old contract is saved to the new token storage using the `_afterClaimableInitHook()` function. This function is overriding by the root contract and the storage update directives are hardcoded into this function.
 
 To use the `claim()` function a holder of old Lif tokens must approve spending of these tokens by the contract address. A call of the `claim()` function will have the following results:
-- whole balance of old Lif tokens of the caller will be transferred to the new contract address. Recover these funds will not be possible anymore.
+- the whole balance of old Lif tokens of the caller will be transferred to the new contract address. Recovering these funds will not be possible anymore.
 - equal number of new tokens will be transferred to the caller address and a `Claim` event will be emitted
 - transaction to call may be reverted in following cases:
   - balance of old tokens is equal to zero or a user does not approved them;
   - transfer of old tokens from its owner to the new contract is failed;
   - the transfer is succeeded but the caller balance does not become equal to zero;
-- in case of the address of a caller has a positive `stuckBalance` the caller will be credited with the value of this balance. Along with it, this balance will be set to zero and a `Resurrect` event will be emitted.
+- in case the address of a caller has a positive `stuckBalance` the caller will be credited with the value of this balance. Along with it, this balance will be set to zero and a `Resurrect` event will be emitted.
 ## Environment setup
 
 Please use mono-repository root script for the package bootstrap.
