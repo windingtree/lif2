@@ -27,7 +27,7 @@ import { useSigner } from '../hooks/useSigner';
 import { useRegisterToken } from '../hooks/useRegisterToken';
 
 // Initialize logger
-const logger = Logger('UnlockTokens');
+const logger = Logger('ClaimTokens');
 
 // Config
 const { lif2 } = getContractsAddresses();
@@ -36,9 +36,10 @@ const network = getNetwork();
 export interface ClaimTokensProps {
   lifTokens: Lif2Token | undefined;
   provider: Web3ModalProvider | undefined;
-  balances: LifTokensBalances,
-  isRightNetwork: boolean,
-  onClaim: Function
+  balances: LifTokensBalances;
+  isRightNetwork: boolean;
+  onClaim: Function,
+  isEnabled: boolean;
 }
 
 export interface ClaimTokensState {
@@ -50,11 +51,11 @@ export interface ClaimTokensState {
 // The components' states
 export const states: ClaimTokensState[] = [
   {
-    label: () => 'Claim LÍF',
+    label: () => 'Claim LIF',
     disabled: true
   },
   {
-    label: (balance: BigNumber) => `Claim ${etherString(balance)}\u00A0LÍF`,
+    label: (balance: BigNumber) => `Claim ${etherString(balance)}\u00A0LIF`,
     disabled: false
   },
   {
@@ -83,7 +84,8 @@ export const ClaimTokens = (
     lifTokens,
     balances,
     isRightNetwork,
-    onClaim
+    onClaim,
+    isEnabled
   }: ClaimTokensProps
 ) => {
   const [error, setError] = useState<string | null>(null);
@@ -99,7 +101,12 @@ export const ClaimTokens = (
     return newState;
   }, [stateIndex]);
 
-  const allowance = useAllowance(lifTokens, account, lif2, isRightNetwork);
+  const allowance = useAllowance(
+    lifTokens,
+    account,
+    lif2,
+    isRightNetwork && !isEnabled
+  );
 
   useEffect(() => {
     if (!isZero(balances.lif) && stateIndex !== 2) {
@@ -174,7 +181,10 @@ export const ClaimTokens = (
 
   return (
     <BlockWrapper>
-      <Container title='New tokens'>
+      <Container
+        title='New tokens'
+        isLoading={!balances.isSetupDone}
+      >
         <Balance
           balance={balances.lif2}
           kind='new'

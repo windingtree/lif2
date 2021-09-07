@@ -5,9 +5,15 @@ import Logger from '../utils/logger';
 // Initialize logger
 const logger = Logger('useNetworkId');
 
+export type NetworkIdHook = [
+  networkId: number | undefined,
+  isNetworkIdLoading: boolean
+];
+
 // useNetworkId react hook
-export const useNetworkId = (provider: Web3ModalProvider | undefined): number | undefined => {
+export const useNetworkId = (provider: Web3ModalProvider | undefined): NetworkIdHook => {
   const [networkId, setNetworkId] = useState<number | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!provider) {
@@ -16,7 +22,9 @@ export const useNetworkId = (provider: Web3ModalProvider | undefined): number | 
 
     const getNetworkId = async () => {
       try {
+        setIsLoading(true);
         const network = await provider.getNetwork();
+        setIsLoading(false);
         logger.info('getNetwork:', network);
 
         if (network) {
@@ -26,12 +34,16 @@ export const useNetworkId = (provider: Web3ModalProvider | undefined): number | 
         }
       } catch (error) {
         logger.error(error);
-        throw error;
+        setIsLoading(false);
+        setNetworkId(undefined);
       }
     };
 
     getNetworkId();
   }, [provider]);
 
-  return networkId;
+  return [
+    networkId,
+    isLoading
+  ];
 };

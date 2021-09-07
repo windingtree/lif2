@@ -87,10 +87,13 @@ const DropDown = styled.div`
   cursor: auto;
   top: 60px;
   width: 250px;
+  z-index: 9999;
 `;
 
 export const Account = ({
-  account, isRightNetwork, logOut = () => {}
+  account,
+  isRightNetwork,
+  logOut = () => {}
 }: AccountProps) => {
   const [showMenu, setShowMenu] = useState(false);
 

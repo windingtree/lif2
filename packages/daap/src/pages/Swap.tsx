@@ -1,4 +1,3 @@
-import type { Web3ModalProvider } from '../hooks/useWeb3Modal';
 import { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -45,25 +44,25 @@ const Title = styled.div`
   }
 `;
 
-export interface SwapProps {
-  provider: Web3ModalProvider | undefined;
-  logOut: Function;
-}
-
 export const Swap = () => {
   const [isClaimedDone, setIsClaimedDone] = useState(false);
   const {
     isRightNetwork,
     provider,
     logOut,
-    account
+    account,
+    isConnecting
   } = useContext(GlobalContext);
   const lifTokens = useLifTokens(
     provider,
     contracts.lif,
     contracts.lif2
   );
-  const balances = useBalances(lifTokens, account, isRightNetwork);
+  const balances = useBalances(
+    lifTokens,
+    account,
+    isRightNetwork && !isConnecting
+  );
 
   useEffect(() => {
     setIsClaimedDone(false);
@@ -88,9 +87,10 @@ export const Swap = () => {
       <ContainerSpacer />
       {(
         !isClaimedDone &&
+        balances.isSetupDone &&
         (
-          (balances.isClaimed && balances.lif.gt(zero)) ||
-          !balances.isClaimed
+          !balances.isClaimed ||
+          (balances.isClaimed && balances.lif.gt(zero))
         )
       ) &&
         <UnlockTokens
@@ -98,6 +98,7 @@ export const Swap = () => {
           lifTokens={lifTokens}
           balances={balances}
           isRightNetwork={isRightNetwork}
+          isEnabled={isConnecting}
         />
       }
       <ClaimTokens
@@ -105,6 +106,7 @@ export const Swap = () => {
         lifTokens={lifTokens}
         balances={balances}
         isRightNetwork={isRightNetwork}
+        isEnabled={isConnecting}
         onClaim={onClaimDone}
       />
       {lifTokens && balances.lif2.gt(zero) &&

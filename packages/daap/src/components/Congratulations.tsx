@@ -10,7 +10,7 @@ const BlockWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin: 0 24px 0 24px;
+  margin: 40px 24px 0 24px;
 `;
 
 const Title = styled.div`
@@ -19,7 +19,6 @@ const Title = styled.div`
   font-weight: 500;
   line-height: 35px;
   color: rgb(${colors.purple});
-  margin-bottom: 40px;
 `;
 
 export const Congratulations = () => (

@@ -71,6 +71,7 @@ export interface GlobalContextObject {
   provider?: Web3ModalProvider;
   logOut: Function;
   account?: string;
+  isConnecting: boolean;
 }
 
 // Global context
@@ -79,15 +80,21 @@ export const GlobalContext = createContext<GlobalContextObject>({
   isRightNetwork: false,
   provider: undefined,
   logOut: () => {},
-  account: undefined
+  account: undefined,
+  isConnecting: false
 });
 
 export const Main = () => {
   const [provider, logIn, logOut, isConnecting] = useWeb3Modal(web3ModalConfig);
-  const networkId = useNetworkId(provider);
+  const [networkId, isNetworkIdLoading] = useNetworkId(provider);
+  const appConnecting = useMemo(
+    () => isConnecting || isNetworkIdLoading,
+    [isConnecting, isNetworkIdLoading]
+  );
   const isRightNetwork = useMemo(
-    () => !!networkId && !!targetNetworkId && networkId === targetNetworkId,
-    [networkId]
+    () => isNetworkIdLoading ||
+      (!!networkId && !!targetNetworkId && networkId === targetNetworkId),
+    [networkId, isNetworkIdLoading]
   );
   const account = useAccount(provider);
   const globalContextValue = useMemo(
@@ -96,9 +103,10 @@ export const Main = () => {
       isRightNetwork,
       provider,
       logOut,
-      account
+      account,
+      isConnecting: appConnecting
     }),
-    [networkId, isRightNetwork, provider, logOut, account]
+    [networkId, isRightNetwork, provider, logOut, account, appConnecting]
   );
 
   return (
@@ -108,7 +116,7 @@ export const Main = () => {
           {!account &&
             <Hello
               logIn={logIn}
-              isConnecting={isConnecting}
+              isConnecting={appConnecting}
             />
           }
           {account &&

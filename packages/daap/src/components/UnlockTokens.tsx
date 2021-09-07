@@ -34,8 +34,9 @@ const network = getNetwork();
 export interface UnlockTokensProps {
   lifTokens: Lif2Token | undefined;
   provider: Web3ModalProvider | undefined;
-  balances: LifTokensBalances,
-  isRightNetwork: boolean
+  balances: LifTokensBalances;
+  isRightNetwork: boolean;
+  isEnabled: boolean;
 }
 
 export interface UnlockTokensState {
@@ -72,7 +73,8 @@ export const UnlockTokens = (
     provider,
     lifTokens,
     balances,
-    isRightNetwork
+    isRightNetwork,
+    isEnabled
   }: UnlockTokensProps
 ) => {
   const [error, setError] = useState<string | null>(null);
@@ -82,11 +84,16 @@ export const UnlockTokens = (
 
   const state = useMemo(() => {
     const newState = getStateByIndex(stateIndex)
-    logger.debug('New state', newState);
+    logger.debug(`New state #${stateIndex}`, newState);
     return newState;
   }, [stateIndex]);
 
-  const allowance = useAllowance(lifTokens, account, lif2, isRightNetwork);
+  const allowance = useAllowance(
+    lifTokens,
+    account,
+    lif2,
+    isRightNetwork && !isEnabled
+  );
 
   useEffect(() => {
     if (isZero(balances.lif)) {
@@ -138,6 +145,7 @@ export const UnlockTokens = (
     <>
       <Container
         title='Old Tokens'
+        isLoading={!balances.isSetupDone}
       >
         <Balance
           balance={balances.lif}
@@ -153,7 +161,7 @@ export const UnlockTokens = (
         <Balance
           balance={balances.lif}
           kind='new'
-          title='New tokens to claim'
+          title='New tokens available to claim'
           isUnlock={true}
         />
         <Button
