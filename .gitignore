@@ -21,11 +21,6 @@ lib-cov
 # nyc test coverage
 .nyc_output
 
-# Compiled files
-build/Release
-public/api/**
-!public/.gitkeep
-
 # Dependency directories
 node_modules/
 

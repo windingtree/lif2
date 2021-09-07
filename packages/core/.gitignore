@@ -26,7 +26,6 @@ coverage
 .nyc_output
 
 # Compiled files
-dist
 build/Release
 public/api/**
 !public/.gitkeep
