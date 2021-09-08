@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 // Styles
@@ -11,7 +11,7 @@ import { ContainerSpacer } from '../components/Container';
 import { UnlockTokens } from '../components/UnlockTokens';
 import { ClaimTokens } from '../components/ClaimTokens';
 import { OverallStats } from '../components/OverallStats';
-import { NewContractLink } from '../components/NewContractLink';
+import { ContractLink } from '../components/ContractLink';
 
 // Contexts
 import { GlobalContext } from './Main';
@@ -21,7 +21,7 @@ import { useLifTokens } from '../hooks/useLifTokens';
 import { useBalances } from '../hooks/useBalances';
 
 // Utils
-import { zero } from '../utils/numbers';
+import { zero, isZero } from '../utils/numbers';
 
 // Config
 import { getContractsAddresses } from '../config';
@@ -45,13 +45,13 @@ const Title = styled.div`
 `;
 
 export const Swap = () => {
-  const [isClaimedDone, setIsClaimedDone] = useState(false);
   const {
     isRightNetwork,
     provider,
     logOut,
     account,
-    isConnecting
+    isConnecting,
+    setScreenState
   } = useContext(GlobalContext);
   const lifTokens = useLifTokens(
     provider,
@@ -65,11 +65,17 @@ export const Swap = () => {
   );
 
   useEffect(() => {
-    setIsClaimedDone(false);
-  }, [account, isRightNetwork]);
+    if (!balances.isClaimed || (balances.isClaimed && !isZero(balances.lif))) {
+      setScreenState(1);
+    } else if (balances.isClaimed && isZero(balances.lif)) {
+      setScreenState(2);
+    } else {
+      setScreenState(0);
+    }
+  }, [balances, setScreenState]);
 
-  const onClaimDone = () => {
-    setIsClaimedDone(true);
+  if (!account) {
+    return null;
   }
 
   return (
@@ -85,38 +91,21 @@ export const Swap = () => {
         />
       </Header>
       <ContainerSpacer />
-      {(
-        !isClaimedDone &&
-        balances.isSetupDone &&
-        (
-          !balances.isClaimed ||
-          (balances.isClaimed && balances.lif.gt(zero))
-        )
-      ) &&
-        <UnlockTokens
-          provider={provider}
-          lifTokens={lifTokens}
-          balances={balances}
-          isRightNetwork={isRightNetwork}
-          isEnabled={isConnecting}
-        />
-      }
+      <UnlockTokens
+        provider={provider}
+        lifTokens={lifTokens}
+        balances={balances}
+        isEnabled={!isConnecting && isRightNetwork}
+      />
       <ClaimTokens
         provider={provider}
         lifTokens={lifTokens}
         balances={balances}
-        isRightNetwork={isRightNetwork}
-        isEnabled={isConnecting}
-        onClaim={onClaimDone}
+        isEnabled={!isConnecting && isRightNetwork}
       />
       {lifTokens && balances.lif2.gt(zero) &&
         <OverallStats
           lifTokens={lifTokens}
-        />
-      }
-      {lifTokens &&
-        <NewContractLink
-          address={lifTokens.contract.address}
         />
       }
     </>

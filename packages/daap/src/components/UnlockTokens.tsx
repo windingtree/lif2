@@ -10,10 +10,11 @@ import { getContractsAddresses, getNetwork } from '../config';
 import { Button } from '../components/Buttons';
 import { Container } from '../components/Container';
 import { Balance } from '../components/Balance';
-import { GreenLine, VectorDown } from '../components/Decor';
+import { VectorDown } from '../components/Decor';
 import { EtherscanLink } from '../components/EtherscanLink';
 import { TxError } from '../components/TxError';
 import { DeFiNote } from '../components/DeFiNote';
+import { ContractLink } from '../components/ContractLink';
 // import { DeFi } from '../components/DeFi';
 
 // Utils
@@ -35,7 +36,6 @@ export interface UnlockTokensProps {
   lifTokens: Lif2Token | undefined;
   provider: Web3ModalProvider | undefined;
   balances: LifTokensBalances;
-  isRightNetwork: boolean;
   isEnabled: boolean;
 }
 
@@ -73,13 +73,13 @@ export const UnlockTokens = (
     provider,
     lifTokens,
     balances,
-    isRightNetwork,
     isEnabled
   }: UnlockTokensProps
 ) => {
   const [error, setError] = useState<string | null>(null);
   const [signer, account] = useSigner(provider);
   const [stateIndex, setStateIndex] = useState(account && !isZero(balances.lif) ? 1 : 0);
+  const [isClaimed, setIsClaimed] = useState(false);
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
 
   const state = useMemo(() => {
@@ -92,8 +92,15 @@ export const UnlockTokens = (
     lifTokens,
     account,
     lif2,
-    isRightNetwork && !isEnabled
+    isEnabled
   );
+
+  useEffect(() => {
+    setIsClaimed(
+      !balances.isSetupDone ||
+      (balances.isClaimed && isZero(balances.lif))
+    );
+  }, [balances]);
 
   useEffect(() => {
     if (isZero(balances.lif)) {
@@ -109,7 +116,7 @@ export const UnlockTokens = (
 
   useEffect(() => {
     setTransactionHash(null);
-  }, [account, isRightNetwork]);
+  }, [account, isEnabled]);
 
   const approveTokens = useCallback(async () => {
     try {
@@ -141,6 +148,10 @@ export const UnlockTokens = (
   //   isRightNetwork
   // );
 
+  if (isClaimed || !isEnabled) {
+    return null;
+  }
+
   return (
     <>
       <Container
@@ -151,19 +162,22 @@ export const UnlockTokens = (
           balance={balances.lif}
           kind='old'
         />
-        <GreenLine />
-        <DeFiNote />
         {/* <DeFi
           uniswapV2Balance={uniswapV2Balance}
           idexBalance={idexBalance}
           etherDeltaBalance={etherDeltaBalance}
         /> */}
-        <Balance
+        {/* <Balance
           balance={balances.lif}
           kind='new'
           title='New tokens available to claim'
           isUnlock={true}
-        />
+        /> */}
+        {lifTokens &&
+          <ContractLink
+            address={lifTokens.oldContract.address}
+          />
+        }
         <Button
           onClick={approveTokens}
           color='green'
@@ -182,6 +196,7 @@ export const UnlockTokens = (
         {error &&
           <TxError message={error}/>
         }
+        <DeFiNote />
       </Container>
       <VectorDown />
     </>

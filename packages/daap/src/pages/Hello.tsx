@@ -1,3 +1,4 @@
+import { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
 // Icons
@@ -13,10 +14,8 @@ import { responsive } from '../styles';
 import { Container } from '../components/Container';
 import { Button } from '../components/Buttons';
 
-export interface HelloProps {
-  logIn: Function;
-  isConnecting: boolean;
-}
+// Contexts
+import { GlobalContext } from './Main';
 
 const HelloTitle = styled.div`
   font-size: 42px;
@@ -76,47 +75,66 @@ const VectorIcon = styled(TokenIcon)`
   height : 34px;
 `;
 
-export const Hello = ({ logIn, isConnecting }: HelloProps) => (
-  <>
-    <HelloTitle>
-      Hello!
-    </HelloTitle>
-    <WelcomeText>
-      <p>
-      Winding Tree is undergoing a Token Swap.
-      </p>
-      <a href='#tbs' title='LIF tokens swap' target='_blank' rel='noopener noreferrer'>
-        Learn why
-      </a>
-    </WelcomeText>
-    <Container
-      title='Claim your new LÍF'
-      titleStyle='purple'
-    >
-      <IconsBlock>
-        <TokenIcon
-          src={LifSvg}
-        />
-        <TokenName>
-          LÍF
-        </TokenName>
-        <VectorIcon
-          src={VectorLeftSvg}
-        />
-        <TokenName>
-          LÍF
-        </TokenName>
-        <TokenIcon
-          src={Lif2Svg}
-        />
-      </IconsBlock>
-      <Button
-        color='purple'
-        onClick={logIn}
-        progress={isConnecting}
+export const Hello = () => {
+  const {
+    account,
+    logIn,
+    isConnecting,
+    setScreenState
+  } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (!account) {
+      setScreenState(0);
+    }
+  }, [account, setScreenState]);
+
+  if (account) {
+    return null;
+  }
+
+  return (
+    <>
+      <HelloTitle>
+        Hello!
+      </HelloTitle>
+      <WelcomeText>
+        <p>
+        Winding Tree is undergoing a Token Swap.
+        </p>
+        <a href='#tbs' title='LIF tokens swap' target='_blank' rel='noopener noreferrer'>
+          Learn why
+        </a>
+      </WelcomeText>
+      <Container
+        title='Claim your new LÍF'
+        titleStyle='purple'
       >
-        Connect a wallet
-      </Button>
-    </Container>
-  </>
-);
+        <IconsBlock>
+          <TokenIcon
+            src={LifSvg}
+          />
+          <TokenName>
+            LÍF
+          </TokenName>
+          <VectorIcon
+            src={VectorLeftSvg}
+          />
+          <TokenName>
+            LÍF
+          </TokenName>
+          <TokenIcon
+            src={Lif2Svg}
+          />
+        </IconsBlock>
+        <Button
+          color='purple'
+          onClick={logIn}
+          progress={isConnecting}
+        >
+          Connect a wallet
+        </Button>
+      </Container>
+    </>
+  );
+}

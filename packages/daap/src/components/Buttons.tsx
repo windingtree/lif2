@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 // Icons
 import LockedSvg from '../assets/Locked.svg'
@@ -27,6 +27,7 @@ const ButtonWrapper = styled.button`
   flex-direction: row;
   align-items: center;
   align-self: stretch;
+  justify-content: flex-start;
   border-radius: 24px;
   outline: none;
   padding: 24px 32px;
@@ -71,9 +72,13 @@ const ButtonWrapper = styled.button`
     }
   }
 
+  div {
+    text-align: left;
+  }
+
   @media (max-width: ${responsive.sm}) {
-    padding: 16px 24px;
-    font-size: 26px;
+    padding: 14px 22px;
+    font-size: 22px;
   }
 `;
 
@@ -106,7 +111,49 @@ const UnlockedIcon = styled(Icon)`
   background-image: url(${UnlockedSvg});
 `;
 
-const ProgressSign = styled.div``;
+const animationEllipsis = keyframes`
+  0% {
+    background: rgba(${colors.dark},0.1);
+  }
+  100% {
+    background: rgba(${colors.dark},1);
+  }
+`;
+
+const ProgressSign = styled.span`
+  font: inherit;
+  vertical-align: bottom;
+  width: 25px;
+  margin-left: 3px;
+
+  span {
+    background-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    height: 5px;
+    width: 5px;
+    margin-right: 4px;
+    animation: ${animationEllipsis} steps(10,end) 800ms infinite;
+
+    @media (max-width: ${responsive.sm}) {
+      height: 4px;
+      width: 4px;
+      margin-right: 3px;
+    }
+
+    &:last-child {
+      margin-right: 0px;
+    }
+
+    &.two {
+      animation-delay: 200ms;
+    }
+
+    &.three {
+      animation-delay: 400ms;
+    }
+  }
+`;
 
 export const Button = ({
   children, color, locked, disabled, progress, onClick
@@ -128,11 +175,13 @@ export const Button = ({
     }
     <Content>
       {children}
+      {progress &&
+        <ProgressSign>
+          <span className='one'></span>
+          <span className='two'></span>
+          <span className='three'></span>
+        </ProgressSign>
+      }
     </Content>
-    {progress &&
-      <ProgressSign>
-        ...
-      </ProgressSign>
-    }
   </ButtonWrapper>
 );

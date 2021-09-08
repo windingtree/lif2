@@ -17,6 +17,7 @@ import { Balance } from '../components/Balance';
 import { EtherscanLink } from '../components/EtherscanLink';
 import { TxError } from '../components/TxError';
 import { Congratulations } from '../components/Congratulations';
+import { ContractLink } from '../components/ContractLink';
 
 // Utils
 import { isZero, etherString } from '../utils/numbers';
@@ -37,8 +38,6 @@ export interface ClaimTokensProps {
   lifTokens: Lif2Token | undefined;
   provider: Web3ModalProvider | undefined;
   balances: LifTokensBalances;
-  isRightNetwork: boolean;
-  onClaim: Function,
   isEnabled: boolean;
 }
 
@@ -83,8 +82,6 @@ export const ClaimTokens = (
     provider,
     lifTokens,
     balances,
-    isRightNetwork,
-    onClaim,
     isEnabled
   }: ClaimTokensProps
 ) => {
@@ -105,11 +102,11 @@ export const ClaimTokens = (
     lifTokens,
     account,
     lif2,
-    isRightNetwork && !isEnabled
+    isEnabled
   );
 
   useEffect(() => {
-    if (!isZero(balances.lif) && stateIndex !== 2) {
+    if (stateIndex !== 2 && !isZero(balances.lif)) {
       logger.info('balance', balances.lif.toString());
       if (allowance.gte(balances.lif)) {
         logger.info('Already allowed', allowance.toString());
@@ -127,7 +124,8 @@ export const ClaimTokens = (
     setTransactionHash(null);
     setShowRegisterToken(false);
     setRegisterTokenProgress(false);
-  }, [account, isRightNetwork]);
+    logger.info('State reset');
+  }, [account, isEnabled]);
 
   const claimTokens = useCallback(async () => {
     try {
@@ -144,9 +142,6 @@ export const ClaimTokens = (
         tx => setTransactionHash(tx.hash)
       );
       setTimeout(() => {
-        onClaim();
-      }, 500);
-      setTimeout(() => {
         setStateIndex(3);
         setShowRegisterToken(true);
       }, 1000);
@@ -155,7 +150,7 @@ export const ClaimTokens = (
       setError((error as Error).message);
       setStateIndex(1);
     }
-  }, [lifTokens, signer, onClaim]);
+  }, [lifTokens, signer]);
 
   const registrationCallback = useRegisterToken(
     provider,
@@ -189,6 +184,11 @@ export const ClaimTokens = (
           balance={balances.lif2}
           kind='new'
         />
+        {lifTokens &&
+          <ContractLink
+            address={lifTokens.contract.address}
+          />
+        }
         {(
           !showRegisterToken &&
           stateIndex > 0 &&
@@ -198,7 +198,7 @@ export const ClaimTokens = (
           <Button
             onClick={claimTokens}
             color='green'
-            disabled={state.disabled}
+            disabled={state.disabled || !isEnabled}
             progress={state.progress}
           >
             {state.label(balances.lif)}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 export interface FireWorksProps {
@@ -63,13 +63,11 @@ const FireWorksWrapper = styled.div`
 export const FireWorks = ({ duration }: FireWorksProps) => {
   const [started, setStarted] = useState(true);
 
-  const scheduleStop = useCallback(() => {
+  useEffect(() => {
     if (duration && duration !== 0) {
       setTimeout(() => setStarted(false), duration);
     }
-  }, [duration]);
-
-  useEffect(() => scheduleStop(), [scheduleStop]);
+  });
 
   if (!started) {
     return null;

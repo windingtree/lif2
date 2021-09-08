@@ -1,5 +1,5 @@
 import type { Web3ModalConfig, Web3ModalProvider } from '../hooks/useWeb3Modal';
-import { useMemo, createContext } from 'react';
+import { useState, useMemo, createContext } from 'react';
 import styled from 'styled-components';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
@@ -36,20 +36,41 @@ const web3ModalConfig: Web3ModalConfig = {
   }
 };
 
+export interface ScreenProps {
+  state?: number;
+}
+
+const getGradientByState = (state?: number): string => {
+  if (state === 1) {
+    return '0.4';
+  } else if (state === 2) {
+    return '0.6';
+  }
+
+  return '0.2';
+};
+
 export const Screen = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 0;
 
-  &:before {
+  &:after {
     position: absolute;
     content: "";
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 70.59%, #FEFEFE 121.26%), linear-gradient(146.86deg, rgba(122, 227, 148, 0.3) 11.79%, rgba(72, 219, 200, 0.3) 88.01%);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 70.59%,
+      #FEFEFE 121.26%),
+      linear-gradient(146.86deg,
+      rgba(122, 227, 148, ${({ state }: ScreenProps) => getGradientByState(state)}) 11.79%,
+      rgba(72, 219, 200, ${({ state }: ScreenProps) => getGradientByState(state)}) 88.01%
+    );
     filter: blur(434px);
   }
 `;
@@ -69,9 +90,11 @@ export interface GlobalContextObject {
   networkId?: number;
   isRightNetwork: boolean;
   provider?: Web3ModalProvider;
-  logOut: Function;
   account?: string;
   isConnecting: boolean;
+  logIn: Function;
+  logOut: Function;
+  setScreenState: Function;
 }
 
 // Global context
@@ -79,12 +102,15 @@ export const GlobalContext = createContext<GlobalContextObject>({
   networkId: undefined,
   isRightNetwork: false,
   provider: undefined,
-  logOut: () => {},
   account: undefined,
-  isConnecting: false
+  isConnecting: false,
+  logIn: () => {},
+  logOut: () => {},
+  setScreenState: () => {}
 });
 
 export const Main = () => {
+  const [screenState, setScreenState] = useState<number>(0);
   const [provider, logIn, logOut, isConnecting] = useWeb3Modal(web3ModalConfig);
   const [networkId, isNetworkIdLoading] = useNetworkId(provider);
   const appConnecting = useMemo(
@@ -102,26 +128,21 @@ export const Main = () => {
       networkId,
       isRightNetwork,
       provider,
-      logOut,
       account,
-      isConnecting: appConnecting
+      isConnecting: appConnecting,
+      logIn,
+      logOut,
+      setScreenState
     }),
-    [networkId, isRightNetwork, provider, logOut, account, appConnecting]
+    [networkId, isRightNetwork, provider, logIn, logOut, account, appConnecting]
   );
 
   return (
     <GlobalContext.Provider value={globalContextValue}>
-      <Screen>
+      <Screen state={screenState}>
         <PageWrapper>
-          {!account &&
-            <Hello
-              logIn={logIn}
-              isConnecting={appConnecting}
-            />
-          }
-          {account &&
-            <Swap />
-          }
+          <Hello />
+          <Swap />
         </PageWrapper>
       </Screen>
     </GlobalContext.Provider>

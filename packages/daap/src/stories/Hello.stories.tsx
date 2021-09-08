@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Hello } from '../pages/Hello';
 
-const Template: ComponentStory<typeof Hello> = args => (<Hello {...args} />);
+const Template: ComponentStory<typeof Hello> = args => (<Hello />);
 
 export const HelloPrimary = Template.bind({});
 HelloPrimary.args = {

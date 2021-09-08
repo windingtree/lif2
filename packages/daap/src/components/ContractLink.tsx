@@ -8,35 +8,37 @@ import { responsive } from '../styles';
 import CopySvg from '../assets/copy.svg';
 
 // Custom components
-import { Tooltip } from '../components/Tooltip';
+import { Tooltip } from './Tooltip';
 
 // Utils
 import { copyToClipboard, centerEllipsis } from '../utils/strings';
 
-export interface NewContractLinkProps {
+export interface ContractLinkProps {
   address?: string;
 }
 
-const NewContractWrapper = styled.div`
+const ContractWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 24px;
 `;
 
 const ContractTitle = styled.div`
   display: flex;
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 400;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  color: rgb(${colors.dark});
 `;
 
 const ContractAddressWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   padding: 8px 12px;
-  background: linear-gradient(117.13deg, #E1F9F2 16.38%, rgba(86, 241, 196, 0) 88.99%);
+  background-color: rgba(${colors.green},0.2);
   border-radius: 16px;
+  margin-bottom: 16px;
 `;
 
 const ContractAddress = styled.div`
@@ -58,20 +60,21 @@ const AddressEllipsis = styled.span`
 `;
 
 const CopyIcon = styled.img`
-  width: 25px;
-  height: 25px;
+  width: 16px;
+  height: 16px;
   margin-left: 10px;
+  margin-bottom: -1px;
 `;
 
-export const NewContractLink = ({ address }: NewContractLinkProps) => {
+export const ContractLink = ({ address }: ContractLinkProps) => {
   if (!address) {
     return null;
   }
 
   return (
-    <NewContractWrapper>
+    <ContractWrapper>
       <ContractTitle>
-        New contract
+        Contract address
       </ContractTitle>
       <ContractAddressWrapper>
         <ContractAddress>
@@ -89,6 +92,6 @@ export const NewContractLink = ({ address }: NewContractLinkProps) => {
           <CopyIcon src={CopySvg}/>
         </Tooltip>
       </ContractAddressWrapper>
-    </NewContractWrapper>
+    </ContractWrapper>
   );
 };
