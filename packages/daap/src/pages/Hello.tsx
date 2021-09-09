@@ -107,7 +107,7 @@ export const Hello = () => {
         </a>
       </WelcomeText>
       <Container
-        title='Claim your new LÍF'
+        title='Claim your new LIF'
         titleStyle='purple'
       >
         <IconsBlock>
@@ -121,7 +121,7 @@ export const Hello = () => {
             src={VectorLeftSvg}
           />
           <TokenName>
-            LÍF
+            LIF
           </TokenName>
           <TokenIcon
             src={Lif2Svg}
