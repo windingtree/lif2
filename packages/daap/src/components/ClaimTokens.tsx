@@ -106,7 +106,7 @@ export const ClaimTokens = (
   );
 
   useEffect(() => {
-    if (stateIndex !== 2 && !isZero(balances.lif)) {
+    if (![2, 3].includes(stateIndex) && !isZero(balances.lif)) {
       logger.info('balance', balances.lif.toString());
       if (allowance.gte(balances.lif)) {
         logger.info('Already allowed', allowance.toString());

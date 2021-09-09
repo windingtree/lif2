@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
 // Styles
-import { responsive } from '../styles';
+import { colors, responsive } from '../styles';
+
+// Icons
+import LogoPurpleIcon from '../assets/logo-purple.svg';
+
+// Custom components
+import { Footer } from '../components/Footer';
 
 // Pages
 import { Hello } from './Hello';
@@ -39,6 +45,47 @@ const web3ModalConfig: Web3ModalConfig = {
 export interface ScreenProps {
   state?: number;
 }
+
+const TopMessage = styled.div`
+  position: relative;
+  padding: 8px;
+  background-color: rgb(${colors.white});
+  width: 100%;
+  z-index: 9999;
+  text-align: center;
+  font-size: 14px;
+  color: rgb(${colors.black});
+
+  a {
+    color: rgb(${colors.purple});
+    &:visited {
+      color: rgb(${colors.purple});
+      text-decoration: none;
+    }
+  }
+`;
+
+const TopLogoWrapper = styled.a`
+  display: block;
+  position: absolute;
+  top: 75px;
+  left: 40px;
+  z-index: 9999;
+
+  @media (max-width: ${responsive.sm}) {
+    display: none;
+  }
+`;
+
+const TopLogo = styled.div`
+  background-image: url(${LogoPurpleIcon});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+`;
 
 const getGradientByState = (state?: number): string => {
   if (state === 1) {
@@ -139,10 +186,19 @@ export const Main = () => {
 
   return (
     <GlobalContext.Provider value={globalContextValue}>
+      <TopMessage>
+        Please check the URL twice. It&nbsp;should&nbsp;be&nbsp;<a href="https://windingtree.com/yourlif">windingtree.com/yourlif</a>.  Scammers will do fake websites, don’t let them send your tokens somewhere else
+      </TopMessage>
+      <TopLogoWrapper
+        href='https://windingtree.com'
+      >
+        <TopLogo />
+      </TopLogoWrapper>
       <Screen state={screenState}>
         <PageWrapper>
           <Hello />
           <Swap />
+          <Footer />
         </PageWrapper>
       </Screen>
     </GlobalContext.Provider>

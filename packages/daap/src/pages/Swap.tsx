@@ -2,8 +2,7 @@ import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 // Styles
-import { colors } from '../styles';
-import { responsive } from '../styles';
+import { colors, responsive } from '../styles';
 
 // Custom components
 import { Account } from '../components/Account';
@@ -11,7 +10,6 @@ import { ContainerSpacer } from '../components/Container';
 import { UnlockTokens } from '../components/UnlockTokens';
 import { ClaimTokens } from '../components/ClaimTokens';
 import { OverallStats } from '../components/OverallStats';
-import { ContractLink } from '../components/ContractLink';
 
 // Contexts
 import { GlobalContext } from './Main';
@@ -82,7 +80,7 @@ export const Swap = () => {
     <>
       <Header>
         <Title>
-          Your LÍF
+          Your LIF
         </Title>
         <Account
           account={account}

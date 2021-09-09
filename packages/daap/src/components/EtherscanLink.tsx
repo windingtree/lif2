@@ -15,13 +15,15 @@ export interface EtherscanLinkProps {
 const EtherscanLinkWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 24px;
+  justify-content: flex-end;
+  font-size: 20px;
   font-weight: 400;
   color: rgb(${colors.dark});
   margin-top: 10px;
   a {
     text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: rgba(${colors.black},0.7);
     cursor: pointer;
     margin: 0;
     &:visited {

@@ -42,7 +42,7 @@ const ButtonWrapper = styled.button`
       ? 'linear-gradient(117.13deg, #D0F6EB 16.38%, rgba(208, 246, 235, 0) 88.99%);'
       : ''
   )};
-  font-size: 32px;
+  font-size: 30px;
   font-weight: bold;
   color: rgb(${({ color, disabled }: ButtonProps) => (
     disabled
@@ -80,6 +80,8 @@ const ButtonWrapper = styled.button`
     padding: 14px 22px;
     font-size: 22px;
   }
+
+  transition: background-color 100ms;
 `;
 
 const Content = styled.div`

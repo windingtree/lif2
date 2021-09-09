@@ -31,6 +31,7 @@ const ContainerWrapper = styled.div`
   border-radius: 24px;
   padding: 24px;
   background-color: rgb(${colors.white});
+  overflow: hidden;
 
   &:before {
     ${({ isLoading }: ContainerWrapperProps) => (
@@ -38,13 +39,14 @@ const ContainerWrapper = styled.div`
     )}
     content: "";
     position: absolute;
+    overflow: visible;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     border-radius: 24px;
     background-size: 200% 100%;
-    background-image: linear-gradient(110deg, rgba(${colors.grey},0.1) 8%, rgba(${colors.white},0.5) 18%, rgba(${colors.grey},0.1) 33%);
+    background-image: linear-gradient(110deg, rgba(${colors.grey},0.2) 8%, rgba(${colors.white},0.8) 18%, rgba(${colors.grey},0.2) 33%);
     animation: 1.5s ${shineAnimation} linear infinite;
   }
 `;

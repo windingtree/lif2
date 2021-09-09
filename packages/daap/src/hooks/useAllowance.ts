@@ -36,14 +36,12 @@ export const useAllowance = (
 
       const allowance = await lifTokens.allowanceOld(account, spender);
 
-      if (!allowance.eq(accountAllowance)) {
-        logger.info('Allowance changed:', allowance.toString());
-        setAllowance(allowance);
-      }
+      logger.info(`Allowance for account "${account}":`, allowance.toString());
+      setAllowance(allowance);
     } catch (error) {
       logger.error(error);
     }
-  }, [isEnabled, lifTokens, account, spender, accountAllowance]);
+  }, [isEnabled, lifTokens, account, spender]);
 
   usePoller(
     getAllowance,

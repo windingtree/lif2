@@ -6,11 +6,18 @@ import { colors } from '../styles';
 // Icons
 import VectorDownSvg from '../assets/VectorDown.svg'
 
+export interface GreenLineProps {
+  thin?: boolean;
+}
+
 export const GreenLine = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 16px;
-  border: 1px solid rgba(${colors.green},0.3);
+  border: 1px solid rgba(
+    ${colors.green},
+    ${({ thin }: GreenLineProps) => thin ? '0.15' : '0.3'}
+  );
 `;
 
 export interface VectorDownProps {

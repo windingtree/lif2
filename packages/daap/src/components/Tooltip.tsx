@@ -18,7 +18,7 @@ const TooltipWrapper = styled.div`
 const TooltipContent = styled.div`
   position: absolute;
   top: -28px;
-  left: 10px;
+  left: -28px;
   border-radius: 4px;
   padding: 4px;
   font-size: 16px;
@@ -27,6 +27,7 @@ const TooltipContent = styled.div`
   border: 1px solid rgba(${colors.dark},0.3);
   box-shadow: 1px 1px 1px rgba(${colors.dark},0.3);
   cursor: pointer;
+  z-index: 99999;
 `;
 
 export const Tooltip = ({

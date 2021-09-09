@@ -116,6 +116,7 @@ export const UnlockTokens = (
 
   useEffect(() => {
     setTransactionHash(null);
+    setStateIndex(0);
   }, [account, isEnabled]);
 
   const approveTokens = useCallback(async () => {
@@ -148,7 +149,7 @@ export const UnlockTokens = (
   //   isRightNetwork
   // );
 
-  if (isClaimed || !isEnabled) {
+  if (isClaimed) {
     return null;
   }
 

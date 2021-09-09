@@ -48,20 +48,6 @@ const AccountWrapper = styled.div`
   cursor: pointer;
 `;
 
-const ItemsList = styled.ul`
-  li {
-    font-size: 24px;
-    font-weight: 500;
-    color: rgb(${colors.black});
-    margin-bottom: 40px;
-    cursor: pointer;
-
-    &:last-child {
-      margin-bottom: 0px;
-    }
-  }
-`;
-
 const Address = styled.div`
   color: rgb(${colors.dark});
   font-size: 24px;
@@ -80,6 +66,7 @@ const DropDown = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   padding: 20px;
   border-radius: 20px;
   background-color: rgb(${colors.white});
@@ -88,6 +75,48 @@ const DropDown = styled.div`
   top: 60px;
   width: 250px;
   z-index: 9999;
+`;
+
+const MenuItem = styled.div`
+  display: block;
+  position: relative;
+  font-size: 24px;
+  font-weight: 500;
+  color: rgb(${colors.black});
+  margin-bottom: 40px;
+  cursor: pointer;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+  &:hover {
+    &:after {
+      opacity: 1;
+    }
+  }
+  &:active {
+    color: rgb(${colors.dark});
+    &:after {
+      background-color: rgba(${colors.grey},0.8);
+    }
+  }
+  &:after {
+    opacity: 0;
+    position: absolute;
+    content: "";
+    top: -20px;
+    right: -20px;
+    bottom: -20px;
+    left: -20px;
+    background-color: rgba(${colors.grey},0.3);
+  }
+`;
+
+const MenuLabel = styled.div`
+  z-index: 9999;
+  position: relative;
+  /* &:hover {
+
+  } */
 `;
 
 export const Account = ({
@@ -141,19 +170,19 @@ export const Account = ({
       </div>
       {showMenu &&
         <DropDown ref={dropDownRef}>
-          <ItemsList>
-            {menuItems.map((item, index) => (
-              <li
-                key={index}
-                onClick={() => {
-                  menuItems[index].callback();
-                  setShowMenu(false);
-                }}
-              >
+          {menuItems.map((item, index) => (
+            <MenuItem
+              key={index}
+              onClick={() => {
+                menuItems[index].callback();
+                setShowMenu(false);
+              }}
+            >
+              <MenuLabel>
                 {item.label}
-              </li>
-            ))}
-          </ItemsList>
+              </MenuLabel>
+            </MenuItem>
+          ))}
         </DropDown>
       }
     </AccountWrapper>

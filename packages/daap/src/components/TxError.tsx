@@ -1,7 +1,11 @@
 import styled from 'styled-components';
+import Logger from '../utils/logger';
 
 // Styles
 import { colors } from '../styles';
+
+// Initialize logger
+const logger = Logger('TxError');
 
 export interface TxErrorProps {
   message: any;
@@ -23,9 +27,12 @@ const parseMessage = (message: string) => {
       const parsedMessage = JSON.parse(clearedJson[0]);
       return parsedMessage?.value?.data?.message;
     } catch (error) {
-      //
+      logger.error(error);
       return message;
     }
+  }
+  if (message.length > 300) {
+    message = `${message.substr(0, 300)}…`;
   }
   return message;
 };

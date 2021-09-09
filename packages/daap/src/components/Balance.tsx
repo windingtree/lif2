@@ -33,14 +33,10 @@ const BalanceWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 16px;
-  font-size: ${
-    ({ kind }: BalanceWrapperProps) => (kind === 'old' ? '40' : '32')
-  }px;
+  font-size: 34px;
 
   @media (max-width: ${responsive.sm}) {
-    font-size: ${
-      ({ kind }: BalanceWrapperProps) => (kind === 'old' ? '34' : '26')
-    }px;
+    font-size: 26px;
   }
 `;
 
@@ -81,7 +77,7 @@ export const Balance = ({ balance, kind, title, isUnlock }: BalanceProps) => (
         {title}
       </Title>
     }
-    <BalanceWrapper kind={kind}>
+    <BalanceWrapper>
       <BalanceValue>
         {etherString(balance || BN.from(0))}
       </BalanceValue>
