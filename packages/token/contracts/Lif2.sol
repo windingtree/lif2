@@ -25,7 +25,7 @@ contract Lif2 is
    *
    * Note: Must be called as soon as possible after the contract deployment
    */
-  function initialize(address tokenAddress_) public initializer {
+  function initialize(address tokenAddress_) external initializer {
     __ERC20_init("LifToken", "LIF");
     __Pausable_init();
     __Ownable_init();

@@ -137,8 +137,8 @@ abstract contract ClaimableUpgradeable is
     emit Claim(holder, balance);
 
     // Resurrect tokens if exists
-    if (_stuckBalance[holder] > 0) {
-      uint256 holderStuckBalance = _stuckBalance[holder];
+    uint256 holderStuckBalance = _stuckBalance[holder];
+    if (holderStuckBalance > 0) {
       _stuckBalance[holder] = 0;
       _transfer(address(this), holder, holderStuckBalance);
       emit Resurrect(holder, holderStuckBalance);
