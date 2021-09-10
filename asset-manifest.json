@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.js": "./static/js/main.b92c9181.chunk.js",
+    "main.js.map": "./static/js/main.b92c9181.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.56d0b921.js",
+    "runtime-main.js.map": "./static/js/runtime-main.56d0b921.js.map",
+    "static/js/2.64b9205d.chunk.js": "./static/js/2.64b9205d.chunk.js",
+    "static/js/2.64b9205d.chunk.js.map": "./static/js/2.64b9205d.chunk.js.map",
+    "index.html": "./index.html",
+    "static/js/2.64b9205d.chunk.js.LICENSE.txt": "./static/js/2.64b9205d.chunk.js.LICENSE.txt",
+    "static/media/Locked.53914eb2.svg": "./static/media/Locked.53914eb2.svg",
+    "static/media/Unlocked.a85a72e3.svg": "./static/media/Unlocked.a85a72e3.svg",
+    "static/media/Unlocking.b65ad79b.svg": "./static/media/Unlocking.b65ad79b.svg",
+    "static/media/VectorDown.8f3d1e0c.svg": "./static/media/VectorDown.8f3d1e0c.svg",
+    "static/media/VectorLeft.9420f7ca.svg": "./static/media/VectorLeft.9420f7ca.svg",
+    "static/media/VectorOut.0054e12e.svg": "./static/media/VectorOut.0054e12e.svg",
+    "static/media/copy.cf850eb6.svg": "./static/media/copy.cf850eb6.svg",
+    "static/media/lif.13920cbb.svg": "./static/media/lif.13920cbb.svg",
+    "static/media/lif2.14c44a75.svg": "./static/media/lif2.14c44a75.svg",
+    "static/media/logo-base.29899d7d.svg": "./static/media/logo-base.29899d7d.svg",
+    "static/media/logo-purple.c4361590.svg": "./static/media/logo-purple.c4361590.svg",
+    "static/media/telegram.8711f954.svg": "./static/media/telegram.8711f954.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.56d0b921.js",
+    "static/js/2.64b9205d.chunk.js",
+    "static/js/main.b92c9181.chunk.js"
+  ]
+}
