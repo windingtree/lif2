@@ -75,10 +75,28 @@ const VectorIcon = styled(TokenIcon)`
   height : 34px;
 `;
 
+const StopConnecting = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 400;
+  color: rgb(${colors.dark});
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(${colors.black},0.7);
+  margin-top: 20px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 export const Hello = () => {
   const {
+    injectedProvider,
     account,
     logIn,
+    logOut,
     isConnecting,
     setScreenState
   } = useContext(GlobalContext);
@@ -100,10 +118,14 @@ export const Hello = () => {
       </HelloTitle>
       <WelcomeText>
         <p>
-        Winding Tree is undergoing a Token Swap.
+          Winding Tree is upgrading LIF token to LIF v2
         </p>
-        <a href='#tbs' title='LIF tokens swap' target='_blank' rel='noopener noreferrer'>
-          Learn why
+        <a
+          href='https://blog.windingtree.com/lif-token-upgrade-fa07387a7ba7'
+          title='Lif Token Upgrade'
+          target='_blank'
+          rel='noopener noreferrer'>
+          Read our blog article to learn why
         </a>
       </WelcomeText>
       <Container
@@ -132,8 +154,23 @@ export const Hello = () => {
           onClick={logIn}
           progress={isConnecting}
         >
-          Connect a wallet
+          {
+            isConnecting
+              ? `Connecting to ${
+                injectedProvider && injectedProvider.name
+                  ? injectedProvider.name
+                  : 'wallet'
+              }`
+              : 'Connect a wallet'
+          }
         </Button>
+        {isConnecting &&
+          <StopConnecting
+            onClick={() => logOut()}
+          >
+            Stop connecting
+          </StopConnecting>
+        }
       </Container>
     </>
   );

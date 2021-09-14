@@ -1,5 +1,6 @@
+import type { IProviderInfo } from 'web3modal';
 import type { Web3ModalConfig, Web3ModalProvider } from '../hooks/useWeb3Modal';
-import { useState, useMemo, createContext } from 'react';
+import { useState, useMemo, useEffect, createContext } from 'react';
 import styled from 'styled-components';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
@@ -82,8 +83,8 @@ const TopLogo = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   cursor: pointer;
 `;
 
@@ -137,6 +138,7 @@ export interface GlobalContextObject {
   networkId?: number;
   isRightNetwork: boolean;
   provider?: Web3ModalProvider;
+  injectedProvider?: IProviderInfo;
   account?: string;
   isConnecting: boolean;
   logIn: Function;
@@ -158,8 +160,9 @@ export const GlobalContext = createContext<GlobalContextObject>({
 
 export const Main = () => {
   const [screenState, setScreenState] = useState<number>(0);
-  const [provider, logIn, logOut, isConnecting] = useWeb3Modal(web3ModalConfig);
+  const [provider, injectedProvider, logIn, logOut, isConnecting] = useWeb3Modal(web3ModalConfig);
   const [networkId, isNetworkIdLoading] = useNetworkId(provider);
+  const [showUrlNote, setShowUrlNote] = useState(true);
   const appConnecting = useMemo(
     () => isConnecting || isNetworkIdLoading,
     [isConnecting, isNetworkIdLoading]
@@ -175,20 +178,29 @@ export const Main = () => {
       networkId,
       isRightNetwork,
       provider,
+      injectedProvider,
       account,
       isConnecting: appConnecting,
       logIn,
       logOut,
       setScreenState
     }),
-    [networkId, isRightNetwork, provider, logIn, logOut, account, appConnecting]
+    [networkId, isRightNetwork, provider, injectedProvider, logIn, logOut, account, appConnecting]
   );
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowUrlNote(false);
+    }, 10000);
+    return () => clearTimeout(timeout);
+  });
 
   return (
     <GlobalContext.Provider value={globalContextValue}>
-      <TopMessage>
-        Please check the URL twice. It&nbsp;should&nbsp;be&nbsp;<a href="https://windingtree.com/yourlif">windingtree.com/yourlif</a>.  Scammers will do fake websites, don’t let them send your tokens somewhere else
-      </TopMessage>
+      {showUrlNote &&
+        <TopMessage>
+          Please check the URL twice. It&nbsp;should&nbsp;be&nbsp;<a href="https://lif.windingtree.com">lif.windingtree.com</a>.  Scammers will do fake websites, don’t let them send your tokens somewhere else
+        </TopMessage>
+      }
       <TopLogoWrapper
         href='https://windingtree.com'
       >

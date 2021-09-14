@@ -1,4 +1,4 @@
-import type { IProviderControllerOptions } from 'web3modal';
+import type { IProviderInfo, IProviderControllerOptions } from 'web3modal';
 import { useMemo, useCallback, useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import Web3modal from 'web3modal';
@@ -13,6 +13,7 @@ export type Web3ModalProvider = ethers.providers.Web3Provider;
 
 export type  Web3ModalHook = [
   provider: Web3ModalProvider | undefined,
+  injectedProvider: IProviderInfo | undefined,
   logIn: Function,
   logOut: Function,
   isConnecting: boolean
@@ -21,6 +22,7 @@ export type  Web3ModalHook = [
 // Web3Modal React Hook
 export const useWeb3Modal = (web3ModalConfig: Web3ModalConfig): Web3ModalHook => {
   const [provider, setProvider] = useState<Web3ModalProvider | undefined>();
+  const [injectedProvider, setInjectedProvider] = useState<IProviderInfo | undefined>();
   const [isConnecting, setIsConnecting] = useState(false);
 
   // Web3Modal initialization
@@ -39,6 +41,12 @@ export const useWeb3Modal = (web3ModalConfig: Web3ModalConfig): Web3ModalHook =>
   const logIn = useCallback(async () => {
     try {
       setIsConnecting(true);
+      setInjectedProvider(
+        (web3Modal as any).providerController.cachedProvider === 'injected'
+          ? (web3Modal as any).providerController.injectedProvider
+          : undefined
+      );
+
       const web3ModalProvider = await web3Modal.connect();
 
       const updateProvider = () => setProvider(
@@ -83,6 +91,7 @@ export const useWeb3Modal = (web3ModalConfig: Web3ModalConfig): Web3ModalHook =>
 
   return [
     provider,
+    injectedProvider,
     logIn,
     logOut,
     isConnecting

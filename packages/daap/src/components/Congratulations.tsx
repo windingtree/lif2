@@ -26,7 +26,7 @@ export const Congratulations = () => (
     <FireWorks duration={15000} />
     <Title>
       Congratulations!<br/>
-      All your LÍF is now in new tokens
+      All your LIF is now in new tokens
     </Title>
   </BlockWrapper>
 );

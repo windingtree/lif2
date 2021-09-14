@@ -84,7 +84,7 @@ export const UnlockTokens = (
 
   const state = useMemo(() => {
     const newState = getStateByIndex(stateIndex)
-    logger.debug(`New state #${stateIndex}`, newState);
+    logger.info(`New state #${stateIndex}`, newState);
     return newState;
   }, [stateIndex]);
 

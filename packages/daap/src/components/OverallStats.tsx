@@ -119,7 +119,8 @@ export const OverallStats = ({ lifTokens }: OverallStatsProps) => {
   const [
     totalSupply,
     claimedTokens,
-    claimedPercents
+    claimedPercents,
+    claimedPercentsDecimals
   ] = useSupply(lifTokens);
 
   if (!lifTokens) {
@@ -129,7 +130,7 @@ export const OverallStats = ({ lifTokens }: OverallStatsProps) => {
   return (
     <OverallStatsWrapper>
       <Title>
-        Overall LÍF migration stats so far:
+        Overall LIF migration stats so far:
       </Title>
       <SuppliesBlock>
         <SupplyRow>
@@ -152,7 +153,7 @@ export const OverallStats = ({ lifTokens }: OverallStatsProps) => {
       <ProgressWrapper>
         <Progress max='100' value={claimedPercents}></Progress>
         <ProgressValue>
-          {claimedPercents}%
+          {claimedPercentsDecimals}%
         </ProgressValue>
         <ProgressBg><ProgressBar width={claimedPercents}></ProgressBar></ProgressBg>
       </ProgressWrapper>

@@ -45,11 +45,9 @@ const ButtonWrapper = styled.button`
   font-size: 30px;
   font-weight: bold;
   color: rgb(${({ color, disabled }: ButtonProps) => (
-    disabled
-      ? colors.dark
-      : color === 'purple'
-        ? colors.white
-        : colors.black
+    color === 'purple'
+      ? disabled ? colors.dark : colors.white
+      : disabled ? colors.dark : colors.black
   )});
   &:disabled {
     cursor: not-allowed;
@@ -115,10 +113,10 @@ const UnlockedIcon = styled(Icon)`
 
 const animationEllipsis = keyframes`
   0% {
-    background: rgba(${colors.dark},0.1);
+    background: rgba(${colors.black},0.1);
   }
   100% {
-    background: rgba(${colors.dark},1);
+    background: rgba(${colors.black},0.8);
   }
 `;
 

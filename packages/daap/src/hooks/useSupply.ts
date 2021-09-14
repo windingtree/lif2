@@ -13,7 +13,8 @@ const logger = Logger('useSupply');
 export type UseSupplyHook = [
   totalSupply: BigNumber,
   claimedTokens: BigNumber,
-  claimedPercents: number
+  claimedPercents: number,
+  claimedPercentsDecimals: string
 ];
 
 // Shorthand to zero
@@ -27,6 +28,7 @@ export const useSupply = (
   const [totalSupply, setTotalSupply] = useState<BigNumber>(zero);
   const [claimedTokens, setClaimedTokens] = useState<BigNumber>(zero);
   const [claimedPercents, setClaimedPercents] = useState<number>(0);
+  const [claimedPercentsDecimals, setClaimedPercentsDecimals] = useState<string>('0.000');
 
   const getTotalSupply = useCallback(async () => {
     try {
@@ -42,17 +44,25 @@ export const useSupply = (
         if (currentClaimedTokens.eq(zero)) {
           logger.info('Claimed percents:', 0);
           setClaimedPercents(0);
+          setClaimedPercentsDecimals('0.000');
         } else {
-          let currentClaimedPercents = currentClaimedTokens
-            .mul(BN.from(100))
-            .div(currentTotalSupply)
-            .toNumber();
-          currentClaimedPercents = Math.ceil(currentClaimedPercents);
-          currentClaimedPercents = currentClaimedPercents > 100
-            ? 100
-            : currentClaimedPercents;
-          logger.info('Claimed percents:', currentClaimedPercents);
+          let multiplier = BN.from(1000);
+          let currentClaimedPercents =
+            currentClaimedTokens
+              .mul(BN.from(100))
+              .mul(multiplier)
+              .div(currentTotalSupply)
+              .toNumber();
+          let currentClaimedPercentsDecimals = currentClaimedPercents / multiplier.toNumber();
+          currentClaimedPercentsDecimals =
+            currentClaimedPercentsDecimals > 100
+                ? 100
+                : currentClaimedPercentsDecimals;
+          setClaimedPercentsDecimals(currentClaimedPercentsDecimals.toFixed(3));
+          logger.info('Claimed percents with decimals:', currentClaimedPercents);
+          currentClaimedPercents = Math.ceil(currentClaimedPercentsDecimals);
           setClaimedPercents(currentClaimedPercents);
+          logger.info('Claimed percents:', currentClaimedPercents);
         }
       }
     } catch (error) {
@@ -70,6 +80,7 @@ export const useSupply = (
   return [
     totalSupply,
     claimedTokens,
-    claimedPercents
+    claimedPercents,
+    claimedPercentsDecimals
   ];
 };

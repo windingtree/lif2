@@ -19,7 +19,7 @@ export const useAccount = (
     const getAccount = async () => {
       try {
         const accounts = await provider.listAccounts();
-        logger.debug(`listAccounts:`, accounts);
+        logger.info(`listAccounts:`, accounts);
         setAccount(accounts[0]);
       } catch (error) {
         logger.error(error);
