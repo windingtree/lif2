@@ -4,14 +4,16 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build:ropsten": "npx senv ./ropsten.senv react-scripts build",
+    "build:mainnet": "npx senv ./mainnet.senv react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "dev:node": "npx hardhat node",
     "dev:setup": "npx hardhat --network localhost testSetup",
-    "deploy": "npx ts-node ./scripts/deploy.ts"
+    "deploy:ropsten": "npx senv ./ropsten.senv \"npx ts-node ./scripts/deploy.ts\"",
+    "deploy:mainnet": "npx senv ./mainnet.senv \"npx ts-node ./scripts/deploy.ts\""
   },
   "homepage": "./",
   "repository": {
@@ -99,7 +101,8 @@
     "ts-node": "^10.2.1",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@windingtree/lif2-token": "1.0.0",
-    "@jamesives/github-pages-deploy-action": "^4.1.5"
+    "@jamesives/github-pages-deploy-action": "^4.1.5",
+    "@windingtree/secure-env-cli": "1.0.3"
   },
   "resolutions": {
     "babel-loader": "8.1.0"

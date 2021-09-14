@@ -40,6 +40,7 @@ node_modules/
 .env
 .env.test
 .env.build
+.senv
 
 # Serverless directories
 .serverless/

@@ -1,6 +1,10 @@
 node_modules
 keys.json
 networks.json
+.env
+*.env
+.senv
+*.senv
 
 #Hardhat files
 cache

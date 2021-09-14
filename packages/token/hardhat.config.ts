@@ -9,12 +9,6 @@ import 'solidity-coverage';
 import 'hardhat-docgen';
 import './scripts/lif2tasks';
 
-import networks from './networks.json';
-
-if (!networks) {
-  console.log('Unable to load networks config');
-}
-
 export interface CustomHardhatConfig extends HardhatUserConfig {
   etherscan: {
     apiKey: string;
@@ -39,18 +33,19 @@ const config: CustomHardhatConfig = {
   defaultNetwork: 'hardhat',
   networks: {
     hardhat: {
-      ...(
-        networks.hardhat
-          ? networks.hardhat
-          : {
-            "chainId": 1337,
-            "initialBaseFeePerGas": 0
-          }
-      )
+      "chainId": 1337,
+      "initialBaseFeePerGas": 0
     },
-    ropsten: networks.ropsten,
+    ropsten: {
+      url: process.env.NETWORK_RPC_URL,
+      accounts: [
+        process.env.ACCOUNT_KEY as string
+      ]
+    },
   },
-  etherscan: networks.etherscan,
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_KEY as string
+  } ,
   mocha: {
     timeout: 20000
   },

@@ -3,27 +3,14 @@ import type { HardhatUserConfig } from 'hardhat/types';
 import '@nomiclabs/hardhat-ethers';
 import './scripts/testSetup';
 
-import networks from '../token/networks.json';
-
-if (!networks) {
-  console.log('Unable to load networks config');
-}
-
 // Hardhat config
 const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
   networks: {
     hardhat: {
-      ...(
-        networks.hardhat
-          ? networks.hardhat
-          : {
-            "chainId": 1337,
-            "initialBaseFeePerGas": 0
-          }
-      )
-    },
-    ropsten: networks.ropsten
+      "chainId": 1337,
+      "initialBaseFeePerGas": 0
+    }
   },
   mocha: {
     timeout: 20000

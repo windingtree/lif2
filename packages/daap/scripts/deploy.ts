@@ -1,7 +1,7 @@
 import run from '@jamesives/github-pages-deploy-action';
 
 run({
-  token: process.env['GITHUB_TOKEN'],
+  token: process.env.GITHUB_TOKEN,
   branch: 'gh-pages',
   folder: 'build',
   hostname: 'github.com',
