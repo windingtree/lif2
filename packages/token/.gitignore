@@ -13,4 +13,4 @@ cache
 artifacts/**/*.dbg.json
 artifacts/build-info
 
-.openzeppelin/unknown-31337.json
+.openzeppelin/unknown*.json
