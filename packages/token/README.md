@@ -1,4 +1,5 @@
 # Lif2 Token Smart Contract
+> The [audit of the smart contract](./[WindingTree_15092021]SCAudit_Report_2.pdf) is made by the [Hacken](https://hacken.io) at September 15 th , 2021
 
 The token implements ERC20 interface and the related use cases that described in the [EIP-20](https://eips.ethereum.org/EIPS/eip-20) specification with following extensions:
 - `Pausable` functionality (native OpenZeppelin's implementation)
@@ -59,7 +60,7 @@ import Lif2Contract from '@windingtree/lif2-token/artifacts/contracts/Lif2.sol/L
 
 // Proxy instance in the Ropsten network
 import ropstenDeployment from '@windingtree/lif2-token/.openzeppelin/ropsten.json';
-const ropstenLifAddress = ropstenDeployment.proxies[0].address;
+const ropstenLifAddress = ropstenDeployment.proxies[<PROXY_INDEX>].address;
 /*
 ropstenLifAddress -> 0x40a9c072848243EA5bFd88d9f18A6Fa3af0B3d31
 */
@@ -80,25 +81,16 @@ yarn lint
 yarn test
 ```
 
-To run the code you will need to create a `network.json` in the root folder of this package. The content of this file may look like:
+To run the code you will need to initialize the following environment variables:
 
-```json
-{
-  "ropsten": {
-    "url": "https://ropsten.infura.io/v3/<YOUR_INFURA_PROJECT_ID>",
-    "accounts": [
-      "<PRIVATE_KEY_OF_THE_DEPLOYER_ACCOUNT>"
-    ]
-  },
-  "hardhat": {
-    "chainId": 1337,
-    "initialBaseFeePerGas": 0
-  },
-  "etherscan": {
-    "apiKey": "<YOUR_ETHERSCAN_API_KEY>"
-  }
-}
 ```
+NETWORK_RPC_URL=https://<NETWORK_NAME>.infura.io/v3/<YOUR_INFURA_PROJECT_ID>
+ACCOUNT_KEY=<PRIVATE_KEY_OF_THE_DEPLOYER_ACCOUNT>
+ETHERSCAN_KEY=<YOUR_ETHERSCAN_API_KEY>
+OLD_LIF_CONTRACT=<OLD_LIF_CONTRACT_ADDRESS>
+```
+
+It is highly recommended to not store environment variables in raw files. Instead of this, you can use our `senv` CLI tool (package: [@windingtree/secure-env-cli](https://github.com/windingtree/secure-env-cli)) that allowing to encrypt an environment file. To initialize environment using encrypted variables you will have to run the command `npx senv ./path/to/encrypted.senv "<COMMAND_OR_SCRIPT_TO_START>"`. `senv` CLI tool will prompt you for a password and then start the command or script in the initialized environment.
 
 ### Deployment
 
@@ -106,6 +98,12 @@ It is required to compile contract before the deployment.
 
 ```bash
 npx hardhat --network <NETWORK_NAME> deploy
+```
+
+using `senv` tool:
+
+```bash
+npx senv ./<PATH_TO_ENCRYPTED>.senv "npx hardhat --network <NETWORK_NAME> deploy"
 ```
 
 The contract instance as well as the address of the proxy contract deployed will be saved in the file:
@@ -119,10 +117,22 @@ This operation will be required if you want to transfer an ability to make upgra
 npx hardhat --network <NETWORK_NAME> transfer --address <ACCOUNT_ADDRESS>
 ```
 
+using `senv` tool:
+
+```bash
+npx senv ./<PATH_TO_ENCRYPTED>.senv "npx hardhat --network <NETWORK_NAME> transfer --address <ACCOUNT_ADDRESS>"
+```
+
 ### Upgrade
 
 ```bash
-npx hardhat --network <NETWORK_NAME> upgrade --name <NAME_OF_THE_NEW_CONTRACT>
+npx hardhat --network <NETWORK_NAME> upgrade --name <NAME_OF_THE_NEW_CONTRACT> --proxy <PROXY_ADDRESS_TO_UPGRADE>
+```
+
+using `senv` tool:
+
+```bash
+npx senv ./<PATH_TO_ENCRYPTED>.senv "npx hardhat --network <NETWORK_NAME> upgrade --name <NAME_OF_THE_NEW_CONTRACT> --proxy <PROXY_ADDRESS_TO_UPGRADE>"
 ```
 
 ### Prepare an upgrade
@@ -130,7 +140,13 @@ npx hardhat --network <NETWORK_NAME> upgrade --name <NAME_OF_THE_NEW_CONTRACT>
 This operation will be required if you want to just deploy a new instance. As result, you will get an address of the deployed contract instance which can be used in the multisig wallet or DAO for initialization of an upgrade.
 
 ```bash
-npx hardhat --network <NETWORK_NAME> prepare --name <NAME_OF_THE_NEW_CONTRACT>
+npx hardhat --network <NETWORK_NAME> prepare --name <NAME_OF_THE_NEW_CONTRACT> --proxy <PROXY_ADDRESS_TO_UPGRADE>
+```
+
+using `senv` tool:
+
+```bash
+npx senv ./<PATH_TO_ENCRYPTED>.senv "npx hardhat --network <NETWORK_NAME> prepare --name <NAME_OF_THE_NEW_CONTRACT> --proxy <PROXY_ADDRESS_TO_UPGRADE>"
 ```
 
 A result will look like:

@@ -42,12 +42,19 @@ const config: CustomHardhatConfig = {
         process.env.ACCOUNT_KEY as string
       ]
     },
+    mainnet: {
+      url: process.env.NETWORK_RPC_URL,
+      accounts: [
+        process.env.ACCOUNT_KEY as string
+      ],
+      gasPrice: 'auto',
+    },
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_KEY as string
   } ,
   mocha: {
-    timeout: 20000
+    timeout: 60000
   },
   typechain: {
     outDir: 'typechain',
