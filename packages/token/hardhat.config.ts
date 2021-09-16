@@ -15,6 +15,26 @@ export interface CustomHardhatConfig extends HardhatUserConfig {
   }
 }
 
+let customNetworksConfig = {};
+
+if (process.env.NETWORK_RPC_URL && process.env.ACCOUNT_KEY) {
+  customNetworksConfig = {
+    ropsten: {
+      url: process.env.NETWORK_RPC_URL,
+      accounts: [
+        process.env.ACCOUNT_KEY as string
+      ]
+    },
+    mainnet: {
+      url: process.env.NETWORK_RPC_URL,
+      accounts: [
+        process.env.ACCOUNT_KEY as string
+      ],
+      gasPrice: 'auto',
+    },
+  };
+}
+
 // Hardhat config
 const config: CustomHardhatConfig = {
   solidity: {
@@ -36,19 +56,7 @@ const config: CustomHardhatConfig = {
       "chainId": 1337,
       "initialBaseFeePerGas": 0
     },
-    ropsten: {
-      url: process.env.NETWORK_RPC_URL,
-      accounts: [
-        process.env.ACCOUNT_KEY as string
-      ]
-    },
-    mainnet: {
-      url: process.env.NETWORK_RPC_URL,
-      accounts: [
-        process.env.ACCOUNT_KEY as string
-      ],
-      gasPrice: 'auto',
-    },
+    ...customNetworksConfig
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_KEY as string
