@@ -68,6 +68,19 @@ ropstenLifAddress -> 0x40a9c072848243EA5bFd88d9f18A6Fa3af0B3d31
 
 ## Management
 
+> To run the code you will need to initialize the following environment variables:
+
+```
+NETWORK_RPC_URL=https://<NETWORK_NAME>.infura.io/v3/<YOUR_INFURA_PROJECT_ID>
+ACCOUNT_KEY=<PRIVATE_KEY_OF_THE_DEPLOYER_ACCOUNT>
+ETHERSCAN_KEY=<YOUR_ETHERSCAN_API_KEY>
+OLD_LIF_CONTRACT=<OLD_LIF_CONTRACT_ADDRESS>
+```
+
+> It is highly recommended not to store environment variables in raw files. Instead of this, you can use our `senv` CLI tool (package: [@windingtree/secure-env-cli](https://github.com/windingtree/secure-env-cli)) that allowing to encrypt an environment file. To initialize environment using encrypted variables you will have to run the command `npx senv ./path/to/encrypted.senv "<COMMAND_OR_SCRIPT_TO_START>"`. The `senv` CLI tool will prompt you for a password and then start the command or script in the initialized environment.
+
+> After each deployment, upgrade or transfer please commit the repository changes. This is required for the normal operation of the management scripts in future. The management scripts are saving information about the transactions sent and addresses of deployed contracts instances.
+
 ### Compile contract
 
 ```bash
@@ -80,17 +93,6 @@ yarn compile
 yarn lint
 yarn test
 ```
-
-To run the code you will need to initialize the following environment variables:
-
-```
-NETWORK_RPC_URL=https://<NETWORK_NAME>.infura.io/v3/<YOUR_INFURA_PROJECT_ID>
-ACCOUNT_KEY=<PRIVATE_KEY_OF_THE_DEPLOYER_ACCOUNT>
-ETHERSCAN_KEY=<YOUR_ETHERSCAN_API_KEY>
-OLD_LIF_CONTRACT=<OLD_LIF_CONTRACT_ADDRESS>
-```
-
-It is highly recommended to not store environment variables in raw files. Instead of this, you can use our `senv` CLI tool (package: [@windingtree/secure-env-cli](https://github.com/windingtree/secure-env-cli)) that allowing to encrypt an environment file. To initialize environment using encrypted variables you will have to run the command `npx senv ./path/to/encrypted.senv "<COMMAND_OR_SCRIPT_TO_START>"`. `senv` CLI tool will prompt you for a password and then start the command or script in the initialized environment.
 
 ### Deployment
 
