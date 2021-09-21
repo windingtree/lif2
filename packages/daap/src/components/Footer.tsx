@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 // Styles
-import { colors, responsive } from '../styles';
+import { colors } from '../styles';
 
 // Icons
 import LogoBaseIcon from '../assets/logo-base.svg';

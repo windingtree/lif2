@@ -98,7 +98,6 @@ task('testSetup', 'Deploys the token')
         const holdersList = {
           addresses: [
             '0x567Eb9E8D8A43C24c7bac4cb4b51ca806cFE8996', // me
-            '0x0bb476Cc44b32eC1B7DBF93F57A984764F7246C8', // me
             '0xA0B74BFE28223c9e08d6DBFa74B5bf4Da763f959', // me
             '0x8db4FDd5FD446bB2f1C821A727ccb6d9e619E935', // m
             '0x9253AA6cce96b2D02C25532a2522142185FAee94', // m
@@ -107,7 +106,6 @@ task('testSetup', 'Deploys the token')
           balances: [
             formatValue('1234567'),
             formatValue('1000000000'),
-            formatValue('765'),
             formatValue('654'),
             formatValue('987'),
             formatValue('876'),

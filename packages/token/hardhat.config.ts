@@ -25,6 +25,13 @@ if (process.env.NETWORK_RPC_URL && process.env.ACCOUNT_KEY) {
         process.env.ACCOUNT_KEY as string
       ]
     },
+    rinkeby: {
+      url: process.env.NETWORK_RPC_URL,
+      accounts: [
+        process.env.ACCOUNT_KEY as string
+      ],
+      gasPrice: 'auto',
+    },
     mainnet: {
       url: process.env.NETWORK_RPC_URL,
       accounts: [
