@@ -8,7 +8,7 @@ import Logger from '../utils/logger';
 import { getContractsAddresses, getNetwork } from '../config';
 
 // Icons
-import Lif2Png from '../assets/lif2.png';
+// import Lif2Png from '../assets/lif2.png';
 
 // Custom components
 import { Button } from './Buttons';
@@ -25,7 +25,7 @@ import { isZero, etherString } from '../utils/numbers';
 // Custom hooks
 import { useAllowance } from '../hooks/useAllowance';
 import { useSigner } from '../hooks/useSigner';
-import { useRegisterToken } from '../hooks/useRegisterToken';
+// import { useRegisterToken } from '../hooks/useRegisterToken';
 
 // Initialize logger
 const logger = Logger('ClaimTokens');
@@ -90,7 +90,7 @@ export const ClaimTokens = (
   const [stateIndex, setStateIndex] = useState(account && !isZero(balances.lif) ? 1 : 0);
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [showRegisterToken, setShowRegisterToken] = useState(false);
-  const [registerTokenProgress, setRegisterTokenProgress] = useState(false);
+  // const [registerTokenProgress, setRegisterTokenProgress] = useState(false);
 
   const state = useMemo(() => {
     const newState = getStateByIndex(stateIndex)
@@ -123,7 +123,7 @@ export const ClaimTokens = (
     setError(null);
     setTransactionHash(null);
     setShowRegisterToken(false);
-    setRegisterTokenProgress(false);
+    // setRegisterTokenProgress(false);
     logger.info('State reset');
   }, [account, isEnabled]);
 
@@ -152,27 +152,27 @@ export const ClaimTokens = (
     }
   }, [lifTokens, signer]);
 
-  const registrationCallback = useRegisterToken(
-    provider,
-    lif2,
-    'LIF',
-    18,
-    Lif2Png
-  );
+  // const registrationCallback = useRegisterToken(
+  //   provider,
+  //   lif2,
+  //   'LIF',
+  //   18,
+  //   Lif2Png
+  // );
 
-  // Token registration flow
-  const registerToken = useCallback(async () => {
-    try {
-      setRegisterTokenProgress(true);
-      await registrationCallback();
-      setRegisterTokenProgress(false);
-      setShowRegisterToken(false);
-    } catch (error) {
-      setError((error as Error).message);
-      logger.error(error);
-      setRegisterTokenProgress(false);
-    }
-  }, [registrationCallback]);
+  // // Token registration flow
+  // const registerToken = useCallback(async () => {
+  //   try {
+  //     setRegisterTokenProgress(true);
+  //     await registrationCallback();
+  //     setRegisterTokenProgress(false);
+  //     setShowRegisterToken(false);
+  //   } catch (error) {
+  //     setError((error as Error).message);
+  //     logger.error(error);
+  //     setRegisterTokenProgress(false);
+  //   }
+  // }, [registrationCallback]);
 
   return (
     <BlockWrapper>
@@ -204,7 +204,7 @@ export const ClaimTokens = (
             {state.label(balances.lif)}
           </Button>
         }
-        {showRegisterToken &&
+        {/* {showRegisterToken &&
           <Button
             color='purple'
             onClick={registerToken}
@@ -212,7 +212,7 @@ export const ClaimTokens = (
           >
             Add to your wallet
           </Button>
-        }
+        } */}
         {transactionHash &&
           <EtherscanLink
             blockExplorer={network.blockExplorer}
@@ -224,7 +224,7 @@ export const ClaimTokens = (
         }
       </Container>
       {stateIndex === 3 &&
-        <Congratulations />
+        <Congratulations provider={provider} />
       }
     </BlockWrapper>
   );

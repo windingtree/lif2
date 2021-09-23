@@ -210,7 +210,7 @@ export const Main = () => {
         <PageWrapper>
           <Hello />
           <Swap />
-          <Footer />
+          <Footer provider={provider} />
         </PageWrapper>
       </Screen>
     </GlobalContext.Provider>

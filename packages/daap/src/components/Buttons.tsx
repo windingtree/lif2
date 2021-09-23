@@ -13,6 +13,9 @@ export type ButtonColor =
   | 'green'
   | 'purple';
 
+export type ButtonSize =
+  | 'small'
+  | 'normal';
 export interface ButtonProps {
   children: any;
   color: ButtonColor;
@@ -20,6 +23,7 @@ export interface ButtonProps {
   locked?: boolean;
   disabled?: boolean;
   progress?: boolean;
+  size?: ButtonSize;
 }
 
 const ButtonWrapper = styled.button`
@@ -42,8 +46,12 @@ const ButtonWrapper = styled.button`
       ? 'linear-gradient(117.13deg, #D0F6EB 16.38%, rgba(208, 246, 235, 0) 88.99%);'
       : ''
   )};
-  font-size: 30px;
-  font-weight: bold;
+  font-size: ${({ size }: ButtonProps) => (
+    size && size === 'small'
+      ? '24px'
+      : '30px'
+  )};
+  font-weight: 700;
   color: rgb(${({ color, disabled }: ButtonProps) => (
     color === 'purple'
       ? disabled ? colors.dark : colors.white
@@ -156,13 +164,14 @@ const ProgressSign = styled.span`
 `;
 
 export const Button = ({
-  children, color, locked, disabled, progress, onClick
+  children, color, locked, disabled, progress, size, onClick
 }: ButtonProps) => (
   <ButtonWrapper
     color={color}
     locked={locked}
     disabled={disabled || progress}
     onClick={onClick as any}
+    size={size}
   >
     {(locked !== undefined && locked && !progress) &&
       <LockedIcon />
