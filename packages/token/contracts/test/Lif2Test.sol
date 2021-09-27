@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-import "./Lif2.sol";
+import "../Lif2.sol";
 
 /**
  * @dev Lif token implementation for testing purposes

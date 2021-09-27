@@ -2,13 +2,8 @@ import type { BigNumber, Signer } from 'ethers';
 import { expect } from 'chai';
 import { BigNumber as BN } from 'ethers';
 import hre from 'hardhat';
+import { prepareOldLif, stuckBalances } from './helpers/lif';
 const utils = hre.ethers.utils;
-
-const stuckBalances = {
-  '0x70997970C51812dc3A010C7d01b50e0d17dc79C8': BN.from('9830000000000000000000'),
-  '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC': BN.from('51999999999999999995385'),
-  '0x90F79bf6EB2c4f870365E785982E1f101E93b906': BN.from('751039901550000000000')
-};
 
 describe('Lif2 contract', () => {
   let signers;
@@ -22,25 +17,6 @@ describe('Lif2 contract', () => {
   let oldLif: any;
   let Lif2: any;
   let Lif2UpgradeabilityTest: any;
-
-  const prepareOldLif = async (signer: Signer, holders: string[] = []) => {
-    const OldLifTest = await hre.ethers.getContractFactory('OldLifTest');
-    const instance = await OldLifTest.connect(signer).deploy();
-    await instance.deployed();
-
-    if (holders.length > 0) {
-      for (let holder of holders) {
-        await instance.mint(holder, utils.parseUnits('100', 'gwei'));
-      }
-    }
-
-    // Initialize stuck balance
-    for (let addr in stuckBalances) {
-      await instance.mint(instance.address, stuckBalances[addr]);
-    }
-
-    return instance;
-  };
 
   before(async () => {
     signers = await hre.ethers.getSigners();
@@ -56,7 +32,7 @@ describe('Lif2 contract', () => {
     holder2Address = await holder2.getAddress();
 
     // Setup old Lif
-    oldLif = await prepareOldLif(deployer, [holder1Address]);
+    oldLif = await prepareOldLif(deployer, [holder1Address], stuckBalances);
 
     Lif2 = await hre.ethers.getContractFactory('Lif2Test');
     Lif2UpgradeabilityTest = await hre.ethers.getContractFactory('Lif2UpgradeabilityTest');
@@ -299,7 +275,7 @@ describe('Lif2 contract', () => {
     let totalSupply: BigNumber;
 
     beforeEach(async () => {
-      const oldLif = await prepareOldLif(deployer, [holder1Address]);
+      const oldLif = await prepareOldLif(deployer, [holder1Address], stuckBalances);
       const lif = await hre.upgrades.deployProxy(Lif2, [oldLif.address]);
       oldLifContract = oldLif.connect(holder1);
       lifContract = lif.connect(holder1);
@@ -310,6 +286,11 @@ describe('Lif2 contract', () => {
     });
 
     describe('#transfer(address,uint256)', () => {
+      let anotherContract: any;
+
+      before(async () => {
+        anotherContract = await hre.upgrades.deployProxy(Lif2UpgradeabilityTest, [oldLif.address]);
+      });
 
       it('should throw if paused', async () => {
         let lif = lifContract.connect(deployer);
