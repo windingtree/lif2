@@ -4,10 +4,24 @@ import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-waffle';
 import '@openzeppelin/hardhat-upgrades';
 
-import networks from '../token/networks.json';
+let customNetworksConfig = {};
 
-if (!networks) {
-  console.log('Unable to load networks config');
+if (process.env.NETWORK_RPC_URL && process.env.ACCOUNT_KEY) {
+  customNetworksConfig = {
+    ropsten: {
+      url: process.env.NETWORK_RPC_URL,
+      accounts: [
+        process.env.ACCOUNT_KEY as string
+      ]
+    },
+    rinkeby: {
+      url: process.env.NETWORK_RPC_URL,
+      accounts: [
+        process.env.ACCOUNT_KEY as string
+      ],
+      gasPrice: 'auto',
+    },
+  };
 }
 
 // Hardhat config
@@ -15,16 +29,10 @@ const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
   networks: {
     hardhat: {
-      ...(
-        networks.hardhat
-          ? networks.hardhat
-          : {
-            "chainId": 1337,
-            "initialBaseFeePerGas": 0
-          }
-      )
+      "chainId": 1337,
+      "initialBaseFeePerGas": 0
     },
-    ropsten: networks.ropsten
+    ...customNetworksConfig
   },
   mocha: {
     timeout: 20000

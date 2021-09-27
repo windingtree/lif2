@@ -134,7 +134,7 @@ contract Lif2 is
    * Requirements:
    *
    * - `recipient` cannot be the zero address.
-   * - `recipient` cannot be a contract
+   * - `recipient` cannot be the token contract itself
    * - the caller must have a balance of at least `amount`.
    */
   function transfer(address recipient, uint256 amount)
@@ -144,7 +144,7 @@ contract Lif2 is
     returns (bool)
   {
     require(
-      !AddressUpgradeable.isContract(recipient),
+      recipient != address(this),
       "ERC20: transfer to the contract"
     );
     return super.transfer(recipient, amount);
