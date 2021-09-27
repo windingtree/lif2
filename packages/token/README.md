@@ -62,7 +62,7 @@ import Lif2Contract from '@windingtree/lif2-token/artifacts/contracts/Lif2.sol/L
 import ropstenDeployment from '@windingtree/lif2-token/.openzeppelin/ropsten.json';
 const ropstenLifAddress = ropstenDeployment.proxies[<PROXY_INDEX>].address;
 /*
-ropstenLifAddress -> 0x40a9c072848243EA5bFd88d9f18A6Fa3af0B3d31
+ropstenLifAddress -> 0xd5B30eb26F6fEDA91BfeBA90ae9bdd0431bb02e8
 */
 ```
 
