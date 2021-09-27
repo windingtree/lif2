@@ -3,7 +3,7 @@ import type { Provider } from '@ethersproject/abstract-provider';
 import type { ERC20Upgradeable, Lif2 } from '@windingtree/lif2-token/typechain';
 import type { ApproveResult, ClaimResult, MethodOptions } from './types';
 
-import Lif2Contract from '@windingtree/lif2-token/artifacts/contracts/Lif2.sol/Lif2.json';
+import Lif2Contract from '@windingtree/lif2-token/artifacts/contracts/Lif2V2.sol/Lif2V2.json';
 import ERC20Contract from '@windingtree/lif2-token/artifacts/@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol/ERC20Upgradeable.json';
 import { ethers } from 'ethers';
 
