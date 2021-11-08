@@ -1,9 +1,7 @@
-import type { BigNumber, Signer, Contract } from 'ethers';
+import type { Signer } from 'ethers';
 import { expect } from 'chai';
-import { BigNumber as BN } from 'ethers';
 import hre from 'hardhat';
 import { prepareOldLif, stuckBalances } from './helpers/lif';
-const utils = hre.ethers.utils;
 
 describe('Lif2 contract upgrade to V2', () => {
   let signers: Signer[];
@@ -46,46 +44,43 @@ describe('Lif2 contract upgrade to V2', () => {
       .connect(proxyAdminOwnerSigner);
   });
 
-  describe('Lif2 upgrade', () => {
+  it('should upgrade', async () => {
+    const holder1Balance = await oldLif.balanceOf(holder1Address);
+    let instance = await hre.upgrades.deployProxy(Lif2, [oldLif.address]);
+    await oldLif.connect(holder1).approve(instance.address, holder1Balance);
+    await instance.connect(holder1).claim();
 
-    it('should upgrade', async () => {
-      const holder1Balance = await oldLif.balanceOf(holder1Address);
-      let instance = await hre.upgrades.deployProxy(Lif2, [oldLif.address]);
-      await oldLif.connect(holder1).approve(instance.address, holder1Balance);
-      await instance.connect(holder1).claim();
+    // should to throw when transfer to itself
+    await expect(
+      instance
+        .connect(holder1)
+        .transfer(
+          instance.address,
+          holder1Balance
+        )
+    ).revertedWith('ERC20: transfer to the contract');
+    await expect(
+      instance
+        .connect(holder1)
+        .transfer(
+          oldLif.address,
+          holder1Balance
+        )
+    ).revertedWith('ERC20: transfer to the contract');
 
-      // should to throw when transfer to itself
-      await expect(
-        instance
-          .connect(holder1)
-          .transfer(
-            instance.address,
-            holder1Balance
-          )
-      ).revertedWith('ERC20: transfer to the contract');
-      await expect(
-        instance
-          .connect(holder1)
-          .transfer(
-            oldLif.address,
-            holder1Balance
-          )
-      ).revertedWith('ERC20: transfer to the contract');
+    const upgraded = await hre.upgrades.upgradeProxy(instance.address, Lif2V2);
 
-      const upgraded = await hre.upgrades.upgradeProxy(instance.address, Lif2V2);
-
-      // should to throw when transfer to itself
-      await expect(
-        upgraded
-          .connect(holder1)
-          .transfer(
-            upgraded.address,
-            holder1Balance
-          )
-      ).revertedWith('ERC20: transfer to the contract');
-      // should not to throw when transfer to another contract
-      await upgraded.connect(holder1).transfer(oldLif.address, holder1Balance);
-      expect(await upgraded.balanceOf(oldLif.address)).to.equal(holder1Balance);
-    });
+    // should to throw when transfer to itself
+    await expect(
+      upgraded
+        .connect(holder1)
+        .transfer(
+          upgraded.address,
+          holder1Balance
+        )
+    ).revertedWith('ERC20: transfer to the contract');
+    // should not to throw when transfer to another contract
+    await upgraded.connect(holder1).transfer(oldLif.address, holder1Balance);
+    expect(await upgraded.balanceOf(oldLif.address)).to.equal(holder1Balance);
   });
 });

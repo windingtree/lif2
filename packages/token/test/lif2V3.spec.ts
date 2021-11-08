@@ -1,10 +1,8 @@
-import type { BigNumber, Signer, Contract } from 'ethers';
+import type { Signer } from 'ethers';
 import { expect } from 'chai';
-import { BigNumber as BN } from 'ethers';
 import hre from 'hardhat';
 import { domainSeparator } from './helpers/sig';
 import { prepareOldLif, stuckBalances } from './helpers/lif';
-const utils = hre.ethers.utils;
 
 describe('Lif2 contract upgrade to V3', () => {
   let signers: Signer[];
@@ -15,47 +13,6 @@ describe('Lif2 contract upgrade to V3', () => {
   let Lif2: any;
   let Lif2V2: any;
   let Lif2V3: any;
-  const typeHash = utils.solidityKeccak256(
-    [ 'string' ],
-    [ 'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)' ]
-  );
-  const versionHash = utils.solidityKeccak256(
-    [ 'string' ],
-    [ '1' ]
-  );
-  const getNameHash = (name: string) => utils.solidityKeccak256(
-    [ "bytes" ],
-    [
-      utils.solidityPack(
-        [ 'string' ],
-        [ name ]
-      )
-    ]
-  );
-  const buildDomainSeparator = (name: string, chainId: number, address: string) =>
-    utils.solidityKeccak256(
-      [
-        'bytes'
-      ],
-      [
-        utils.solidityPack(
-          [
-            'bytes32',
-            'bytes32',
-            'bytes32',
-            'uint',
-            'address'
-          ],
-          [
-            typeHash,
-            getNameHash(name),
-            versionHash,
-            chainId,
-            address
-          ]
-        )
-      ]
-    );
 
   before(async () => {
     signers = await hre.ethers.getSigners();
@@ -91,34 +48,31 @@ describe('Lif2 contract upgrade to V3', () => {
       .connect(proxyAdminOwnerSigner);
   });
 
-  describe('Lif2 upgrade', () => {
-
-    it('should upgrade', async () => {
-      // V1
-      const instanceV1 = await hre.upgrades.deployProxy(Lif2, [oldLif.address]);
-      // V2
-      const instanceV2 = await hre.upgrades.upgradeProxy(instanceV1.address, Lif2V2);
-      const initialName = await instanceV2.name();
-      const initialSymbol = await instanceV2.symbol();
-      const initialDomainSeparator = await instanceV2.DOMAIN_SEPARATOR();
-      expect(initialName).to.equal('LifToken');
-      expect(initialSymbol).to.equal('LIF');
-      expect(initialDomainSeparator).to.equal(
-        await domainSeparator('LifToken', '1', 1337, instanceV2.address)
-      );
-      // V3
-      const instanceV3 = await hre.upgrades.upgradeProxy(
-        instanceV2.address,
-        Lif2V3
-      );
-      const name = await instanceV3.name();
-      const symbol = await instanceV3.symbol();
-      const initialDomainSeparatorV3 = await instanceV3.DOMAIN_SEPARATOR();
-      expect(name).to.equal('Lif');
-      expect(symbol).to.equal('LIF');
-      expect(initialDomainSeparatorV3).to.equal(
-        await domainSeparator('Lif', '1', 1337, instanceV3.address)
-      );
-    });
+  it('should upgrade', async () => {
+    // V1
+    const instanceV1 = await hre.upgrades.deployProxy(Lif2, [oldLif.address]);
+    // V1 -> V2
+    const instanceV2 = await hre.upgrades.upgradeProxy(instanceV1.address, Lif2V2);
+    const initialName = await instanceV2.name();
+    const initialSymbol = await instanceV2.symbol();
+    const initialDomainSeparator = await instanceV2.DOMAIN_SEPARATOR();
+    expect(initialName).to.equal('LifToken');
+    expect(initialSymbol).to.equal('LIF');
+    expect(initialDomainSeparator).to.equal(
+      await domainSeparator('LifToken', '1', 1337, instanceV2.address)
+    );
+    // V2 -> V3
+    const instanceV3 = await hre.upgrades.upgradeProxy(
+      instanceV2.address,
+      Lif2V3
+    );
+    const name = await instanceV3.name();
+    const symbol = await instanceV3.symbol();
+    const initialDomainSeparatorV3 = await instanceV3.DOMAIN_SEPARATOR();
+    expect(name).to.equal('Lif');
+    expect(symbol).to.equal('LIF');
+    expect(initialDomainSeparatorV3).to.equal(
+      await domainSeparator('Lif', '1', 1337, instanceV3.address)
+    );
   });
 });
