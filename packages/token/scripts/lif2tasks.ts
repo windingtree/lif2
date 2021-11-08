@@ -17,10 +17,10 @@ task('accounts', 'Prints a list of signers addresses')
   });
 
 // Deployment task
-task('deploy', 'Deploys the token')
+task('deploy', 'Deploys the new token')
   .setAction(async (_, hre) => {
     await getSigners(hre);
-    const contractName = 'Lif2V2';
+    const contractName = 'Lif2V3';
     const contract = await hre.ethers.getContractFactory(contractName);
     console.log(`Deploying the ${contractName} proxy...`);
     const proxy = await hre.upgrades.deployProxy(

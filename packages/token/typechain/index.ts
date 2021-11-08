@@ -11,9 +11,11 @@ export type { IERC20Upgradeable } from "./IERC20Upgradeable";
 export type { ClaimableUpgradeable } from "./ClaimableUpgradeable";
 export type { Lif2 } from "./Lif2";
 export type { Lif2V2 } from "./Lif2V2";
+export type { Lif2V3 } from "./Lif2V3";
 export type { OldLifTest } from "./OldLifTest";
 export type { Lif2Test } from "./Lif2Test";
 export type { Lif2TestV2 } from "./Lif2TestV2";
+export type { Lif2TestV3 } from "./Lif2TestV3";
 export type { Lif2UpgradeabilityTest } from "./Lif2UpgradeabilityTest";
 
 export { OwnableUpgradeable__factory } from "./factories/OwnableUpgradeable__factory";
@@ -26,7 +28,9 @@ export { IERC20Upgradeable__factory } from "./factories/IERC20Upgradeable__facto
 export { ClaimableUpgradeable__factory } from "./factories/ClaimableUpgradeable__factory";
 export { Lif2__factory } from "./factories/Lif2__factory";
 export { Lif2V2__factory } from "./factories/Lif2V2__factory";
+export { Lif2V3__factory } from "./factories/Lif2V3__factory";
 export { OldLifTest__factory } from "./factories/OldLifTest__factory";
 export { Lif2Test__factory } from "./factories/Lif2Test__factory";
 export { Lif2TestV2__factory } from "./factories/Lif2TestV2__factory";
+export { Lif2TestV3__factory } from "./factories/Lif2TestV3__factory";
 export { Lif2UpgradeabilityTest__factory } from "./factories/Lif2UpgradeabilityTest__factory";
