@@ -9,5 +9,7 @@ run({
   workspace: '.',
   clean: true,
   silent: false,
-  isTest: 0
+  isTest: 0,
+  email: 'kostysh@gmail.com',
+  name: 'kostysh'
 });
